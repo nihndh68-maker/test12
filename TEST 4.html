@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Academic Reading · Test 320</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#fff;--border:#e5e7eb;--border-soft:#f3f4f6;--accent:#1e3a5f;--accent-red:#e11d48;--accent-red-hover:#be123c;--text:#1f2937;--muted:#6b7280;--success:#059669;--passage-width:52%;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+  #start-screen{position:fixed;inset:0;background:#f8fafc;display:flex;align-items:center;justify-content:center;z-index:500;}
+  #start-screen.hidden{display:none;}
+  .start-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:40px 44px;max-width:460px;width:92%;box-shadow:0 10px 40px rgba(0,0,0,.08);}
+  .start-card h1{font-size:20px;margin-bottom:4px;font-weight:600;}
+  .start-card .sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
+  .start-card label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;}
+  .start-card input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;margin-bottom:16px;font-family:inherit;}
+  .start-card input:focus{outline:none;border-color:var(--accent-red);box-shadow:0 0 0 3px rgba(225,29,72,.12);}
+  .start-card button{width:100%;padding:12px;background:var(--accent-red);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:6px;}
+  .start-card button:hover{background:var(--accent-red-hover);}
+  .resume-banner{display:none;background:#fef3c7;border:1px solid #fbbf24;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12.5px;color:#92400e;line-height:1.5;}
+  .resume-banner.show{display:block;}
+  .resume-banner .resume-actions{margin-top:8px;display:flex;gap:8px;}
+  .resume-banner .resume-actions button{width:auto;margin:0;padding:6px 12px;font-size:12px;border-radius:6px;}
+  .resume-banner .resume-actions .btn-ghost{background:#fff;color:#92400e;border:1px solid #fbbf24;}
+  #topbar{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:56px;flex-shrink:0;z-index:100;}
+  .top-left{display:flex;align-items:center;gap:12px;}
+  .mock-label{font-size:15px;font-weight:500;}
+  #autosave-indicator{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--success);font-weight:500;opacity:0;transition:opacity .4s ease;}
+  #autosave-indicator.show{opacity:1;}
+  #autosave-indicator .dot{width:7px;height:7px;border-radius:50%;background:var(--success);}
+  #autosave-indicator.saving .dot{background:#f59e0b;animation:blink .8s infinite;}
+  #autosave-indicator.saving{color:#f59e0b;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+  #timer-wrap{display:flex;align-items:center;gap:6px;color:var(--accent-red);font-weight:600;}
+  #timer{font-size:18px;font-weight:600;letter-spacing:0.02em;min-width:52px;}
+  #timer.warn{animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+  .top-actions{display:flex;align-items:center;gap:8px;}
+  .icon-btn{width:36px;height:36px;border:none;background:transparent;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s;}
+  .icon-btn:hover{background:var(--border-soft);color:var(--text);}
+  .btn-submit{background:#e5e7eb;color:var(--text);border:none;padding:8px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;}
+  .btn-submit:hover{background:#d1d5db;}
+  .icon-btn.active{background:#fff1f2;color:var(--accent-red);}
+  #notepad-panel{position:fixed;top:56px;right:0;width:320px;height:calc(100vh - 56px - 56px);background:#fff;border-left:1px solid var(--border);box-shadow:-4px 0 24px rgba(0,0,0,.08);z-index:150;display:flex;flex-direction:column;transition:transform .2s ease;}
+  #notepad-panel.hidden{transform:translateX(100%);pointer-events:none;}
+  .notepad-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+  .notepad-title{font-size:15px;font-weight:600;color:var(--accent-red);}
+  #notepad-text{flex:1;border:none;resize:none;padding:14px 16px;font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.55;outline:none;}
+  #main{display:flex;flex:1;overflow:hidden;}
+  #passage-panel{width:var(--passage-width);background:#fff;overflow-y:auto;padding:24px 28px 40px;flex-shrink:0;}
+  .part-header{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:0.04em;margin-bottom:4px;}
+  #passage-panel h2{font-size:22px;font-weight:700;color:var(--accent);margin-bottom:6px;letter-spacing:-0.3px;}
+  .time-note{font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.5;}
+  .passage-title{text-align:center;font-family:'Source Serif 4',Georgia,serif;font-size:18px;font-weight:600;color:var(--accent);margin-bottom:22px;}
+  #passage-panel p{font-family:'Source Serif 4',Georgia,serif;font-size:15px;line-height:1.75;margin-bottom:16px;}
+  #passage-panel p.glossary{font-size:13px;line-height:1.6;color:var(--muted);border-top:1px solid var(--border);padding-top:12px;margin-top:8px;}
+  #passage-panel strong{font-weight:700;color:var(--accent);}
+  #passage-panel em{font-style:italic;}
+  #resizer{width:5px;background:transparent;cursor:col-resize;flex-shrink:0;position:relative;z-index:10;}
+  #resizer::before{content:'';position:absolute;top:0;bottom:0;left:2px;width:1px;background:var(--accent-red);}
+  #resizer:hover::before,#resizer.dragging::before{width:3px;left:1px;}
+  #resizer .handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:14px;height:28px;background:#fff;border:1px solid var(--accent-red);border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--accent-red);font-size:10px;}
+  #questions-panel{flex:1;overflow-y:auto;padding:20px 24px 80px;background:#fff;}
+  .q-section{margin-bottom:28px;}
+  .q-section-header{font-size:15px;font-weight:600;margin-bottom:8px;}
+  .q-section-intro{font-size:13.5px;color:var(--muted);line-height:1.55;margin-bottom:16px;}
+  .info-box{padding:12px 16px;font-size:13px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;margin-bottom:14px;line-height:1.9;}
+  .info-box.notes{font-size:13.5px;line-height:2.1;}
+  .info-box .box-title{display:block;font-weight:600;color:var(--accent);margin-bottom:2px;}
+  .question{padding:12px 0;border-bottom:1px solid var(--border-soft);display:flex;gap:12px;align-items:flex-start;}
+  .question:last-child{border-bottom:none;}
+  .q-num{min-width:26px;height:26px;color:var(--muted);border:1.5px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;margin-top:1px;}
+  .q-body{flex:1;}
+  .q-text{font-size:14px;line-height:1.55;margin-bottom:10px;}
+  .tfn-options,.mcq-options{display:flex;flex-direction:column;gap:6px;}
+  .tfn-options.horizontal{flex-direction:row;flex-wrap:wrap;gap:8px;}
+  .tfn-btn,.mcq-opt{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:13.5px;transition:all .12s;}
+  .tfn-btn:hover,.mcq-opt:hover{border-color:#94a3b8;background:#f8fafc;}
+  .tfn-btn.selected,.mcq-opt.selected{border-color:var(--accent-red);background:#fff1f2;}
+  .tfn-btn .radio-dot,.mcq-opt .radio-dot{width:18px;height:18px;border-radius:50%;border:2px solid #cbd5e1;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+  .tfn-btn.selected .radio-dot,.mcq-opt.selected .radio-dot{border-color:var(--accent-red);}
+  .tfn-btn.selected .radio-dot::after,.mcq-opt.selected .radio-dot::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--accent-red);}
+  .fill-input{border:1.5px solid var(--border);border-radius:6px;padding:7px 12px;font-size:14px;font-family:inherit;width:100%;max-width:220px;transition:border-color .15s;}
+  .fill-input:focus{outline:none;border-color:var(--accent-red);box-shadow:0 0 0 3px rgba(225,29,72,.1);}
+  .fill-input.answered{border-color:var(--success);background:#f0fdf4;}
+  .fill-input.inline{display:inline-block;vertical-align:middle;margin:0 2px;}
+  .dd-select{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 36px 10px 12px;font-size:13.5px;font-family:inherit;background-color:#fff;cursor:pointer;transition:border-color .15s;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");background-repeat:no-repeat;background-position:right 12px center;}
+  .dd-select:focus{outline:none;border-color:var(--accent-red);box-shadow:0 0 0 3px rgba(225,29,72,.1);}
+  .dd-select.answered{border-color:var(--success);background-color:#f0fdf4;}
+  .pair-hint{font-size:12.5px;color:#b45314;background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;padding:6px 10px;margin-bottom:10px;}
+  #bottombar{border-top:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;flex-shrink:0;gap:12px;min-height:56px;}
+  .part-tabs{display:flex;gap:8px;flex-shrink:0;}
+  .part-tab{padding:8px 16px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap;}
+  .part-tab:hover{border-color:#94a3b8;color:var(--text);}
+  .part-tab.active{border-color:var(--accent-red);color:var(--accent);box-shadow:0 0 0 1px var(--accent-red);}
+  .part-tab .count{font-weight:400;color:var(--muted);}
+  .q-circles{display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;flex:1;padding:0 8px;}
+  .q-circle{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);background:#fff;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .12s;}
+  .q-circle:hover{border-color:#94a3b8;color:var(--text);}
+  .q-circle.answered{background:var(--success);border-color:var(--success);color:#fff;}
+  .nav-arrows{display:flex;gap:6px;flex-shrink:0;}
+  .nav-arrow{width:36px;height:36px;border:1.5px solid var(--border);border-radius:50%;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:16px;}
+  .nav-arrow:hover{border-color:#94a3b8;color:var(--text);}
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:flex;align-items:center;justify-content:center;}
+  .modal-overlay.hidden{display:none;}
+  .modal{background:#fff;border-radius:12px;padding:28px 32px;max-width:720px;width:94%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+  .modal h2{font-size:20px;margin-bottom:10px;}
+  .modal p{font-size:14px;line-height:1.6;color:var(--muted);margin-bottom:16px;}
+  .score-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0;}
+  .score-card{background:#f8fafc;border-radius:10px;padding:14px;text-align:center;}
+  .score-card .val{font-size:26px;font-weight:700;color:var(--accent);}
+  .score-card .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+  .modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;}
+  .btn-modal{padding:9px 18px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:#fff;}
+  .btn-modal:hover{background:#f8fafc;}
+  .btn-modal.primary{background:var(--accent-red);color:#fff;border-color:var(--accent-red);}
+  .btn-modal.primary:hover{background:var(--accent-red-hover);}
+  .ans-table-wrap{margin:12px 0;max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;}
+  .ans-table{width:100%;border-collapse:collapse;font-size:12px;}
+  .ans-table th{position:sticky;top:0;background:var(--accent);color:#fff;padding:8px 10px;text-align:left;font-weight:600;font-size:11px;}
+  .ans-table td{padding:6px 10px;border-bottom:1px solid var(--border);}
+  .ans-table tr:nth-child(even) td{background:#f8fafc;}
+  .ans-table .ok{color:var(--success);font-weight:600;}
+  .ans-table .bad{color:var(--accent-red);font-weight:600;}
+  .ans-table .blank{color:var(--muted);font-style:italic;}
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px;}
+  .passage-content{display:none;}
+  .passage-content.active{display:block;}
+  mark.hl{background:#fef08a;padding:0 2px;border-radius:2px;}
+  mark.hl-note{background:#bbf7d0;padding:0 2px;border-radius:2px;border-bottom:2px solid #16a34a;}
+  #sel-toolbar{position:fixed;z-index:300;display:none;background:#1e3a5f;color:#fff;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.2);font-size:13px;font-weight:500;overflow:hidden;white-space:nowrap;}
+  #sel-toolbar button{background:transparent;border:none;color:#fff;padding:8px 14px;cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;}
+  #sel-toolbar button:hover{background:rgba(255,255,255,.15);}
+  #sel-toolbar .sep{display:inline-block;width:1px;height:14px;background:rgba(255,255,255,.35);vertical-align:middle;}
+  @media (max-width:800px){#main{flex-direction:column;}#passage-panel{width:100%!important;height:42vh;border-bottom:1px solid var(--border);}#resizer{display:none;}}
+  #passage-panel p.source-note{font-family:'Inter',system-ui,sans-serif;font-size:12px;font-style:normal;color:var(--muted);text-align:center;margin:-12px 0 20px;line-height:1.5;}
+  .figure{margin:4px 0 20px;}
+  .figure img{width:100%;height:auto;display:block;border:1px solid var(--border);border-radius:6px;}
+  .figure figcaption{font-family:'Inter',system-ui,sans-serif;font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:8px;}
+  .figure .fig-src{font-size:11.5px;opacity:.85;}
+  .dd-select.inline{display:inline-block;width:auto;min-width:130px;padding:6px 32px 6px 10px;vertical-align:middle;margin:0 2px;}
+  .info-box .box-title + .box-title{margin-top:8px;}
+  .q-section .figure{margin:0 0 14px;}
+  .para-label{font-weight:700;color:var(--accent);margin-right:6px;}
+  .diagram-box{border:1px solid var(--border);border-radius:8px;padding:16px;background:#f8fafc;margin-bottom:14px;text-align:center;}
+  .diagram-box img{max-width:100%;height:auto;border-radius:4px;}
+  .diagram-labels{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;}
+  .diagram-label-row{font-size:14px;line-height:1.5;display:flex;align-items:center;flex-wrap:wrap;gap:6px;}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+
+<div id="start-screen">
+  <div class="start-card">
+    <h1>IELTS Academic Reading</h1>
+    <div class="sub">Computer-Delivered Simulation &middot; Test 320</div>
+    <div class="resume-banner" id="resume-banner">
+      <strong>&#9201; Saved session found</strong>
+      <div id="resume-info"></div>
+      <div class="resume-actions">
+        <button onclick="resumeTest()">Resume Test</button>
+        <button class="btn-ghost" onclick="discardSaved()">Start Fresh</button>
+      </div>
+    </div>
+    <label for="cand-name">Candidate Name</label>
+    <input type="text" id="cand-name" placeholder="Enter your full name" autocomplete="off">
+    <label for="cand-num">Candidate Number</label>
+    <input type="text" id="cand-num" placeholder="e.g. 123456" autocomplete="off">
+    <button onclick="startTest()">Start Test</button>
+  </div>
+</div>
+
+<div id="topbar">
+  <div class="top-left">
+    <span class="mock-label">IELTS Academic Reading &middot; Test 320</span>
+    <span id="autosave-indicator"><span class="dot"></span><span id="autosave-text">Saved</span></span>
+  </div>
+  <div id="timer-wrap">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <div id="timer">60:00</div>
+  </div>
+  <div class="top-actions">
+    <button class="icon-btn" id="notepad-btn" title="Notepad" onclick="toggleNotepad()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></button>
+    <button class="icon-btn" title="Full screen" onclick="toggleFullscreen()"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
+    <button class="btn-submit" onclick="confirmSubmit()">Submit</button>
+  </div>
+</div>
+
+<div id="notepad-panel" class="hidden">
+  <div class="notepad-header">
+    <span class="notepad-title">Notepad</span>
+    <button class="icon-btn" title="Close" onclick="toggleNotepad()" style="width:28px;height:28px"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <textarea id="notepad-text" placeholder="Type your notes here&hellip;"></textarea>
+</div>
+
+<div id="sel-toolbar">
+  <button type="button" id="sel-note-btn">Note</button><span class="sep"></span><button type="button" id="sel-hl-btn">Highlight</button>
+</div>
+
+<div id="main">
+  <div id="passage-panel">
+
+    <div class="passage-content active" id="pc-0">
+      <div class="part-header">PART 1</div>
+      <h2>READING PASSAGE 1</h2>
+      <div class="time-note">You should spend about 20 minutes on Questions 1&ndash;13, which are based on Reading Passage 1 below.</div>
+      <div class="passage-title">Salicylic acid</div>
+      <p><em>This natural powdery substance has helped to ease the troubles of human life for centuries.</em></p>
+      <p><strong class="para-label">A</strong> The benefits of salicylic acid were first documented in the 5th Century BC, when the Greek physician Hippocrates noted how powder derived from the bark of the white willow tree (Salix alba) was capable of reducing fevers and relieving pain. Surviving evidence suggests that early civilisations across the Middle East and in North America also used willow bark for these purposes. It was not until 1826, however, that the active component of willow bark was finally distilled and given a name &ndash; salicin &ndash; by Johann Andreas Buchner, a German pharmacologist at the University of Munich. A few years later, the process of isolation was perfected and the Italian chemist Raffaele Piria completed the development of salicylic acid through a chemical conversion. By the end of the nineteenth century, the German company Bayer was successfully marketing the drug as tablets under the Aspirin trademark, and it quickly became a staple in the medicine chest of households in the Western world.</p>
+      <p><strong class="para-label">B</strong> Although salicylic acid is still used most widely in over-the-counter painkiller tablets, over the years its applications have broadened considerably. In the field of dermatology, for instance, salicylic acid in the form of skin cream is lauded for its function as an exfoliator, brightening and enhancing the complexion. Because it softens and dissolves keratin, a kind of &lsquo;glue&rsquo; in the skin&rsquo;s structure, salicylic acid is able to treat many conditions in which the skin has suffered from an excessive accumulation or clogging of skin cells. These conditions include acne, dermatitis, psoriasis and folliculitis, all of which have proved remarkably resistant to other treatments. As a further benefit, salicylic acid also has anti-inflammatory properties and, as a result, can soothe troubled skin where other medicines often tend to exacerbate the problem.</p>
+      <p><strong class="para-label">C</strong> Although it has a reputation as a gentle chemical compared to harsher alternatives, in high concentrations, salicylic acid creams can prove harmful and, very occasionally, even fatal. Highly concentrated salicylic acid, particularly concentrations used for wart, corn or callus removal, can cause chemical burns if applied to skin for long periods of time. Hyper-pigmentation &ndash; a blotchy discolouration of skin tone &ndash; may also result in users who have darker skin and those who follow application with excessive exposure to ultraviolet light. Most over-the-counter facial lotions are limited to a relatively mild 2-3% concentration for this reason.</p>
+      <p><strong class="para-label">D</strong> Salicylic acid also has a number of other less widely known uses. Due to its antimicrobial properties, it is used in the formation of bismuth subsalicylate, the active ingredient in a number of popular remedies for upset stomachs and other intestinal problems. Some evidence suggests that salicylic acid destroys E. Coli bacteria and consequently reduces symptoms of diarrhoea and gastrointestinal distress in many sufferers. Long-term use, however, is discouraged because an accumulation of bismuth subsalicylate in the body is toxic.</p>
+      <p><strong class="para-label">E</strong> Salicylic acid in the form of aspirin tablets is commonly used to reduce fever, aches and pains and inflammation, but when ingested, it can cause gastrointestinal ulcers, stomach irritation or bleeding and other undesirable side effects &ndash; an issue for many users of aspirin over the years. Children seem to be particularly sensitive, with epidemiological research demonstrating a connection between aspirin use in children suffering from a viral illness and a damaging, and potentially fatal, condition known as Reye&rsquo;s syndrome. As a result, the Food and Drug Administration has recommended parents avoid the use of aspirin for all feverish children and teenagers.</p>
+      <p><strong class="para-label">F</strong> Salicylic acid has many uses for humans and other animals, but several species of flora, too, rely on its benefits. It seems to protect against fungicidal and bacterial infections by acting as a signal for pathogenic invasion. It also acts as a kind of therapeutic agent by playing a role in plant responses to abiotic, or external, stresses, such as in situations of drought, excessive cold or heat and heavy metal toxicity.</p>
+      <p><strong class="para-label">G</strong> It is a naturally occurring substance in most fruits, including berries, dates, raisins, kiwifruit, olives and tomatoes. A few vegetables and also mushrooms and almonds have a strong salicylic acid content. Some herbs and spices, such as turmeric and curcumin, possess so much of the substance that, according to the Rowett Research Institute, a very spicy curry contains more salicylic acid than a dose of aspirin.</p>
+      <p><strong class="para-label">H</strong> Some physicians recommend aspirin as a continuous medication in low dosages to provide a defense against heart attacks, strokes and blood clot formation in some patients. Early results from studies show it may even be effective in warding off certain types of cancer. However, it is not suggested that healthy people should start taking daily aspirin as a prophylactic measure, as there are positive lifestyle changes that can be made instead: quitting smoking, consuming little or no alcohol, and maintaining a normal weight by eating a wholesome diet and getting regular exercise. These adjustments to lifestyle may not be effortless but in the long run are extremely beneficial. If symptoms of withdrawal (from nicotine or caffeine, for example) are painful, you could take a couple of aspirin to overcome the temporary discomfort.</p>
+    </div>
+
+    <div class="passage-content" id="pc-1">
+      <div class="part-header">PART 2</div>
+      <h2>READING PASSAGE 2</h2>
+      <div class="time-note">You should spend about 20 minutes on Questions 14&ndash;26, which are based on Reading Passage 2 below.</div>
+      <div class="passage-title">Ada Lovelace: The first computer programmer?</div>
+      <p>Augusta Ada King (now commonly known as Ada Lovelace) was born on December 10, 1815, to the well-regarded poet Lord Byron and his wife Anne Byron. Lord Byron, a restless man who had conceived other children out of wedlock, left his wife in a bitter divorce just weeks after Ada&rsquo;s birth. Following the separation he headed immediately to Europe, where he died in Greece several years later, never having seen his daughter again. Anne Byron, forever averse to what she perceived as &lsquo;dangerous poetic tendencies&rsquo; after her troubling experiences with her wayward former husband, began from an early age trying to prevent the young Ada from following too closely in her father&rsquo;s footsteps. Some of Anne&rsquo;s strategies were relatively draconian &ndash; Ada was not permitted, for example, to look at any portraits of her father until she reached adulthood at twenty years of age. But others proved fortuitous. Attempting to nudge Ada away from poetry, literature and other pursuits that she feared would encourage caprice and self-indulgence in her daughter&rsquo;s young mind, Anne instead focused Ada&rsquo;s attention on areas of study that required more discipline and sober calculation instead: music and mathematics. It was through the latter that Ada found her calling, and eventually her place in the history books. Although it was unusual for young women of her era to pursue mathematics as a discipline, and Ada did not enjoy the privilege of formal education, her position in society allowed her access to some of the greatest minds of her day. Among these tutors was Mary Somerville, a noted mathematician and astronomer, whose legacy is continued in the naming of women&rsquo;s colleges around the world. Another tutor, logician Augustus De Morgan, informed Anne that her daughter had the potential to become an original mathematical investigator, perhaps of first-rate eminence.</p>
+      <p>It was through Somerville, however, that Ada was introduced to the researcher who would play the greatest role in shaping her legacy: Charles Babbage, a professor of mathematics at Cambridge, was widely known for having invented and developed the Difference Engine, a calculating machine more advanced than any of its time. In 1834, Babbage wanted to develop another, even more sophisticated apparatus, an Analytical Engine. Although he enjoyed great prestige, being a founder of the Astronomical Society and a member of international organisations including the American Academy of Arts and Sciences, his sponsors were reluctant to support his Analytical Engine project, and for some time it appeared as if Babbage&rsquo;s project intentions would never be fulfilled. Assistance eventually came from the Italian mathematician Luigi Menabrea, who produced a memoir documenting the Analytical Engine. The memoir was published in French, however, and Babbage recruited Ada to help make it accessible to an English-speaking audience. Over a nine-month period during 1842-1843, Ada devoted herself to completing the work, eventually producing not only an English version of Menabrea&rsquo;s work, but a set of appendices longer than the original document itself. In these appendices, Ada wrote a detailed account, in Section G, of how a sequence of &lsquo;Bernoulli numbers&rsquo; could be calculated using the Analytical Engine. Although the Engine was never built, retrospective studies have concluded that Ada&rsquo;s calculations would have been correct had the Engine existed at the time. In addition to her mathematical accuracy, Ada&rsquo;s other notes, some more speculative, show an awareness of computing potential that went beyond mere number crunching. Ada anticipated advances, such as computer-generated music, which would not be fully realised until a century and a half later. For these contributions, Ada has been dubbed the first computer programmer. Not everyone is convinced that Ada deserves this title, however. Some historians have suggested that Ada functioned more as an editor or compiler rather than as a mathematician in her own right. These critics note that, although published under her name, the algorithms had been completed by Babbage several years earlier, and that her correspondence with Babbage indicates that Ada relied a great deal on his guidance and authority in composing her appendices, while making only minor corrections herself. Other historians defend her role. According to Benjamin Woolley, Ada&rsquo;s biographer, says Ada&rsquo;s great contribution lies in her discussion of the implications of Babbage&rsquo;s work and her conceptual vision of what computing might become. In accomplishing this, Woolley suggests, Ada &lsquo;rose above the technical minutiae of Babbage&rsquo;s extraordinary invention&rsquo; and revealed its true grandeur. For his part, Babbage always insisted that Ada&rsquo;s work, while the product of an extensive dialogue between them, was entirely her own.</p>
+      <p>Disputes aside, Ada&rsquo;s legacy in both computing and the wider popular imagination is now firmly established. The British Computer Society now awards a medal bearing her name, and the United States Department of Defense has named a computer language, Ada, in her honour. In addition, a number of organisations, inspired by the example she set, also exist to foster the development of women in the fields of computing, science and technology.</p>
+    </div>
+
+    <div class="passage-content" id="pc-2">
+      <div class="part-header">PART 3</div>
+      <h2>READING PASSAGE 3</h2>
+      <div class="time-note">You should spend about 20 minutes on Questions 27&ndash;40, which are based on Reading Passage 3 below.</div>
+      <div class="passage-title">Haast's Eagle: Tiger of the skies</div>
+      <p><strong class="para-label">A</strong> As a result of being separated for millions of years from other mainland ecosystems such as Australia or continental Asia, the biota of New Zealand evolved to include some of the most unique plants and animals on earth. Until the arrival of humans and their associated introduced species, such as rats and dogs, New Zealand was not home to a single ground mammal, and this encouraged bird-life to prevail. Another common feature of island ecosystems, whereby some species significantly outgrow their mainland relatives, also occurred in New Zealand. From these twin forces &ndash; the dominance of birds, and the tendency toward larger body sizes in island ecosystems &ndash; emerged one of the most formidable flying predators known on earth: the Haast&rsquo;s eagle.</p>
+      <p><strong class="para-label">B</strong> The largest known eagle ever documented, this fearsome creature weighed up to fifteen kilograms and sported wings spanning two to three metres in diameter. Although this wingspan is comparatively small (the Wandering Albatross and Andean Condor, for instance, each have wingspans in excess of three metres), the Haast&rsquo;s eagle possessed a much larger body mass to wing ratio. While stubbier wings made the eagle ill-suited to prolonged flight, they did enable the Haast&rsquo;s eagle to nimbly and swiftly manoeuvre its large frame around trees, which would have been vital for pursuing prey through New Zealand&rsquo;s dense forest and scrubland.</p>
+      <p><strong class="para-label">C</strong> The most impressive aspect of the bird&rsquo;s anatomy, however, was its enormous talons. At almost 23 centimetres in length, these are comparable to those of some wild cats and have justifiably earned the Haast&rsquo;s eagle the nickname &lsquo;Tiger of the Skies&rsquo;. With these talons the eagle would attack its prey in the only way it knew how &ndash; grasping the animal&rsquo;s pelvis with one talon while crushing its skull with the other &ndash; in a strike that, according to New Zealand researcher Richard Holdaway, is akin to that of a 15 kilogram concrete block dropping from an eight-storey building. This force was enough to bring down very large animals, and indeed the Haast&rsquo;s eagle preyed primarily on the moa, a clumsy, flightless bird nearly fifteen times its size. Once immobilised, a large catch could feed the eagle over several days. With no other large predators, the Haast&rsquo;s eagle could afford to take its time with the carcass of its prey until ready to return to the hunt.</p>
+      <p><strong class="para-label">D</strong> This leads to an important question: How did such a ferocious predator fall from the top of the food chain and rapidly become extinct around AD 1500? The answer is that, like many other extinct animals, the Haast&rsquo;s eagle could not diversify its behaviours and adapt to changing circumstances quickly enough to survive. Moa, an easy source of prey for the eagle, were likewise an easy source of food for Maori tribespeople when they began to settle in New Zealand around AD 1200. These settlers quickly drove the moa to extinction, and with it went the primary food supply of the Haast&rsquo;s eagle. This enormous predator then faced a scarcity of food. Undoubtedly, the horror stories of human encounters with the eagle in Maori legend are true to some extent. If the Haast&rsquo;s eagle could take down a two hundred kilogram moa, some Maori tribesmen would have fallen prey to its massive claws at some point. The occasional human victim was insufficient to sustain the dietary requirements of a creature of its size, however, and when the moa disappeared, the Haast&rsquo;s eagle soon followed.</p>
+      <p><strong class="para-label">E</strong> Mythology surrounding the existence of the Haast&rsquo;s eagle has been passed down through Maori tradition for centuries, but due to a lack of physical evidence (only three full skeletons have ever been recovered), much about this bird remains a mystery. Artists have depicted the plumage of the Haast&rsquo;s eagle in different ways, for example; some see it as more of a muted brown, in line with other large forest eagles still in existence today, whereas others envision it displaying extravagant hues of green, red and purple. All of this is speculation, however. Recovered bones and further DNA evidence can tell us about the genealogy of the Haast&rsquo;s eagle and its size and skeletal structure, but the colour of its feathers, along with many other specifications, will forever be guesswork.</p>
+      <p><strong class="para-label">F</strong> It is difficult to say whether the demise of the Haast&rsquo;s eagle was tragic or fortuitous. No doubt the sight of this majestic bird swooping down from its perch at eighty kilometres per hour would have been an awe-inspiring sight, and it is easy to see why some early Maori settlers exalted the eagle in their imaginations as some kind of &lsquo;Bird God&rsquo;. If it were still around, however, there is no doubt that hiking, camping or even just taking a leisurely stroll through the woods in New Zealand would be a far more dangerous activity. With a force of impact powerful enough to knock an adult male unconscious, many people would never know what had hit them.</p>
+    </div>
+
+  </div>
+
+  <div id="resizer"><div class="handle">&#8942;&#8942;</div></div>
+
+  <div id="questions-panel">
+<div id="qs-0">
+<div class="q-section">
+<div class="q-section-header">Questions 1&ndash;8</div>
+<div class="q-section-intro">Reading Passage 1 has eight paragraphs, <strong>A&ndash;H</strong>. Choose the correct heading for each paragraph from the list of headings below.</div>
+<div class="info-box"><span class="box-title">List of Headings</span>
+<strong>i</strong> Availability to the public<br>
+<strong>ii</strong> Use as a digestive aid<br>
+<strong>iii</strong> Risks of application to the skin<br>
+<strong>iv</strong> Edible sources of salicylic acid<br>
+<strong>v</strong> Unwanted side effects of swallowing aspirin<br>
+<strong>vi</strong> Early popularity in Europe<br>
+<strong>vii</strong> Discovery and development<br>
+<strong>viii</strong> Appropriate and inappropriate long-term uses<br>
+<strong>ix</strong> External uses of salicylic acid<br>
+<strong>x</strong> Benefits for plant life<br>
+<strong>xi</strong> A remedy for sick children
+</div>
+<div class="question" id="q1"><div class="q-num">1</div><div class="q-body"><div class="q-text">Paragraph A</div><select class="dd-select" id="dd-q1" data-opts="i,ii,iii,iv,v,vi,vii,viii,ix,x,xi" data-ph="Select a heading&hellip;" onchange="selectDropdown(this,'q1')"></select></div></div>
+<div class="question" id="q2"><div class="q-num">2</div><div class="q-body"><div class="q-text">Paragraph B</div><select class="dd-select" id="dd-q2" data-opts="i,ii,iii,iv,v,vi,vii,viii,ix,x,xi" data-ph="Select a heading&hellip;" onchange="selectDropdown(this,'q2')"></select></div></div>
+<div class="question" id="q3"><div class="q-num">3</div><div class="q-body"><div class="q-text">Paragraph C</div><select class="dd-select" id="dd-q3" data-opts="i,ii,iii,iv,v,vi,vii,viii,ix,x,xi" data-ph="Select a heading&hellip;" onchange="selectDropdown(this,'q3')"></select></div></div>
+<div class="question" id="q4"><div class="q-num">4</div><div class="q-body"><div class="q-text">Paragraph D</div><select class="dd-select" id="dd-q4" data-opts="i,ii,iii,iv,v,vi,vii,viii,ix,x,xi" data-ph="Select a heading&hellip;" onchange="selectDropdown(this,'q4')"></select></div></div>
+<div class="question" id="q5"><div class="q-num">5</div><div class="q-body"><div class="q-text">Paragraph E</div><select class="dd-select" id="dd-q5" data-opts="i,ii,iii,iv,v,vi,vii,viii,ix,x,xi" data-ph="Select a heading&hellip;" onchange="selectDropdown(this,'q5')"></select></div></div>
+<div class="question" id="q6"><div class="q-num">6</div><div class="q-body"><div class="q-text">Paragraph F</div><select class="dd-select" id="dd-q6" data-opts="i,ii,iii,iv,v,vi,vii,viii,ix,x,xi" data-ph="Select a heading&hellip;" onchange="selectDropdown(this,'q6')"></select></div></div>
+<div class="question" id="q7"><div class="q-num">7</div><div class="q-body"><div class="q-text">Paragraph G</div><select class="dd-select" id="dd-q7" data-opts="i,ii,iii,iv,v,vi,vii,viii,ix,x,xi" data-ph="Select a heading&hellip;" onchange="selectDropdown(this,'q7')"></select></div></div>
+<div class="question" id="q8"><div class="q-num">8</div><div class="q-body"><div class="q-text">Paragraph H</div><select class="dd-select" id="dd-q8" data-opts="i,ii,iii,iv,v,vi,vii,viii,ix,x,xi" data-ph="Select a heading&hellip;" onchange="selectDropdown(this,'q8')"></select></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Questions 9&ndash;12</div>
+<div class="q-section-intro">Complete each sentence with the correct ending, <strong>A&ndash;G</strong>, below.</div>
+<div class="info-box"><span class="box-title">List of Endings</span>
+<strong>A</strong> can cause high temperatures and sore muscles<br>
+<strong>B</strong> is usually sold in high concentrations<br>
+<strong>C</strong> kills germs inside the body<br>
+<strong>D</strong> may result in a serious disease or even death<br>
+<strong>E</strong> reduces the sticky effects of blocked up cells<br>
+<strong>F</strong> resists the progress of many diseases<br>
+<strong>G</strong> changes the colour of the skin
+</div>
+<div class="question" id="q9"><div class="q-num">9</div><div class="q-body"><div class="q-text">Salicylic acid is used on the skin because it</div><select class="dd-select" id="dd-q9" data-opts="A,B,C,D,E,F,G" data-ph="Select an ending&hellip;" onchange="selectDropdown(this,'q9')"></select></div></div>
+<div class="question" id="q10"><div class="q-num">10</div><div class="q-body"><div class="q-text">Some users of salicylic cream have problems because it</div><select class="dd-select" id="dd-q10" data-opts="A,B,C,D,E,F,G" data-ph="Select an ending&hellip;" onchange="selectDropdown(this,'q10')"></select></div></div>
+<div class="question" id="q11"><div class="q-num">11</div><div class="q-body"><div class="q-text">Aspirin is used for stomach problems because it</div><select class="dd-select" id="dd-q11" data-opts="A,B,C,D,E,F,G" data-ph="Select an ending&hellip;" onchange="selectDropdown(this,'q11')"></select></div></div>
+<div class="question" id="q12"><div class="q-num">12</div><div class="q-body"><div class="q-text">Young people should not take Aspirin because it</div><select class="dd-select" id="dd-q12" data-opts="A,B,C,D,E,F,G" data-ph="Select an ending&hellip;" onchange="selectDropdown(this,'q12')"></select></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Question 13</div>
+<div class="q-section-intro">Choose the correct letter, <strong>A</strong>, <strong>B</strong>, <strong>C</strong> or <strong>D</strong>.</div>
+<div class="question" id="q13"><div class="q-num">13</div><div class="q-body"><div class="q-text">What is the writer&rsquo;s overall purpose in writing this article?</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMCQ(this,'q13','A')"><span class="radio-dot"></span>A To outline uses and effects of salicylic acid in various contexts</label><label class="mcq-opt" onclick="selectMCQ(this,'q13','B')"><span class="radio-dot"></span>B To examine the key properties of salicylic acid and how it functions</label><label class="mcq-opt" onclick="selectMCQ(this,'q13','C')"><span class="radio-dot"></span>C To show the benefits of salicylic acid compared to other treatments</label><label class="mcq-opt" onclick="selectMCQ(this,'q13','D')"><span class="radio-dot"></span>D To warn against the dangers of misusing salicylic acid</label></div></div></div>
+</div>
+</div>
+<div id="qs-1" style="display:none">
+<div class="q-section">
+<div class="q-section-header">Questions 14&ndash;19</div>
+<div class="q-section-intro">Do the following statements agree with the information given in Reading Passage 2? Write <strong>TRUE</strong> if the statement agrees with the information, <strong>FALSE</strong> if the statement contradicts the information, or <strong>NOT GIVEN</strong> if there is no information on this.</div>
+<div class="question" id="q14"><div class="q-num">14</div><div class="q-body"><div class="q-text">Ada Lovelace was born after her father&rsquo;s death.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q14','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q14','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q14','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q15"><div class="q-num">15</div><div class="q-body"><div class="q-text">Ada was never allowed to see any images of Lord Byron as a child.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q15','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q15','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q15','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q16"><div class="q-num">16</div><div class="q-body"><div class="q-text">Ada wanted to read books and poems as a child.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q16','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q16','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q16','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q17"><div class="q-num">17</div><div class="q-body"><div class="q-text">Ada did not go to school.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q17','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q17','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q17','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q18"><div class="q-num">18</div><div class="q-body"><div class="q-text">Mary Somerville was a greater mathematician than Augustus de Morgan.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q18','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q18','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q18','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q19"><div class="q-num">19</div><div class="q-body"><div class="q-text">Ada met Charles Babbage at university.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q19','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q19','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q19','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Questions 20&ndash;24</div>
+<div class="q-section-intro">Fill in the gaps in these sentences using <strong>NO MORE THAN THREE WORDS</strong> from the passage.</div>
+<div class="question" id="q20"><div class="q-num">20</div><div class="q-body"><div class="q-text">Babbage did not receive any help for his Analytical Engine from <input class="fill-input inline" id="q20" oninput="markFill('q20')" style="width:180px" placeholder="&hellip;">.</div></div></div>
+<div class="question" id="q21"><div class="q-num">21</div><div class="q-body"><div class="q-text">Ada translated Menabrea&rsquo;s work and created a <input class="fill-input inline" id="q21" oninput="markFill('q21')" style="width:180px" placeholder="&hellip;"> for him.</div></div></div>
+<div class="question" id="q22"><div class="q-num">22</div><div class="q-body"><div class="q-text">Long before its time, Ada predicted the development of <input class="fill-input inline" id="q22" oninput="markFill('q22')" style="width:180px" placeholder="&hellip;">.</div></div></div>
+<div class="question" id="q23"><div class="q-num">23</div><div class="q-body"><div class="q-text">Ada&rsquo;s <input class="fill-input inline" id="q23" oninput="markFill('q23')" style="width:180px" placeholder="&hellip;"> suggests that the work she did for Menabrea was not completely original.</div></div></div>
+<div class="question" id="q24"><div class="q-num">24</div><div class="q-body"><div class="q-text">Ada&rsquo;s biographer felt that she had a <input class="fill-input inline" id="q24" oninput="markFill('q24')" style="width:180px" placeholder="&hellip;"> of the future of computer science.</div></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Questions 25&ndash;26</div>
+<div class="q-section-intro">Choose the correct letter, <strong>A</strong>, <strong>B</strong>, <strong>C</strong> or <strong>D</strong>.</div>
+<div class="question" id="q25"><div class="q-num">25</div><div class="q-body"><div class="q-text">What is the best summary of Ada Lovelace?</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMCQ(this,'q25','A')"><span class="radio-dot"></span>A She was an original mathematician.</label><label class="mcq-opt" onclick="selectMCQ(this,'q25','B')"><span class="radio-dot"></span>B She was a pioneer in women&rsquo;s education.</label><label class="mcq-opt" onclick="selectMCQ(this,'q25','C')"><span class="radio-dot"></span>C She was a visionary thinker.</label><label class="mcq-opt" onclick="selectMCQ(this,'q25','D')"><span class="radio-dot"></span>D She was a famous woman in her time.</label></div></div></div>
+<div class="question" id="q26"><div class="q-num">26</div><div class="q-body"><div class="q-text">What is the writer&rsquo;s purpose in Reading Passage 2?</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMCQ(this,'q26','A')"><span class="radio-dot"></span>A to examine scholars&rsquo; conflicting views surrounding Ada&rsquo;s work</label><label class="mcq-opt" onclick="selectMCQ(this,'q26','B')"><span class="radio-dot"></span>B to introduce Ada and her significant achievements</label><label class="mcq-opt" onclick="selectMCQ(this,'q26','C')"><span class="radio-dot"></span>C to provide a general overview of Ada&rsquo;s life</label><label class="mcq-opt" onclick="selectMCQ(this,'q26','D')"><span class="radio-dot"></span>D to explain how Ada invented the first computer</label></div></div></div>
+</div>
+</div>
+<div id="qs-2" style="display:none">
+<div class="q-section">
+<div class="q-section-header">Questions 27&ndash;34</div>
+<div class="q-section-intro">Reading Passage 3 has six paragraphs, <strong>A&ndash;F</strong>. Which paragraph contains the following information? Write the correct letter, <strong>A&ndash;F</strong>. A letter can be repeated if required.</div>
+<div class="question" id="q27"><div class="q-num">27</div><div class="q-body"><div class="q-text">A description of how the Haast&rsquo;s eagle attacked its prey</div><select class="dd-select" id="dd-q27" data-opts="A,B,C,D,E,F" data-ph="Select a paragraph&hellip;" onchange="selectDropdown(this,'q27')"></select></div></div>
+<div class="question" id="q28"><div class="q-num">28</div><div class="q-body"><div class="q-text">A discussion about whether the Haast&rsquo;s Eagle killed humans</div><select class="dd-select" id="dd-q28" data-opts="A,B,C,D,E,F" data-ph="Select a paragraph&hellip;" onchange="selectDropdown(this,'q28')"></select></div></div>
+<div class="question" id="q29"><div class="q-num">29</div><div class="q-body"><div class="q-text">An explanation of how the body proportions of the Haast&rsquo;s eagle made it an efficient hunter</div><select class="dd-select" id="dd-q29" data-opts="A,B,C,D,E,F" data-ph="Select a paragraph&hellip;" onchange="selectDropdown(this,'q29')"></select></div></div>
+<div class="question" id="q30"><div class="q-num">30</div><div class="q-body"><div class="q-text">The mental image that the Maori people had of the Haast&rsquo;s eagle</div><select class="dd-select" id="dd-q30" data-opts="A,B,C,D,E,F" data-ph="Select a paragraph&hellip;" onchange="selectDropdown(this,'q30')"></select></div></div>
+<div class="question" id="q31"><div class="q-num">31</div><div class="q-body"><div class="q-text">Facts about the early ecology of New Zealand</div><select class="dd-select" id="dd-q31" data-opts="A,B,C,D,E,F" data-ph="Select a paragraph&hellip;" onchange="selectDropdown(this,'q31')"></select></div></div>
+<div class="question" id="q32"><div class="q-num">32</div><div class="q-body"><div class="q-text">Conflicting views on the appearance of the Haast&rsquo;s eagle</div><select class="dd-select" id="dd-q32" data-opts="A,B,C,D,E,F" data-ph="Select a paragraph&hellip;" onchange="selectDropdown(this,'q32')"></select></div></div>
+<div class="question" id="q33"><div class="q-num">33</div><div class="q-body"><div class="q-text">A comparison between the Haast&rsquo;s eagle and other birds</div><select class="dd-select" id="dd-q33" data-opts="A,B,C,D,E,F" data-ph="Select a paragraph&hellip;" onchange="selectDropdown(this,'q33')"></select></div></div>
+<div class="question" id="q34"><div class="q-num">34</div><div class="q-body"><div class="q-text">An explanation of why the Haast&rsquo;s eagle could eat its kills slowly</div><select class="dd-select" id="dd-q34" data-opts="A,B,C,D,E,F" data-ph="Select a paragraph&hellip;" onchange="selectDropdown(this,'q34')"></select></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Questions 35&ndash;36</div>
+<div class="q-section-intro">Choose <strong>TWO</strong> letters, <strong>A&ndash;E</strong>. Which TWO of the following are given as reasons why the Haast&rsquo;s eagle originally evolved?</div>
+<div class="pair-hint">Select exactly two options below.</div>
+<div class="question" id="q35"><div class="q-num">35</div><div class="q-body"><div class="mcq-options"><label class="mcq-opt" onclick="selectMulti(this,'q35','A')"><span class="radio-dot"></span>A New Zealand has many unusual birds and plants</label><label class="mcq-opt" onclick="selectMulti(this,'q35','B')"><span class="radio-dot"></span>B New Zealand had no natural bird predators</label><label class="mcq-opt" onclick="selectMulti(this,'q35','C')"><span class="radio-dot"></span>C New Zealand has no native mammals</label><label class="mcq-opt" onclick="selectMulti(this,'q35','D')"><span class="radio-dot"></span>D New Zealand settlers brought other creatures with them</label><label class="mcq-opt" onclick="selectMulti(this,'q35','E')"><span class="radio-dot"></span>E New Zealand is an isolated island</label></div></div></div>
+<div class="question" id="q36"><div class="q-num">36</div><div class="q-body"><div class="q-text" style="color:var(--muted);font-size:12.5px">Your second choice.</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMulti(this,'q36','A')"><span class="radio-dot"></span>A New Zealand has many unusual birds and plants</label><label class="mcq-opt" onclick="selectMulti(this,'q36','B')"><span class="radio-dot"></span>B New Zealand had no natural bird predators</label><label class="mcq-opt" onclick="selectMulti(this,'q36','C')"><span class="radio-dot"></span>C New Zealand has no native mammals</label><label class="mcq-opt" onclick="selectMulti(this,'q36','D')"><span class="radio-dot"></span>D New Zealand settlers brought other creatures with them</label><label class="mcq-opt" onclick="selectMulti(this,'q36','E')"><span class="radio-dot"></span>E New Zealand is an isolated island</label></div></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Question 37</div>
+<div class="q-section-intro">Choose the best answer. Circle the correct letter, <strong>A&ndash;D</strong>.</div>
+<div class="question" id="q37"><div class="q-num">37</div><div class="q-body"><div class="q-text">Which of the following is NOT true?</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMCQ(this,'q37','A')"><span class="radio-dot"></span>A The Haast&rsquo;s eagle could only fly for short distances.</label><label class="mcq-opt" onclick="selectMCQ(this,'q37','B')"><span class="radio-dot"></span>B The Haast&rsquo;s eagle was adapted to flying through forests.</label><label class="mcq-opt" onclick="selectMCQ(this,'q37','C')"><span class="radio-dot"></span>C The Haast&rsquo;s eagle&rsquo;s wings were shorter than other large birds.</label><label class="mcq-opt" onclick="selectMCQ(this,'q37','D')"><span class="radio-dot"></span>D The Haast&rsquo;s eagle had small but very efficient claws.</label></div></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Questions 38&ndash;39</div>
+<div class="q-section-intro">Choose <strong>TWO</strong> letters, <strong>A&ndash;E</strong>. Which TWO of the following are given as reasons why the Haast&rsquo;s eagle died out very quickly?</div>
+<div class="pair-hint">Select exactly two options below.</div>
+<div class="question" id="q38"><div class="q-num">38</div><div class="q-body"><div class="mcq-options"><label class="mcq-opt" onclick="selectMulti(this,'q38','A')"><span class="radio-dot"></span>A The first settlers ate all the moa.</label><label class="mcq-opt" onclick="selectMulti(this,'q38','B')"><span class="radio-dot"></span>B The eagle was hunted by the first settlers.</label><label class="mcq-opt" onclick="selectMulti(this,'q38','C')"><span class="radio-dot"></span>C The eagle could not survive by eating people.</label><label class="mcq-opt" onclick="selectMulti(this,'q38','D')"><span class="radio-dot"></span>D The settlers destroyed the eagle&rsquo;s habitat.</label><label class="mcq-opt" onclick="selectMulti(this,'q38','E')"><span class="radio-dot"></span>E The eagle flew slowly and was easily caught.</label></div></div></div>
+<div class="question" id="q39"><div class="q-num">39</div><div class="q-body"><div class="q-text" style="color:var(--muted);font-size:12.5px">Your second choice.</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMulti(this,'q39','A')"><span class="radio-dot"></span>A The first settlers ate all the moa.</label><label class="mcq-opt" onclick="selectMulti(this,'q39','B')"><span class="radio-dot"></span>B The eagle was hunted by the first settlers.</label><label class="mcq-opt" onclick="selectMulti(this,'q39','C')"><span class="radio-dot"></span>C The eagle could not survive by eating people.</label><label class="mcq-opt" onclick="selectMulti(this,'q39','D')"><span class="radio-dot"></span>D The settlers destroyed the eagle&rsquo;s habitat.</label><label class="mcq-opt" onclick="selectMulti(this,'q39','E')"><span class="radio-dot"></span>E The eagle flew slowly and was easily caught.</label></div></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Question 40</div>
+<div class="q-section-intro">Choose the best answer. Circle the correct letter, <strong>A&ndash;D</strong>.</div>
+<div class="question" id="q40"><div class="q-num">40</div><div class="q-body"><div class="q-text">Which of the following is NOT the author&rsquo;s opinion?</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMCQ(this,'q40','A')"><span class="radio-dot"></span>A If the Haast&rsquo;s eagle had not died out it would have attacked people.</label><label class="mcq-opt" onclick="selectMCQ(this,'q40','B')"><span class="radio-dot"></span>B It is sad that the Haast&rsquo;s eagle died out because it was beautiful.</label><label class="mcq-opt" onclick="selectMCQ(this,'q40','C')"><span class="radio-dot"></span>C We can understand why the first settlers worshipped the Haast&rsquo;s eagle.</label><label class="mcq-opt" onclick="selectMCQ(this,'q40','D')"><span class="radio-dot"></span>D The Maori people should have preserved the Haast&rsquo;s eagle.</label></div></div></div>
+</div>
+</div>
+  </div>
+</div>
+
+<div id="bottombar">
+  <div class="part-tabs">
+    <div class="part-tab active" id="ptab-0" onclick="switchPassage(0)">Part 1: <span class="count" id="pcount-0">0 of 13</span></div>
+    <div class="part-tab" id="ptab-1" onclick="switchPassage(1)">Part 2: <span class="count" id="pcount-1">0 of 13</span></div>
+    <div class="part-tab" id="ptab-2" onclick="switchPassage(2)">Part 3: <span class="count" id="pcount-2">0 of 14</span></div>
+  </div>
+  <div class="q-circles" id="q-circles"></div>
+  <div class="nav-arrows">
+    <button class="nav-arrow" onclick="prevQ()">&lsaquo;</button>
+    <button class="nav-arrow" onclick="nextQ()">&rsaquo;</button>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="submit-modal">
+  <div class="modal">
+    <h2>Submit Your Test?</h2>
+    <p>You are about to submit your test. This action cannot be undone.</p>
+    <div class="score-grid" id="score-grid" style="display:none">
+      <div class="score-card"><div class="val" id="sc-answered">0</div><div class="lbl">Answered</div></div>
+      <div class="score-card"><div class="val" id="sc-unanswered">40</div><div class="lbl">Unanswered</div></div>
+      <div class="score-card"><div class="val" id="sc-pct">0%</div><div class="lbl">Completion</div></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-modal" onclick="closeModal()">Cancel</button>
+      <button class="btn-modal primary" onclick="submitTest()">Submit Test</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="results-modal">
+  <div class="modal">
+    <h2>Test Complete</h2>
+    <p id="results-cand"></p>
+    <div class="score-grid">
+      <div class="score-card"><div class="val" id="r-correct" style="color:var(--success)">&mdash;</div><div class="lbl">Correct</div></div>
+      <div class="score-card"><div class="val" id="r-wrong" style="color:var(--accent-red)">&mdash;</div><div class="lbl">Incorrect</div></div>
+      <div class="score-card"><div class="val" id="r-unanswered">&mdash;</div><div class="lbl">Unanswered</div></div>
+    </div>
+    <div style="margin:14px 0 12px;background:var(--accent);border-radius:12px;padding:18px 22px;text-align:center;color:#fff">
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.75;margin-bottom:4px">IELTS Band Score</div>
+      <div id="r-band" style="font-size:48px;font-weight:700;line-height:1">&mdash;</div>
+      <div id="r-band-label" style="font-size:13px;margin-top:6px;opacity:.85">&mdash;</div>
+    </div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:6px">Your Answers vs Correct Answers</div>
+    <div class="ans-table-wrap"><table class="ans-table"><thead><tr><th>Q</th><th>Your Answer</th><th>Correct Answer</th><th>Result</th></tr></thead><tbody id="ans-table-body"></tbody></table></div>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px">Green = correct &middot; Red = incorrect &middot; Band scores are approximate for Academic Reading.</p>
+    <p id="pdf-status" style="font-size:13px;color:var(--success);margin-top:8px;font-weight:500"></p>
+    <div class="modal-btns">
+      <button class="btn-modal" onclick="redownloadPDF()">Download PDF again</button>
+      <button class="btn-modal primary" onclick="document.getElementById('results-modal').classList.add('hidden')">Close &amp; Review</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var ANSWERS = {
+  q1:'vii', q2:'ix', q3:'iii', q4:'ii', q5:'v', q6:'x', q7:'iv', q8:'viii',
+  q9:'E', q10:'G', q11:'C', q12:'D', q13:'A',
+  q14:'FALSE', q15:'TRUE', q16:'NOT GIVEN', q17:'TRUE', q18:'NOT GIVEN', q19:'NOT GIVEN',
+  q20:'his sponsors', q21:'set of appendices', q22:'computer-generated music', q23:'correspondence (with Babbage)', q24:'conceptual vision',
+  q25:'C', q26:'B',
+  q27:'C', q28:'D', q29:'B', q30:'F', q31:'A', q32:'E', q33:'B', q34:'C',
+  q35:'C or E', q36:'C or E',
+  q37:'D',
+  q38:'A or C', q39:'A or C',
+  q40:'D'
+};
+
+var ALT = {
+  q23:['correspondence (with Babbage)', 'correspondence', 'correspondence with Babbage'],
+  q35:['C','E','c','e'],
+  q36:['C','E','c','e'],
+  q38:['A','C','a','c'],
+  q39:['A','C','a','c']
+};
+
+// Pair questions that accept answers in either order (used by selectMulti + checkCorrect)
+var PAIR_QS = {
+  q35: {partner:'q36', letters:['C','E']},
+  q36: {partner:'q35', letters:['C','E']},
+  q38: {partner:'q39', letters:['A','C']},
+  q39: {partner:'q38', letters:['A','C']}
+};
+
+var PART_RANGES = [[1,13],[14,26],[27,40]];
+var userAnswers = {}, currentPassage = 0, submitted = false;
+var candidateName='', candidateNumber='';
+var seconds = 60*60;
+var timerEl = document.getElementById('timer');
+var timerInterval = null;
+
+(function initSelects(){
+  document.querySelectorAll('select[data-opts],select[data-words]').forEach(function(s){
+    var ph = document.createElement('option');
+    ph.value = ''; ph.disabled = true; ph.selected = true;
+    ph.innerHTML = s.getAttribute('data-ph') || 'Select\u2026';
+    s.appendChild(ph);
+    var words = s.getAttribute('data-words');
+    if(words){
+      words.split(',').forEach(function(p){
+        var kv = p.split(':');
+        var o = document.createElement('option');
+        o.value = kv[0]; o.textContent = kv[0] + ' \u2013 ' + kv[1];
+        s.appendChild(o);
+      });
+    } else {
+      s.getAttribute('data-opts').split(',').forEach(function(v){
+        var o = document.createElement('option');
+        o.value = v; o.textContent = v;
+        s.appendChild(o);
+      });
+    }
+  });
+})();
+
+var STORAGE_KEY = 'ielts_reading_320_session';
+var autosaveInterval = null;
+var autosaveListenersAdded = false;
+var autosaveIndicator = document.getElementById('autosave-indicator');
+var autosaveText = document.getElementById('autosave-text');
+
+function showAutosaveSaving(){
+  autosaveIndicator.classList.add('show','saving');
+  autosaveText.textContent = 'Saving\u2026';
+}
+function showAutosaveSaved(){
+  autosaveIndicator.classList.add('show');
+  autosaveIndicator.classList.remove('saving');
+  var t = new Date();
+  autosaveText.textContent = 'Saved ' + t.toTimeString().slice(0,8);
+  setTimeout(function(){ autosaveIndicator.classList.remove('show'); }, 2500);
+}
+function getPassageWidth(){
+  var pw = document.getElementById('passage-panel');
+  return pw ? (pw.style.width || pw.offsetWidth + 'px') : '';
+}
+function saveSession(silent){
+  if(submitted) return;
+  if(!silent) showAutosaveSaving();
+  try{
+    var data = {
+      version: 3,
+      timestamp: Date.now(),
+      candidateName: candidateName,
+      candidateNumber: candidateNumber,
+      seconds: seconds,
+      currentPassage: currentPassage,
+      userAnswers: userAnswers,
+      notepad: document.getElementById('notepad-text').value,
+      passageWidth: getPassageWidth(),
+      started: true
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    if(!silent) showAutosaveSaved();
+  }catch(e){ console.warn('Autosave failed:', e); }
+}
+function loadSession(){
+  try{
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return null;
+    var d = JSON.parse(raw);
+    if(!d || !d.started) return null;
+    return d;
+  }catch(e){ return null; }
+}
+function clearSession(){ try{ localStorage.removeItem(STORAGE_KEY); }catch(e){} }
+function formatTime(sec){
+  var m = Math.floor(sec/60), s = sec%60;
+  return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+
+(function checkSavedSession(){
+  var saved = loadSession();
+  if(!saved) return;
+  var banner = document.getElementById('resume-banner');
+  var info = document.getElementById('resume-info');
+  var answered = 0;
+  for(var i=1;i<=40;i++){ if(saved.userAnswers && saved.userAnswers['q'+i]) answered++; }
+  var when = new Date(saved.timestamp).toLocaleString();
+  info.innerHTML = '<strong>' + escapeHtml(saved.candidateName || 'Anonymous') + '</strong> &middot; ' + answered + '/40 answered &middot; ' + formatTime(saved.seconds) + ' remaining<br><span style="opacity:.75">Saved ' + when + '</span>';
+  banner.classList.add('show');
+  document.getElementById('cand-name').value = saved.candidateName || '';
+  document.getElementById('cand-num').value = saved.candidateNumber || '';
+})();
+
+function resumeTest(){
+  var saved = loadSession();
+  if(!saved){ startTest(); return; }
+  candidateName = saved.candidateName || 'Anonymous';
+  candidateNumber = saved.candidateNumber || 'N/A';
+  seconds = saved.seconds || 60*60;
+  userAnswers = saved.userAnswers || {};
+  currentPassage = saved.currentPassage || 0;
+  if(saved.notepad) document.getElementById('notepad-text').value = saved.notepad;
+  if(saved.passageWidth){ document.getElementById('passage-panel').style.width = saved.passageWidth; }
+
+  document.getElementById('start-screen').classList.add('hidden');
+  restoreAnswersUI();
+  buildCircles();
+  updatePartCounts();
+  if(currentPassage !== 0) switchPassage(currentPassage);
+  updateTimerDisplay();
+  startTimer();
+  startAutosave();
+  showAutosaveSaved();
+}
+function discardSaved(){
+  clearSession();
+  document.getElementById('resume-banner').classList.remove('show');
+  document.getElementById('cand-name').value = '';
+  document.getElementById('cand-num').value = '';
+}
+
+function restoreAnswersUI(){
+  for(var id in userAnswers){
+    var val = userAnswers[id];
+    if(!val) continue;
+    var dd = document.getElementById('dd-'+id);
+    if(dd){ dd.value = val; dd.classList.add('answered'); continue; }
+    var fi = document.getElementById(id);
+    if(fi && fi.tagName !== 'INPUT'){
+      fi = fi.querySelector('input.fill-input');
+    }
+    if(fi && fi.tagName === 'INPUT'){ fi.value = val; fi.classList.add('answered'); continue; }
+    var tfnWrap = document.querySelector('#'+id+' .tfn-options');
+    if(tfnWrap){
+      tfnWrap.querySelectorAll('.tfn-btn').forEach(function(b){
+        if(b.textContent.trim() === val) b.classList.add('selected');
+      });
+      continue;
+    }
+    var mcqWrap = document.querySelector('#'+id+' .mcq-options');
+    if(mcqWrap){
+      mcqWrap.querySelectorAll('.mcq-opt').forEach(function(l){
+        if(l.textContent.trim().charAt(0) === val) l.classList.add('selected');
+      });
+    }
+  }
+}
+
+function startAutosave(){
+  if(autosaveInterval) clearInterval(autosaveInterval);
+  autosaveInterval = setInterval(function(){ saveSession(false); }, 5000);
+  if(autosaveListenersAdded) return;
+  autosaveListenersAdded = true;
+  document.addEventListener('visibilitychange', function(){ if(document.hidden) saveSession(true); });
+  window.addEventListener('beforeunload', function(){ saveSession(true); });
+}
+
+function startTest(){
+  candidateName = document.getElementById('cand-name').value.trim() || 'Anonymous';
+  candidateNumber = document.getElementById('cand-num').value.trim() || 'N/A';
+  document.getElementById('start-screen').classList.add('hidden');
+  document.getElementById('resume-banner').classList.remove('show');
+  clearSession();
+  buildCircles();
+  updatePartCounts();
+  startTimer();
+  startAutosave();
+  saveSession(true);
+}
+function startTimer(){
+  if(timerInterval) clearInterval(timerInterval);
+  updateTimerDisplay();
+  timerInterval = setInterval(function(){
+    if(submitted) return;
+    seconds--;
+    if(seconds <= 0){ clearInterval(timerInterval); submitTest(); return; }
+    updateTimerDisplay();
+  }, 1000);
+}
+function updateTimerDisplay(){
+  timerEl.textContent = formatTime(Math.max(0,seconds));
+  timerEl.classList.toggle('warn', seconds < 300);
+}
+
+function switchPassage(idx){
+  currentPassage = idx;
+  // Explicitly set active tab / panel by id (more reliable than NodeList index)
+  for(var i=0;i<3;i++){
+    var tab = document.getElementById('ptab-'+i);
+    if(tab) tab.classList.toggle('active', i===idx);
+    var pc = document.getElementById('pc-'+i);
+    if(pc) pc.classList.toggle('active', i===idx);
+    var qs = document.getElementById('qs-'+i);
+    if(qs) qs.style.display = (i===idx) ? '' : 'none';
+  }
+  buildCircles();
+  updatePartCounts();
+  document.getElementById('questions-panel').scrollTop = 0;
+  document.getElementById('passage-panel').scrollTop = 0;
+  saveSession(true);
+}
+function buildCircles(){
+  var wrap = document.getElementById('q-circles');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  var range = PART_RANGES[currentPassage];
+  if(!range) return;
+  var start = range[0], end = range[1];
+  for(var i=start;i<=end;i++){
+    var d = document.createElement('div');
+    d.className = 'q-circle';
+    d.textContent = i;
+    var a = userAnswers['q'+i];
+    if(a && a.toString().trim()) d.classList.add('answered');
+    d.onclick = (function(n){ return function(){ scrollToQ(n); }; })(i);
+    wrap.appendChild(d);
+  }
+}
+function updatePartCounts(){
+  PART_RANGES.forEach(function(r, idx){
+    var s = r[0], e = r[1], a = 0;
+    for(var i=s;i<=e;i++){
+      if(userAnswers['q'+i] && userAnswers['q'+i].toString().trim()) a++;
+    }
+    var el = document.getElementById('pcount-'+idx);
+    if(el) el.textContent = a + ' of ' + (e - s + 1);
+  });
+}
+function scrollToQ(num){
+  var p = num<=13?0:num<=26?1:2;
+  if(p !== currentPassage) switchPassage(p);
+  setTimeout(function(){
+    var el = document.getElementById('q'+num);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'center'});
+  },50);
+}
+function prevQ(){ document.getElementById('questions-panel').scrollBy({top:-240,behavior:'smooth'}); }
+function nextQ(){ document.getElementById('questions-panel').scrollBy({top:240,behavior:'smooth'}); }
+
+function selectTFN(btn, qId, val){
+  btn.closest('.tfn-options').querySelectorAll('.tfn-btn').forEach(function(b){ b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  userAnswers[qId] = val;
+  updatePartCounts(); buildCircles(); saveSession(true);
+}
+function selectMCQ(label, qId, val){
+  label.closest('.mcq-options').querySelectorAll('.mcq-opt').forEach(function(l){ l.classList.remove('selected'); });
+  label.classList.add('selected');
+  userAnswers[qId] = val;
+  updatePartCounts(); buildCircles(); saveSession(true);
+}
+function selectMulti(label, qId, val){
+  label.closest('.mcq-options').querySelectorAll('.mcq-opt').forEach(function(l){ l.classList.remove('selected'); });
+  label.classList.add('selected');
+  userAnswers[qId] = val;
+  // Prevent duplicate selection within a pair (35/36 or 38/39)
+  if(PAIR_QS && PAIR_QS[qId]){
+    var pId = PAIR_QS[qId].partner;
+    if((userAnswers[pId]||'').toString().trim().toUpperCase() === val.toUpperCase()){
+      userAnswers[pId] = '';
+      var pEl = document.getElementById(pId);
+      if(pEl){
+        pEl.querySelectorAll('.mcq-opt').forEach(function(l){ l.classList.remove('selected'); });
+      }
+    }
+  }
+  updatePartCounts(); buildCircles(); saveSession(true);
+}
+function selectDropdown(sel, qId){
+  var val = sel.value;
+  sel.classList.toggle('answered', !!val);
+  userAnswers[qId] = val;
+  updatePartCounts(); buildCircles(); saveSession(true);
+}
+function markFill(id){
+  var el = document.getElementById(id);
+  // Handle duplicate ids: question wrapper + input share same id in some questions
+  if(el && el.tagName !== 'INPUT'){
+    el = el.querySelector('input.fill-input');
+  }
+  if(!el) return;
+  var val = el.value.trim();
+  el.classList.toggle('answered', val.length > 0);
+  userAnswers[id] = val;
+  updatePartCounts(); buildCircles(); saveSession(true);
+}
+
+var _savedRange = null;
+function hideSelToolbar(){ var tb=document.getElementById('sel-toolbar'); if(tb) tb.style.display='none'; _savedRange=null; }
+function showSelToolbar(x,y){
+  var tb=document.getElementById('sel-toolbar'); if(!tb) return;
+  tb.style.display='block';
+  var tw=tb.offsetWidth||140, th=tb.offsetHeight||36;
+  var left=x-tw/2, top=y-th-10;
+  if(left+tw>window.innerWidth-8) left=window.innerWidth-tw-8;
+  if(left<8) left=8;
+  if(top<60) top=y+12;
+  tb.style.left=left+'px'; tb.style.top=top+'px';
+}
+function getPassageSelection(){
+  var sel=window.getSelection();
+  if(!sel||sel.isCollapsed||sel.rangeCount===0) return null;
+  var range=sel.getRangeAt(0);
+  var p1=document.getElementById('passage-panel');
+  var p2=document.getElementById('questions-panel');
+  var node=range.commonAncestorContainer;
+  if(!((p1&&p1.contains(node))||(p2&&p2.contains(node)))) return null;
+  if(!sel.toString().trim()) return null;
+  var frag=range.cloneContents();
+  if(frag.querySelector && frag.querySelector('input,select,textarea,button,label')) return null;
+  return {sel:sel,range:range};
+}
+function onPassageMouseUp(e){
+  setTimeout(function(){
+    var data=getPassageSelection();
+    if(!data){ var tb=document.getElementById('sel-toolbar'); if(e&&e.target&&tb&&tb.contains(e.target)) return; hideSelToolbar(); return; }
+    _savedRange=data.range.cloneRange();
+    var rect=data.range.getBoundingClientRect();
+    showSelToolbar(rect.left+rect.width/2, rect.top);
+  },10);
+}
+function applyMark(cls){
+  if(!_savedRange) return;
+  try{ var m=document.createElement('mark'); m.className=cls; _savedRange.surroundContents(m); }
+  catch(e){ try{ var f=_savedRange.extractContents(); var m2=document.createElement('mark'); m2.className=cls; m2.appendChild(f); _savedRange.insertNode(m2); }catch(e2){} }
+  var s=window.getSelection(); if(s) s.removeAllRanges();
+  hideSelToolbar();
+}
+(function(){
+  var hl=document.getElementById('sel-hl-btn');
+  if(hl) hl.addEventListener('mousedown',function(e){e.preventDefault();applyMark('hl');});
+  var nb=document.getElementById('sel-note-btn');
+  if(nb) nb.addEventListener('mousedown',function(e){
+    e.preventDefault();
+    var text=_savedRange?_savedRange.toString().trim():'';
+    applyMark('hl-note');
+    if(text){ var ta=document.getElementById('notepad-text'); if(ta){ ta.value+=(ta.value&&!ta.value.endsWith('\n')?'\n':'')+'\u2022 '+text; saveSession(true); var p=document.getElementById('notepad-panel'); if(p&&p.classList.contains('hidden')) toggleNotepad(); } }
+  });
+  var pp=document.getElementById('passage-panel');
+  if(pp) pp.addEventListener('mouseup',onPassageMouseUp);
+  var qp=document.getElementById('questions-panel');
+  if(qp) qp.addEventListener('mouseup',onPassageMouseUp);
+  document.addEventListener('mousedown',function(e){ var tb=document.getElementById('sel-toolbar'); if(!tb||tb.style.display==='none') return; if(tb.contains(e.target)) return; setTimeout(function(){ var s=window.getSelection(); if(!s||s.isCollapsed) hideSelToolbar(); },150); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') hideSelToolbar(); });
+  if(pp) pp.addEventListener('scroll',hideSelToolbar);
+  if(qp) qp.addEventListener('scroll',hideSelToolbar);
+})();
+
+function toggleNotepad(){
+  var panel=document.getElementById('notepad-panel');
+  var btn=document.getElementById('notepad-btn');
+  panel.classList.toggle('hidden');
+  btn.classList.toggle('active', !panel.classList.contains('hidden'));
+  if(!panel.classList.contains('hidden')) document.getElementById('notepad-text').focus();
+  saveSession(true);
+}
+function toggleFullscreen(){
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen().catch(function(){});
+  else document.exitFullscreen().catch(function(){});
+}
+document.getElementById('notepad-text').addEventListener('input', function(){ saveSession(true); });
+
+function getBandScore(c){
+  if(c>=39) return {band:'9.0',level:'Expert User'};
+  if(c>=37) return {band:'8.5',level:'Very Good User'};
+  if(c>=35) return {band:'8.0',level:'Very Good User'};
+  if(c>=33) return {band:'7.5',level:'Good User'};
+  if(c>=30) return {band:'7.0',level:'Good User'};
+  if(c>=27) return {band:'6.5',level:'Competent User'};
+  if(c>=23) return {band:'6.0',level:'Competent User'};
+  if(c>=19) return {band:'5.5',level:'Modest User'};
+  if(c>=15) return {band:'5.0',level:'Modest User'};
+  if(c>=13) return {band:'4.5',level:'Limited User'};
+  if(c>=10) return {band:'4.0',level:'Limited User'};
+  return {band:'3.5',level:'Extremely Limited'};
+}
+function normalize(s){
+  return (s||'').toString().trim().toLowerCase()
+    .replace(/[()]/g,'')
+    .replace(/\s+/g,' ')
+    .replace(/\.$/,'')
+    .replace(/^(a|an|the)\s+/,'');  // articles optional
+}
+function checkCorrect(id){
+  // 35/36: C or E   |   38/39: A or C
+  if(PAIR_QS[id]){
+    var me = (userAnswers[id]||'').toString().trim().toUpperCase();
+    if(!me) return null;
+    var letters = PAIR_QS[id].letters;
+    return (me === letters[0] || me === letters[1]);
+  }
+  var ans = ANSWERS[id];
+  var user = (userAnswers[id]||'').toString().trim();
+  if(!user) return null;
+  var nU = normalize(user);
+  if(ALT[id]){ for(var k=0;k<ALT[id].length;k++){ if(nU === normalize(ALT[id][k])) return true; } }
+  return nU === normalize(ans);
+}
+function correctAnswerLabel(id){ return ANSWERS[id]; }
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function confirmSubmit(){
+  var count=0;
+  for(var i=1;i<=40;i++){ if(userAnswers['q'+i]&&userAnswers['q'+i].toString().trim()) count++; }
+  document.getElementById('sc-answered').textContent=count;
+  document.getElementById('sc-unanswered').textContent=40-count;
+  document.getElementById('sc-pct').textContent=Math.round(count/40*100)+'%';
+  document.getElementById('score-grid').style.display='grid';
+  document.getElementById('submit-modal').classList.remove('hidden');
+}
+function closeModal(){ document.getElementById('submit-modal').classList.add('hidden'); }
+
+function submitTest(){
+  submitted=true;
+  if(timerInterval) clearInterval(timerInterval);
+  if(autosaveInterval) clearInterval(autosaveInterval);
+  document.getElementById('submit-modal').classList.add('hidden');
+  clearSession();
+
+  var correct=0, wrong=0, unanswered=0;
+  var tbody=document.getElementById('ans-table-body');
+  tbody.innerHTML='';
+  var pdfRows=[];
+
+  for(var num=1;num<=40;num++){
+    var id='q'+num;
+    var result=checkCorrect(id);
+    var userRaw=(userAnswers[id]||'').toString().trim();
+    var correctAns=correctAnswerLabel(id);
+
+    var yourCell, resultCell, resText;
+    if(result===null){
+      unanswered++;
+      yourCell='<span class="blank">&mdash;</span>';
+      resultCell='<span class="blank">Unanswered</span>';
+      resText='Unanswered';
+    } else if(result){
+      correct++;
+      yourCell='<span class="ok">'+escapeHtml(userRaw)+'</span>';
+      resultCell='<span class="ok">&#10003; Correct</span>';
+      resText='Correct';
+    } else {
+      wrong++;
+      yourCell='<span class="bad">'+escapeHtml(userRaw||'-')+'</span>';
+      resultCell='<span class="bad">&#10007; Incorrect</span>';
+      resText='Incorrect';
+    }
+
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td style="font-weight:700;color:var(--accent)">'+num+'</td><td>'+yourCell+'</td><td><strong>'+escapeHtml(correctAns)+'</strong></td><td>'+resultCell+'</td>';
+    tbody.appendChild(tr);
+    pdfRows.push([String(num), userRaw||'-', correctAns, resText]);
+  }
+
+  document.getElementById('r-correct').textContent=correct;
+  document.getElementById('r-wrong').textContent=wrong;
+  document.getElementById('r-unanswered').textContent=unanswered;
+  var bs=getBandScore(correct);
+  document.getElementById('r-band').textContent=bs.band;
+  document.getElementById('r-band-label').textContent=bs.level+' \u00B7 '+correct+' / 40 correct';
+  document.getElementById('results-cand').textContent='Candidate: '+candidateName+'  \u00B7  Number: '+candidateNumber;
+  document.getElementById('results-modal').classList.remove('hidden');
+  window._lastPdfData={correct:correct,wrong:wrong,unanswered:unanswered,bs:bs,pdfRows:pdfRows};
+  try{
+    generateResultsPDF(correct,wrong,unanswered,bs,pdfRows);
+    document.getElementById('pdf-status').textContent='Candidate response PDF downloaded.';
+  }catch(e){
+    document.getElementById('pdf-status').textContent='PDF download failed. Use the button below.';
+    document.getElementById('pdf-status').style.color='var(--accent-red)';
+  }
+}
+function redownloadPDF(){
+  if(!window._lastPdfData) return;
+  var d=window._lastPdfData;
+  try{ generateResultsPDF(d.correct,d.wrong,d.unanswered,d.bs,d.pdfRows); }catch(e){}
+}
+
+function generateResultsPDF(correct,wrong,unanswered,bandInfo,rows){
+  var jsPDF=window.jspdf.jsPDF;
+  var doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  var pageWidth=doc.internal.pageSize.getWidth();
+  doc.setFillColor(30,58,95); doc.rect(0,0,pageWidth,28,'F');
+  doc.setTextColor(255,255,255); doc.setFontSize(16); doc.setFont('helvetica','bold');
+  doc.text('IELTS Academic Reading \u00B7 Test 320',14,12);
+  doc.setFontSize(10); doc.setFont('helvetica','normal');
+  doc.text('Candidate Response Report',14,20);
+  doc.text(new Date().toLocaleString(),pageWidth-14,20,{align:'right'});
+  doc.setTextColor(26,24,20); doc.setFontSize(11); doc.setFont('helvetica','bold');
+  doc.text('Candidate Name:',14,38); doc.setFont('helvetica','normal'); doc.text(candidateName||'Anonymous',52,38);
+  doc.setFont('helvetica','bold'); doc.text('Candidate Number:',14,45); doc.setFont('helvetica','normal'); doc.text(candidateNumber||'-',58,45);
+  doc.setFontSize(12); doc.setFont('helvetica','bold'); doc.text('Score Summary',14,56);
+  doc.setFontSize(10); doc.setFont('helvetica','normal');
+  doc.text('Correct: '+correct+'    Incorrect: '+wrong+'    Unanswered: '+unanswered,14,64);
+  doc.setFont('helvetica','bold'); doc.setTextColor(30,58,95); doc.setFontSize(14);
+  doc.text('Band Score: '+bandInfo.band+'  ('+bandInfo.level+')',14,72);
+  doc.setTextColor(26,24,20); doc.setFontSize(10); doc.setFont('helvetica','normal');
+  doc.text(correct+' / 40 correct',14,79);
+  doc.autoTable({
+    startY:86, head:[['Q','Your Answer','Correct Answer','Result']], body:rows, theme:'grid',
+    styles:{fontSize:8,cellPadding:2.2,overflow:'linebreak',valign:'middle'},
+    headStyles:{fillColor:[30,58,95],textColor:255,fontStyle:'bold',fontSize:8},
+    columnStyles:{0:{cellWidth:18,halign:'center'},1:{cellWidth:50},2:{cellWidth:70},3:{cellWidth:35,halign:'center'}},
+    didParseCell:function(data){
+      if(data.section==='body'&&data.column.index===3){
+        var t=data.cell.raw||'';
+        if(t.indexOf('Correct')!==-1 && t.indexOf('Incorrect')===-1){data.cell.styles.textColor=[5,150,105];data.cell.styles.fontStyle='bold';}
+        else if(t.indexOf('Incorrect')!==-1){data.cell.styles.textColor=[225,29,72];data.cell.styles.fontStyle='bold';}
+        else {data.cell.styles.textColor=[107,114,128];data.cell.styles.fontStyle='italic';}
+      }
+    },
+    margin:{left:14,right:14}
+  });
+  var finalY=doc.lastAutoTable.finalY+12;
+  doc.setFontSize(8); doc.setTextColor(107,114,128);
+  doc.text('This report shows your answers against the official answer key.',14,finalY);
+  var safeName=(candidateName||'Candidate').replace(/[^a-zA-Z0-9]/g,'_').slice(0,20);
+  var safeNum=(candidateNumber||'NA').replace(/[^a-zA-Z0-9]/g,'_').slice(0,15);
+  doc.save('IELTS_Test320_'+safeName+'_'+safeNum+'_'+new Date().toISOString().slice(0,10)+'.pdf');
+}
+
+var resizer=document.getElementById('resizer');
+var passPanel=document.getElementById('passage-panel');
+var isResizing=false,startX,startW;
+resizer.addEventListener('mousedown',function(e){ isResizing=true; startX=e.clientX; startW=passPanel.offsetWidth; resizer.classList.add('dragging'); document.body.style.userSelect='none'; document.body.style.cursor='col-resize'; });
+document.addEventListener('mousemove',function(e){ if(!isResizing) return; var dx=e.clientX-startX; passPanel.style.width=Math.min(Math.max(startW+dx,280),window.innerWidth-320)+'px'; });
+document.addEventListener('mouseup',function(){ if(isResizing){ isResizing=false; resizer.classList.remove('dragging'); document.body.style.userSelect=''; document.body.style.cursor=''; saveSession(true); } });
+
+(function(){
+  var saved = loadSession();
+  if(saved && saved.passageWidth){ document.getElementById('passage-panel').style.width = saved.passageWidth; }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Academic Reading · Test 318</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#fff;--border:#e5e7eb;--border-soft:#f3f4f6;--accent:#1e3a5f;--accent-red:#e11d48;--accent-red-hover:#be123c;--text:#1f2937;--muted:#6b7280;--success:#059669;--passage-width:52%;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+  #start-screen{position:fixed;inset:0;background:#f8fafc;display:flex;align-items:center;justify-content:center;z-index:500;}
+  #start-screen.hidden{display:none;}
+  .start-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:40px 44px;max-width:460px;width:92%;box-shadow:0 10px 40px rgba(0,0,0,.08);}
+  .start-card h1{font-size:20px;margin-bottom:4px;font-weight:600;}
+  .start-card .sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
+  .start-card label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;}
+  .start-card input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;margin-bottom:16px;font-family:inherit;}
+  .start-card input:focus{outline:none;border-color:var(--accent-red);box-shadow:0 0 0 3px rgba(225,29,72,.12);}
+  .start-card button{width:100%;padding:12px;background:var(--accent-red);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:6px;}
+  .start-card button:hover{background:var(--accent-red-hover);}
+  .resume-banner{display:none;background:#fef3c7;border:1px solid #fbbf24;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12.5px;color:#92400e;line-height:1.5;}
+  .resume-banner.show{display:block;}
+  .resume-banner .resume-actions{margin-top:8px;display:flex;gap:8px;}
+  .resume-banner .resume-actions button{width:auto;margin:0;padding:6px 12px;font-size:12px;border-radius:6px;}
+  .resume-banner .resume-actions .btn-ghost{background:#fff;color:#92400e;border:1px solid #fbbf24;}
+  #topbar{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:56px;flex-shrink:0;z-index:100;}
+  .top-left{display:flex;align-items:center;gap:12px;}
+  .mock-label{font-size:15px;font-weight:500;}
+  #autosave-indicator{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--success);font-weight:500;opacity:0;transition:opacity .4s ease;}
+  #autosave-indicator.show{opacity:1;}
+  #autosave-indicator .dot{width:7px;height:7px;border-radius:50%;background:var(--success);}
+  #autosave-indicator.saving .dot{background:#f59e0b;animation:blink .8s infinite;}
+  #autosave-indicator.saving{color:#f59e0b;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+  #timer-wrap{display:flex;align-items:center;gap:6px;color:var(--accent-red);font-weight:600;}
+  #timer{font-size:18px;font-weight:600;letter-spacing:0.02em;min-width:52px;}
+  #timer.warn{animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+  .top-actions{display:flex;align-items:center;gap:8px;}
+  .icon-btn{width:36px;height:36px;border:none;background:transparent;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s;}
+  .icon-btn:hover{background:var(--border-soft);color:var(--text);}
+  .btn-submit{background:#e5e7eb;color:var(--text);border:none;padding:8px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;}
+  .btn-submit:hover{background:#d1d5db;}
+  .icon-btn.active{background:#fff1f2;color:var(--accent-red);}
+  #notepad-panel{position:fixed;top:56px;right:0;width:320px;height:calc(100vh - 56px - 56px);background:#fff;border-left:1px solid var(--border);box-shadow:-4px 0 24px rgba(0,0,0,.08);z-index:150;display:flex;flex-direction:column;transition:transform .2s ease;}
+  #notepad-panel.hidden{transform:translateX(100%);pointer-events:none;}
+  .notepad-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+  .notepad-title{font-size:15px;font-weight:600;color:var(--accent-red);}
+  #notepad-text{flex:1;border:none;resize:none;padding:14px 16px;font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.55;outline:none;}
+  #main{display:flex;flex:1;overflow:hidden;}
+  #passage-panel{width:var(--passage-width);background:#fff;overflow-y:auto;padding:24px 28px 40px;flex-shrink:0;}
+  .part-header{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:0.04em;margin-bottom:4px;}
+  #passage-panel h2{font-size:22px;font-weight:700;color:var(--accent);margin-bottom:6px;letter-spacing:-0.3px;}
+  .time-note{font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.5;}
+  .passage-title{text-align:center;font-family:'Source Serif 4',Georgia,serif;font-size:18px;font-weight:600;color:var(--accent);margin-bottom:22px;}
+  #passage-panel p{font-family:'Source Serif 4',Georgia,serif;font-size:15px;line-height:1.75;margin-bottom:16px;}
+  #passage-panel p.glossary{font-size:13px;line-height:1.6;color:var(--muted);border-top:1px solid var(--border);padding-top:12px;margin-top:8px;}
+  #passage-panel strong{font-weight:700;color:var(--accent);}
+  #passage-panel em{font-style:italic;}
+  #resizer{width:5px;background:transparent;cursor:col-resize;flex-shrink:0;position:relative;z-index:10;}
+  #resizer::before{content:'';position:absolute;top:0;bottom:0;left:2px;width:1px;background:var(--accent-red);}
+  #resizer:hover::before,#resizer.dragging::before{width:3px;left:1px;}
+  #resizer .handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:14px;height:28px;background:#fff;border:1px solid var(--accent-red);border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--accent-red);font-size:10px;}
+  #questions-panel{flex:1;overflow-y:auto;padding:20px 24px 80px;background:#fff;}
+  .q-section{margin-bottom:28px;}
+  .q-section-header{font-size:15px;font-weight:600;margin-bottom:8px;}
+  .q-section-intro{font-size:13.5px;color:var(--muted);line-height:1.55;margin-bottom:16px;}
+  .info-box{padding:12px 16px;font-size:13px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;margin-bottom:14px;line-height:1.9;}
+  .info-box.notes{font-size:13.5px;line-height:2.1;}
+  .info-box .box-title{display:block;font-weight:600;color:var(--accent);margin-bottom:2px;}
+  .question{padding:12px 0;border-bottom:1px solid var(--border-soft);display:flex;gap:12px;align-items:flex-start;}
+  .question:last-child{border-bottom:none;}
+  .q-num{min-width:26px;height:26px;color:var(--muted);border:1.5px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;margin-top:1px;}
+  .q-body{flex:1;}
+  .q-text{font-size:14px;line-height:1.55;margin-bottom:10px;}
+  .tfn-options,.mcq-options{display:flex;flex-direction:column;gap:6px;}
+  .tfn-options.horizontal{flex-direction:row;flex-wrap:wrap;gap:8px;}
+  .tfn-btn,.mcq-opt{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:13.5px;transition:all .12s;}
+  .tfn-btn:hover,.mcq-opt:hover{border-color:#94a3b8;background:#f8fafc;}
+  .tfn-btn.selected,.mcq-opt.selected{border-color:var(--accent-red);background:#fff1f2;}
+  .tfn-btn .radio-dot,.mcq-opt .radio-dot{width:18px;height:18px;border-radius:50%;border:2px solid #cbd5e1;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+  .tfn-btn.selected .radio-dot,.mcq-opt.selected .radio-dot{border-color:var(--accent-red);}
+  .tfn-btn.selected .radio-dot::after,.mcq-opt.selected .radio-dot::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--accent-red);}
+  .fill-input{border:1.5px solid var(--border);border-radius:6px;padding:7px 12px;font-size:14px;font-family:inherit;width:100%;max-width:220px;transition:border-color .15s;}
+  .fill-input:focus{outline:none;border-color:var(--accent-red);box-shadow:0 0 0 3px rgba(225,29,72,.1);}
+  .fill-input.answered{border-color:var(--success);background:#f0fdf4;}
+  .fill-input.inline{display:inline-block;vertical-align:middle;margin:0 2px;}
+  .dd-select{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 36px 10px 12px;font-size:13.5px;font-family:inherit;background-color:#fff;cursor:pointer;transition:border-color .15s;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");background-repeat:no-repeat;background-position:right 12px center;}
+  .dd-select:focus{outline:none;border-color:var(--accent-red);box-shadow:0 0 0 3px rgba(225,29,72,.1);}
+  .dd-select.answered{border-color:var(--success);background-color:#f0fdf4;}
+  .pair-hint{font-size:12.5px;color:#b45314;background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;padding:6px 10px;margin-bottom:10px;}
+  #bottombar{border-top:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;flex-shrink:0;gap:12px;min-height:56px;}
+  .part-tabs{display:flex;gap:8px;flex-shrink:0;}
+  .part-tab{padding:8px 16px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap;}
+  .part-tab:hover{border-color:#94a3b8;color:var(--text);}
+  .part-tab.active{border-color:var(--accent-red);color:var(--accent);box-shadow:0 0 0 1px var(--accent-red);}
+  .part-tab .count{font-weight:400;color:var(--muted);}
+  .q-circles{display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;flex:1;padding:0 8px;}
+  .q-circle{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);background:#fff;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .12s;}
+  .q-circle:hover{border-color:#94a3b8;color:var(--text);}
+  .q-circle.answered{background:var(--success);border-color:var(--success);color:#fff;}
+  .nav-arrows{display:flex;gap:6px;flex-shrink:0;}
+  .nav-arrow{width:36px;height:36px;border:1.5px solid var(--border);border-radius:50%;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:16px;}
+  .nav-arrow:hover{border-color:#94a3b8;color:var(--text);}
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:flex;align-items:center;justify-content:center;}
+  .modal-overlay.hidden{display:none;}
+  .modal{background:#fff;border-radius:12px;padding:28px 32px;max-width:720px;width:94%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+  .modal h2{font-size:20px;margin-bottom:10px;}
+  .modal p{font-size:14px;line-height:1.6;color:var(--muted);margin-bottom:16px;}
+  .score-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0;}
+  .score-card{background:#f8fafc;border-radius:10px;padding:14px;text-align:center;}
+  .score-card .val{font-size:26px;font-weight:700;color:var(--accent);}
+  .score-card .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+  .modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;}
+  .btn-modal{padding:9px 18px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:#fff;}
+  .btn-modal:hover{background:#f8fafc;}
+  .btn-modal.primary{background:var(--accent-red);color:#fff;border-color:var(--accent-red);}
+  .btn-modal.primary:hover{background:var(--accent-red-hover);}
+  .ans-table-wrap{margin:12px 0;max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;}
+  .ans-table{width:100%;border-collapse:collapse;font-size:12px;}
+  .ans-table th{position:sticky;top:0;background:var(--accent);color:#fff;padding:8px 10px;text-align:left;font-weight:600;font-size:11px;}
+  .ans-table td{padding:6px 10px;border-bottom:1px solid var(--border);}
+  .ans-table tr:nth-child(even) td{background:#f8fafc;}
+  .ans-table .ok{color:var(--success);font-weight:600;}
+  .ans-table .bad{color:var(--accent-red);font-weight:600;}
+  .ans-table .blank{color:var(--muted);font-style:italic;}
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px;}
+  .passage-content{display:none;}
+  .passage-content.active{display:block;}
+  mark.hl{background:#fef08a;padding:0 2px;border-radius:2px;}
+  mark.hl-note{background:#bbf7d0;padding:0 2px;border-radius:2px;border-bottom:2px solid #16a34a;}
+  #sel-toolbar{position:fixed;z-index:300;display:none;background:#1e3a5f;color:#fff;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.2);font-size:13px;font-weight:500;overflow:hidden;white-space:nowrap;}
+  #sel-toolbar button{background:transparent;border:none;color:#fff;padding:8px 14px;cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;}
+  #sel-toolbar button:hover{background:rgba(255,255,255,.15);}
+  #sel-toolbar .sep{display:inline-block;width:1px;height:14px;background:rgba(255,255,255,.35);vertical-align:middle;}
+  @media (max-width:800px){#main{flex-direction:column;}#passage-panel{width:100%!important;height:42vh;border-bottom:1px solid var(--border);}#resizer{display:none;}}
+  #passage-panel p.source-note{font-family:'Inter',system-ui,sans-serif;font-size:12px;font-style:normal;color:var(--muted);text-align:center;margin:-12px 0 20px;line-height:1.5;}
+  .figure{margin:4px 0 20px;}
+  .figure img{width:100%;height:auto;display:block;border:1px solid var(--border);border-radius:6px;}
+  .figure figcaption{font-family:'Inter',system-ui,sans-serif;font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:8px;}
+  .figure .fig-src{font-size:11.5px;opacity:.85;}
+  .dd-select.inline{display:inline-block;width:auto;min-width:130px;padding:6px 32px 6px 10px;vertical-align:middle;margin:0 2px;}
+  .info-box .box-title + .box-title{margin-top:8px;}
+  .q-section .figure{margin:0 0 14px;}
+  .para-label{font-weight:700;color:var(--accent);margin-right:6px;}
+  .diagram-box{border:1px solid var(--border);border-radius:8px;padding:16px;background:#f8fafc;margin-bottom:14px;text-align:center;}
+  .diagram-box img{max-width:100%;height:auto;border-radius:4px;}
+  .diagram-labels{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;}
+  .diagram-label-row{font-size:14px;line-height:1.5;display:flex;align-items:center;flex-wrap:wrap;gap:6px;}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+
+<div id="start-screen">
+  <div class="start-card">
+    <h1>IELTS Academic Reading</h1>
+    <div class="sub">Computer-Delivered Simulation &middot; Test 318</div>
+    <div class="resume-banner" id="resume-banner">
+      <strong>&#9201; Saved session found</strong>
+      <div id="resume-info"></div>
+      <div class="resume-actions">
+        <button onclick="resumeTest()">Resume Test</button>
+        <button class="btn-ghost" onclick="discardSaved()">Start Fresh</button>
+      </div>
+    </div>
+    <label for="cand-name">Candidate Name</label>
+    <input type="text" id="cand-name" placeholder="Enter your full name" autocomplete="off">
+    <label for="cand-num">Candidate Number</label>
+    <input type="text" id="cand-num" placeholder="e.g. 123456" autocomplete="off">
+    <button onclick="startTest()">Start Test</button>
+  </div>
+</div>
+
+<div id="topbar">
+  <div class="top-left">
+    <span class="mock-label">IELTS Academic Reading &middot; Test 318</span>
+    <span id="autosave-indicator"><span class="dot"></span><span id="autosave-text">Saved</span></span>
+  </div>
+  <div id="timer-wrap">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <div id="timer">60:00</div>
+  </div>
+  <div class="top-actions">
+    <button class="icon-btn" id="notepad-btn" title="Notepad" onclick="toggleNotepad()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></button>
+    <button class="icon-btn" title="Full screen" onclick="toggleFullscreen()"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
+    <button class="btn-submit" onclick="confirmSubmit()">Submit</button>
+  </div>
+</div>
+
+<div id="notepad-panel" class="hidden">
+  <div class="notepad-header">
+    <span class="notepad-title">Notepad</span>
+    <button class="icon-btn" title="Close" onclick="toggleNotepad()" style="width:28px;height:28px"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <textarea id="notepad-text" placeholder="Type your notes here&hellip;"></textarea>
+</div>
+
+<div id="sel-toolbar">
+  <button type="button" id="sel-note-btn">Note</button><span class="sep"></span><button type="button" id="sel-hl-btn">Highlight</button>
+</div>
+
+<div id="main">
+  <div id="passage-panel">
+
+    <div class="passage-content active" id="pc-0">
+      <div class="part-header">PART 1</div>
+      <h2>READING PASSAGE 1</h2>
+      <div class="time-note">You should spend about 20 minutes on Questions 1&ndash;13, which are based on Reading Passage 1 below.</div>
+      <div class="passage-title">Knighthoods: An ancient tradition</div>
+      <p>Knighthoods are one of the oldest and most prestigious forms of honouring individual citizens in the United Kingdom. Although initially conferred upon members of the armed forces solely on the basis of their performance in combat, the award now recognises all contributions to national life. Some of the most notable knighthoods of recent times have been bestowed on musicians or entertainers such as Sir Elton John and Sir Paul McCartney, and the fields of finance, industry and education are also represented. Citizens of non-Commonwealth countries are eligible for an honorary knighthood for which they are not permitted to use the titles &lsquo;Sir&rsquo; or &lsquo;Dame&rsquo;.</p>
+      <p>Perceived to be a British tradition, the legacy of knighthoods actually dates back to ancient Rome, from where it spread throughout a number of European countries in the Middle Ages and acquired certain features. A would-be knight had to undergo strict military instruction from a young age, which included spending time as an assistant (known as an esquire) to an existing knight, and participating in battle. He had to learn how to equip his knight for battle, and to help him with putting on the heavy and cumbersome armour of the time. He was responsible for keeping this armour in good condition, polishing and cleaning it. He also had to demonstrate chivalrous behaviour such as generosity, selflessness, fearlessness and skill in battle. Finally, the potential knight also required the financial means to purchase horses, weapons and armour for himself, and then make himself available to serve the ruling monarch for a minimum period each year.</p>
+      <p>In modern times, the process is very different. Instead of relying on formalised military training or political patronage, a nominations system is used. This way, a person&rsquo;s name can be put forward for a knighthood by any institution such as a school or business, or even just a fellow member of society. After this, an advisory panel, acting on behalf of the sovereign, deliberates and selects the future knights and dames from the pool of applications. Those selected are contacted discreetly before announcements are made to ensure that they wish to accept the honour.</p>
+      <p>In rare cases, knighthoods can be revoked through a process known as forfeiture. This most often occurs when the recipient is convicted of a criminal offence. Terry Lewis, a police officer in Queensland, Australia, was stripped of his knighthood after being implicated in a string of illegal activities that included accepting $700,000 worth of bribes from bookmakers and casinos, and forging the signature of an Australian politician on a police document in 1981. Lewis has repeatedly protested his innocence and suggested that he was falsely accused of these crimes, but his appeals failed in court. In a more serious incident, British art historian and intelligence officer Anthony Blunt lost his knighthood after it was discovered that he was working as a double agent and handing confidential material over to the Soviet Union. Knighthoods have also been forfeited for reasons of incompetence rather than outright illegality or treason. Having been knighted for &lsquo;services to banking&rsquo; in 2004, CEO of the Royal Bank of Scotland Fred Goodwin presided over a 24-billion-pound loss at the bank just four years later. Although retaining a 16 million pound pension, to which he was legally entitled, Goodwin had his knighthood annulled as the Queen&rsquo;s advisory panel deemed him the chief decision maker at the time. Scandals such as these have contributed to spirited debates regarding the role and relevance of knighthoods in 21st-century society.</p>
+    </div>
+
+    <div class="passage-content" id="pc-1">
+      <div class="part-header">PART 2</div>
+      <h2>READING PASSAGE 2</h2>
+      <div class="time-note">You should spend about 20 minutes on Questions 14&ndash;26, which are based on Reading Passage 2 below.</div>
+      <div class="passage-title">&ldquo;Just do it!&rdquo; Or the subtle art of procrastination</div>
+      <p>Procrastination, a kind of chronic time-wasting, has long been dismissed as an innocuous human foible. Researchers are now beginning a more sober examination of this practice, however, and there may be good reason for doing so: twenty per cent of Americans now admit to suffering from procrastination, a fifteen per cent jump from 1970. Researchers are bemused as to what explains this sharp rise in the figures, but there is no doubt that procrastination is wreaking havoc on people&rsquo;s lives. One side effect is perhaps the most predictable: procrastination hampers academic and work commitments as sufferers fail to meet deadlines or achieve their goals. But there are other costs too. In shifting burdens of responsibility onto others and reneging on their promises, procrastinators undermine relationships both in the workplace and in their private lives, all of which takes a toll on their well-being. In one study, over the course of a semester, procrastinating university students were noted to be suffering from notably weaker immune systems, more gastrointestinal problems, and higher occurrences of insomnia than their non-procrastinating peers.</p>
+      <p>Is there hope for procrastinators? Everyone admits it is a difficult demon to beat, but a few self-styled procrastination coaches have developed strategies to that end. Although evidence for their efficacy is largely anecdotal at this stage, some of these strategies at least offer promising avenues for future research. Career counsellor Amy Sykes focuses on the basics. Firstly, she says, embrace peer pressure. Many weight loss and self-help groups encourage individuals to hold themselves accountable to a wider circle of their peers, and Sykes believes this social safety net can be harnessed just as successfully by procrastinators. A change in perspective is also considered vital. &lsquo;When we want people to do something for us, we really sell it to them,&rsquo; Sykes observes. &lsquo;But when we need to do it ourselves, we focus on all the reasons we don&rsquo;t want to.&rsquo; Instead, she argues, we should pique our own interest and find ways to make our important projects more attractive &ndash; by turning them into little competitions or fact-finding missions, for example. If all else fails, Sykes believes we must recompense ourselves for our troubles, ideally with little treats upon finishing a task. &lsquo;It doesn&rsquo;t need to be big,&rsquo; she says. &lsquo;Pancakes, a hot bath, or an episode of your favourite television show could all do the trick.&rsquo;</p>
+      <p>Though these tips may be a little too garden variety for some, others have thought up more cunning twists on the human psyche. One such approach was developed by the crime writer Raymond Chandler, who built his strategy on a basic yet critical observation: procrastinators rarely sit about completely inactively, but rather tend to engage themselves in useful but less pressing tasks &ndash; vacuuming behind the bed, cleaning out the fridge, washing the windows and so on. The result is that they cheat themselves into experiencing feelings of productivity and satisfaction that offer further distraction from the original project. Chandler&rsquo;s method, which he successfully used to help himself write detective stories, involves setting aside a period of time in which the procrastinator may do one of two things: absolutely nothing, or work on the project that he or she wishes to complete. Sitting still, without the satisfaction of busying himself with less urgent tasks, Chandler slowly felt the itch of tedious monotony sink in. Within five or ten minutes, this itch had become intolerable, and he felt compelled to begin writing his stories.</p>
+      <p>Another procrastinator, professor of philosophy John Perry, developed his strategy against procrastination based on essentially the same insight as Chandler&rsquo;s &ndash; procrastinators are actually quite good at doing marginally useful tasks, just not the tasks they really ought to be doing. He thus surmised that the enemy of successful task completion is not, in fact, that great engine of productive activity &ndash; procrastination itself &ndash; but rather how we order our projects in the hierarchy of urgency. If a procrastinator needs to finish an assignment before 8 o&rsquo;clock the following morning, for instance, he is likely to find himself sharpening pencils instead. But if all the procrastinator had left to do was to sharpen some pencils, Perry observes, no force on earth could get him to do it. The key to this approach is to rank one&rsquo;s priorities, then bump the most urgent tasks a little further down and place at the top some potentially daunting and important-sounding projects which are ultimately not all that essential. If the student with the essay deadline can convince himself he absolutely must reorganise his email box, or finish reading that old, dusty novel he only got halfway through, then suddenly the essay deadline is going to seem a far superior option.</p>
+      <p>If the Ancient Greeks struggled with it, and all the life coaches, counsellors and motivational speakers in the modern world are unable to erase it from our existence either, it seems unlikely that procrastination will ever truly be put to rest. As these procrastination gurus have shown, however, the right strategies have the potential to minimise its impact &ndash; if you ever get around to using them.</p>
+    </div>
+
+    <div class="passage-content" id="pc-2">
+      <div class="part-header">PART 3</div>
+      <h2>READING PASSAGE 3</h2>
+      <div class="time-note">You should spend about 20 minutes on Questions 27&ndash;40, which are based on Reading Passage 3 below.</div>
+      <div class="passage-title">When evolution works against us</div>
+      <p>Life has changed in just about every way since small tribes of hunter-gatherers roamed the earth armed with nothing but spears and stone tools. We now buy our meat from the supermarket rather than stalking it through the jungle; houses and high-rises shelter us at night instead of caves. But despite these changes, some very basic responses linger on. The short, sharp feeling of heightened awareness that sweeps through us when a stranger passes in a dark alley is no different, physiologically speaking, from the sensation our ancestors experienced when they were walking through the bushes and heard a dry twig snap nearby. It&rsquo;s called the fight or flight response, and it helps us to identify dangerous situations and act decisively by, as the name suggests, mustering our strength for a confrontation or running away as fast as we can. This shift to survival mode is often popularly described as a sudden unease, a sense that a situation is &lsquo;off&rsquo; or &lsquo;not right&rsquo;. However, the sense is actually the outcome of an incredibly complex mind-body process which involves the brain&rsquo;s fear centre, the hypothalamus, advising the sympathetic nervous system and the adrenal-cortical system to work, at first separately and then together, to blend a potent mix of hormones and chemicals and secrete them into the bloodstream. Our heartbeat rises, along with our respiratory rate. Skin feels cold (hence the &lsquo;shiver&rsquo; down the spine) as blood supply is redirected to the larger muscles required for a physical confrontation or a hasty retreat. The ability to concentrate on issues of minor importance also suffers, as the brain tends to prioritise big picture thinking at this time.</p>
+      <p>Without this instinctive response, the human race would never have survived, but at present it is often more of a hindrance than a help. Although instances of physical threats have decreased over the years, activation of the fight or flight response has actually increased, largely in response to mental frustrations. This poses a problem, however, because the fight or flight mechanism functions most helpfully as a response to something that can cause bodily harm, such as a falling tree or a wild animal, rather than in response to a fulminating boss, a traffic jam, or a spouse who has not returned a phone call. During these instances of mental distress, the physical manifestations of fight or flight, such as an inability to think rationally and calmly can actually exacerbate the problem.</p>
+      <p>A similar case of an evolutionary development overstaying its welcome is the example of mind chatter. Mind chatter is the ceaseless train of scattered thoughts and self-talk that occupies our mind, ensuring we are always switched on, searching for danger and threats. This would have been a boon for a solitary caveman on a three-hour hunting expedition, but in a modern world already overloaded with sensory input, it causes us to fret about non-existent predicaments and occasionally needlessly triggers the fight or flight response.</p>
+      <p>These twin forces, mind chatter and the fight or flight response, have combined to wreak havoc on the modern psyche and have led to a spike in what some studies have suggested is a cause of up to eighty per cent of all illness today: stress. Stress, erroneously considered by many to be a mere feeling, is actually a physiological condition resulting from a cumulative accrual of certain hormones in the body, hormones that can help us in quick, sharp doses, but which are toxic if they are not properly metabolised. Metabolism of these potentially toxic hormones relies on physical exertion, which originally evolved as part of the fight or flight process &ndash; hormone release was usually followed by physical exertion (fighting or running), which returned the body to a state of balance. In present day encounters, however, the vital element of physical exertion is missing: a resentful employee cannot punch his co-worker, for example, and a frustrated driver is unable to simply ram his way through a packed intersection.</p>
+      <p>What can be done to restore the balance? Stress researcher Neil F. Neimarck, perhaps not surprisingly, recommends physical exercise as one useful strategy. Fortunately, the brain is not clever enough to realise that this exercise is completely unrelated to the original stress stimulus, and in this way we can effectively fool our bodies into metabolising stress hormones by punching a boxing bag instead of the person who annoyed us in the first place. Another option is the &lsquo;relaxation response&rsquo;, discovered by Harvard cardiologist Herbert Benson. Benson found that certain behaviours, such as deep breathing, meditation, and the repetition of simple, affirmative phrases, acted as an antidote to mind chatter and the fight or flight responses, calming the nervous system and inducing a relaxed state of mind and body instead. Integrating these methods into our lives will be important if the cycle of stress accumulation that is so endemic in modern Western society is to be stopped.</p>
+    </div>
+
+  </div>
+
+  <div id="resizer"><div class="handle">&#8942;&#8942;</div></div>
+
+  <div id="questions-panel">
+<div id="qs-0">
+<div class="q-section">
+<div class="q-section-header">Questions 1&ndash;6</div>
+<div class="q-section-intro">Do the following statements agree with the information given in Reading Passage 1? Write <strong>TRUE</strong> if the statement agrees with the information, <strong>FALSE</strong> if the statement contradicts the information, or <strong>NOT GIVEN</strong> if there is no information on this.</div>
+<div class="question" id="q1"><div class="q-num">1</div><div class="q-body"><div class="q-text">The knighthood was first awarded only for military service.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q1','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q1','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q1','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q2"><div class="q-num">2</div><div class="q-body"><div class="q-text">Most knights now come from the arts and entertainment industries.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q2','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q2','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q2','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q3"><div class="q-num">3</div><div class="q-body"><div class="q-text">People from outside the Commonwealth cannot be awarded any type of knighthood.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q3','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q3','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q3','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q4"><div class="q-num">4</div><div class="q-body"><div class="q-text">The knighthood began in Great Britain.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q4','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q4','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q4','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q5"><div class="q-num">5</div><div class="q-body"><div class="q-text">Esquires, or trainee knights, were usually related to the knights they served.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q5','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q5','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q5','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q6"><div class="q-num">6</div><div class="q-body"><div class="q-text">An esquire needed money to buy his own equipment.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q6','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q6','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q6','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Questions 7&ndash;10</div>
+<div class="q-section-intro">Complete the summary below. Choose <strong>NO MORE THAN THREE WORDS</strong> from the passage for each answer.</div>
+<div class="info-box notes"><span class="box-title">Knighthood Selection: Then and Now</span>
+The process of becoming a knight has changed over time. In the Middle Ages, people began training to become a knight at <strong>7</strong> <input class="fill-input inline" id="q7" oninput="markFill('q7')" style="width:180px" placeholder="&hellip;">. They had to show they were brave and skilled fighters, and were required to work for <strong>8</strong> <input class="fill-input inline" id="q8" oninput="markFill('q8')" style="width:180px" placeholder="&hellip;"> for part of the year. Today, potential recipients of the knighthood are selected through <strong>9</strong> <input class="fill-input inline" id="q9" oninput="markFill('q9')" style="width:180px" placeholder="&hellip;">. A final decision is made by <strong>10</strong> <input class="fill-input inline" id="q10" oninput="markFill('q10')" style="width:180px" placeholder="&hellip;">.
+</div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Questions 11&ndash;13</div>
+<div class="q-section-intro">Choose <strong>THREE</strong> letters, <strong>A&ndash;F</strong>. Which THREE of the following are reasons given in the text for people losing their knighthoods?</div>
+<div class="pair-hint">Select exactly three options below.</div>
+<div class="question" id="q11"><div class="q-num">11</div><div class="q-body"><div class="mcq-options"><label class="mcq-opt" onclick="selectMulti(this,'q11','A')"><span class="radio-dot"></span>A Punishing someone for a crime he or she did not commit</label><label class="mcq-opt" onclick="selectMulti(this,'q11','B')"><span class="radio-dot"></span>B Using another person&rsquo;s name on an important paper</label><label class="mcq-opt" onclick="selectMulti(this,'q11','C')"><span class="radio-dot"></span>C Poor management of a company</label><label class="mcq-opt" onclick="selectMulti(this,'q11','D')"><span class="radio-dot"></span>D Wrongfully accepting pension payments</label><label class="mcq-opt" onclick="selectMulti(this,'q11','E')"><span class="radio-dot"></span>E Gambling on horse-racing or card games</label><label class="mcq-opt" onclick="selectMulti(this,'q11','F')"><span class="radio-dot"></span>F Giving secret information to a foreign government</label></div></div></div>
+<div class="question" id="q12"><div class="q-num">12</div><div class="q-body"><div class="q-text" style="color:var(--muted);font-size:12.5px">Your second choice.</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMulti(this,'q12','A')"><span class="radio-dot"></span>A Punishing someone for a crime he or she did not commit</label><label class="mcq-opt" onclick="selectMulti(this,'q12','B')"><span class="radio-dot"></span>B Using another person&rsquo;s name on an important paper</label><label class="mcq-opt" onclick="selectMulti(this,'q12','C')"><span class="radio-dot"></span>C Poor management of a company</label><label class="mcq-opt" onclick="selectMulti(this,'q12','D')"><span class="radio-dot"></span>D Wrongfully accepting pension payments</label><label class="mcq-opt" onclick="selectMulti(this,'q12','E')"><span class="radio-dot"></span>E Gambling on horse-racing or card games</label><label class="mcq-opt" onclick="selectMulti(this,'q12','F')"><span class="radio-dot"></span>F Giving secret information to a foreign government</label></div></div></div>
+<div class="question" id="q13"><div class="q-num">13</div><div class="q-body"><div class="q-text" style="color:var(--muted);font-size:12.5px">Your third choice.</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMulti(this,'q13','A')"><span class="radio-dot"></span>A Punishing someone for a crime he or she did not commit</label><label class="mcq-opt" onclick="selectMulti(this,'q13','B')"><span class="radio-dot"></span>B Using another person&rsquo;s name on an important paper</label><label class="mcq-opt" onclick="selectMulti(this,'q13','C')"><span class="radio-dot"></span>C Poor management of a company</label><label class="mcq-opt" onclick="selectMulti(this,'q13','D')"><span class="radio-dot"></span>D Wrongfully accepting pension payments</label><label class="mcq-opt" onclick="selectMulti(this,'q13','E')"><span class="radio-dot"></span>E Gambling on horse-racing or card games</label><label class="mcq-opt" onclick="selectMulti(this,'q13','F')"><span class="radio-dot"></span>F Giving secret information to a foreign government</label></div></div></div>
+</div>
+</div>
+<div id="qs-1" style="display:none">
+<div class="q-section">
+<div class="q-section-header">Questions 14&ndash;18</div>
+<div class="q-section-intro">Do the following statements agree with the information given in Reading Passage 2? Write <strong>TRUE</strong> if the statement agrees with the information, <strong>FALSE</strong> if the statement contradicts the information, or <strong>NOT GIVEN</strong> if there is no information on this.</div>
+<div class="question" id="q14"><div class="q-num">14</div><div class="q-body"><div class="q-text">Procrastination has always been recognised as a serious problem.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q14','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q14','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q14','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q15"><div class="q-num">15</div><div class="q-body"><div class="q-text">The reason for the rise in procrastination is unknown.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q15','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q15','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q15','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q16"><div class="q-num">16</div><div class="q-body"><div class="q-text">Students are the most likely group to procrastinate.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q16','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q16','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q16','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q17"><div class="q-num">17</div><div class="q-body"><div class="q-text">A range of health problems have been linked to procrastination.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q17','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q17','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q17','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q18"><div class="q-num">18</div><div class="q-body"><div class="q-text">Most techniques to stop procrastination are based on scientific study.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q18','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q18','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q18','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Questions 19&ndash;25</div>
+<div class="q-section-intro">Look at the following statements and the list of people below. Match each statement with the correct person, <strong>A</strong>, <strong>B</strong> or <strong>C</strong>.</div>
+<div class="info-box"><span class="box-title">List of People</span>
+<strong>A</strong> Amy Sykes<br>
+<strong>B</strong> Raymond Chandler<br>
+<strong>C</strong> John Perry
+</div>
+<div class="question" id="q19"><div class="q-num">19</div><div class="q-body"><div class="q-text">Doing housework is a common way of avoiding important work.</div><select class="dd-select" id="dd-q19" data-opts="A,B,C" data-ph="Select a person&hellip;" onchange="selectDropdown(this,'q19')"></select></div></div>
+<div class="question" id="q20"><div class="q-num">20</div><div class="q-body"><div class="q-text">Get support from other people.</div><select class="dd-select" id="dd-q20" data-opts="A,B,C" data-ph="Select a person&hellip;" onchange="selectDropdown(this,'q20')"></select></div></div>
+<div class="question" id="q21"><div class="q-num">21</div><div class="q-body"><div class="q-text">Make a list of boring tasks before important ones.</div><select class="dd-select" id="dd-q21" data-opts="A,B,C" data-ph="Select a person&hellip;" onchange="selectDropdown(this,'q21')"></select></div></div>
+<div class="question" id="q22"><div class="q-num">22</div><div class="q-body"><div class="q-text">Look for ways to make the work more interesting.</div><select class="dd-select" id="dd-q22" data-opts="A,B,C" data-ph="Select a person&hellip;" onchange="selectDropdown(this,'q22')"></select></div></div>
+<div class="question" id="q23"><div class="q-num">23</div><div class="q-body"><div class="q-text">Lists are powerful tools for reducing procrastination.</div><select class="dd-select" id="dd-q23" data-opts="A,B,C" data-ph="Select a person&hellip;" onchange="selectDropdown(this,'q23')"></select></div></div>
+<div class="question" id="q24"><div class="q-num">24</div><div class="q-body"><div class="q-text">Use boredom as motivation.</div><select class="dd-select" id="dd-q24" data-opts="A,B,C" data-ph="Select a person&hellip;" onchange="selectDropdown(this,'q24')"></select></div></div>
+<div class="question" id="q25"><div class="q-num">25</div><div class="q-body"><div class="q-text">Use rewards when a task is completed.</div><select class="dd-select" id="dd-q25" data-opts="A,B,C" data-ph="Select a person&hellip;" onchange="selectDropdown(this,'q25')"></select></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Question 26</div>
+<div class="q-section-intro">Choose the correct letter, <strong>A</strong>, <strong>B</strong>, <strong>C</strong> or <strong>D</strong>.</div>
+<div class="question" id="q26"><div class="q-num">26</div><div class="q-body"><div class="q-text">What is the writer&rsquo;s conclusion?</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMCQ(this,'q26','A')"><span class="radio-dot"></span>A Some procrastination-reducing strategies have had proven success</label><label class="mcq-opt" onclick="selectMCQ(this,'q26','B')"><span class="radio-dot"></span>B Procrastination will never be completely eliminated</label><label class="mcq-opt" onclick="selectMCQ(this,'q26','C')"><span class="radio-dot"></span>C Procrastinators should employ a life coach to help them</label><label class="mcq-opt" onclick="selectMCQ(this,'q26','D')"><span class="radio-dot"></span>D Most procrastinators want to learn how to be more efficient</label></div></div></div>
+</div>
+</div>
+<div id="qs-2" style="display:none">
+<div class="q-section">
+<div class="q-section-header">Questions 27&ndash;32</div>
+<div class="q-section-intro">Complete the summary using the list of words, <strong>A&ndash;O</strong>, below.</div>
+<div class="info-box"><span class="box-title">List of Words</span>
+<strong>A</strong> plan<br>
+<strong>B</strong> strengths<br>
+<strong>C</strong> substances<br>
+<strong>D</strong> strangers<br>
+<strong>E</strong> warmth<br>
+<strong>F</strong> mixtures<br>
+<strong>G</strong> instincts<br>
+<strong>H</strong> threats<br>
+<strong>I</strong> powers<br>
+<strong>J</strong> system<br>
+<strong>K</strong> anxiety<br>
+<strong>L</strong> pressure<br>
+<strong>M</strong> drop<br>
+<strong>N</strong> problems<br>
+<strong>O</strong> rise
+</div>
+<div class="question" id="q27"><div class="q-num">27</div><div class="q-body"><div class="q-text">Modem man still has the <strong>27</strong> that were needed in his distant past in the jungle.</div><select class="dd-select" id="dd-q27" data-opts="A,B,C,D,E,F,G,H,I,J,K,L,M,N,O" data-ph="Select a word&hellip;" onchange="selectDropdown(this,'q27')"></select></div></div>
+<div class="question" id="q28"><div class="q-num">28</div><div class="q-body"><div class="q-text">One of these, the fight or flight response, originally assisted humans to recognise <strong>28</strong> and take action.</div><select class="dd-select" id="dd-q28" data-opts="A,B,C,D,E,F,G,H,I,J,K,L,M,N,O" data-ph="Select a word&hellip;" onchange="selectDropdown(this,'q28')"></select></div></div>
+<div class="question" id="q29"><div class="q-num">29</div><div class="q-body"><div class="q-text">Today, this same response manifests itself mostly as nothing more than a feeling of <strong>29</strong>.</div><select class="dd-select" id="dd-q29" data-opts="A,B,C,D,E,F,G,H,I,J,K,L,M,N,O" data-ph="Select a word&hellip;" onchange="selectDropdown(this,'q29')"></select></div></div>
+<div class="question" id="q30"><div class="q-num">30</div><div class="q-body"><div class="q-text">It is the result of the hypothalamus producing and releasing <strong>30</strong> into the blood,</div><select class="dd-select" id="dd-q30" data-opts="A,B,C,D,E,F,G,H,I,J,K,L,M,N,O" data-ph="Select a word&hellip;" onchange="selectDropdown(this,'q30')"></select></div></div>
+<div class="question" id="q31"><div class="q-num">31</div><div class="q-body"><div class="q-text">with subsequent rises in heart rate and breathing, and the sensation of a <strong>31</strong> in temperature as the blood is diverted to other organs.</div><select class="dd-select" id="dd-q31" data-opts="A,B,C,D,E,F,G,H,I,J,K,L,M,N,O" data-ph="Select a word&hellip;" onchange="selectDropdown(this,'q31')"></select></div></div>
+<div class="question" id="q32"><div class="q-num">32</div><div class="q-body"><div class="q-text">Although this <strong>32</strong> was once essential to human survival, it now occurs as a result of perceived rather than actual threat.</div><select class="dd-select" id="dd-q32" data-opts="A,B,C,D,E,F,G,H,I,J,K,L,M,N,O" data-ph="Select a word&hellip;" onchange="selectDropdown(this,'q32')"></select></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Questions 33&ndash;36</div>
+<div class="q-section-intro">Choose the correct letter, <strong>A</strong>, <strong>B</strong>, <strong>C</strong> or <strong>D</strong>.</div>
+<div class="question" id="q33"><div class="q-num">33</div><div class="q-body"><div class="q-text">When the fight or flight response is activated, it is difficult to</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMCQ(this,'q33','A')"><span class="radio-dot"></span>A increase breathing speed</label><label class="mcq-opt" onclick="selectMCQ(this,'q33','B')"><span class="radio-dot"></span>B focus on small problems</label><label class="mcq-opt" onclick="selectMCQ(this,'q33','C')"><span class="radio-dot"></span>C maintain body temperature</label><label class="mcq-opt" onclick="selectMCQ(this,'q33','D')"><span class="radio-dot"></span>D run for long periods of time</label></div></div></div>
+<div class="question" id="q34"><div class="q-num">34</div><div class="q-body"><div class="q-text">The fight or flight response is less useful today because modern individuals</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMCQ(this,'q34','A')"><span class="radio-dot"></span>A encounter fewer physical threats</label><label class="mcq-opt" onclick="selectMCQ(this,'q34','B')"><span class="radio-dot"></span>B can easily manage small daily difficulties</label><label class="mcq-opt" onclick="selectMCQ(this,'q34','C')"><span class="radio-dot"></span>C are better at creative problem solving</label><label class="mcq-opt" onclick="selectMCQ(this,'q34','D')"><span class="radio-dot"></span>D do not need to hunt dangerous animals</label></div></div></div>
+<div class="question" id="q35"><div class="q-num">35</div><div class="q-body"><div class="q-text">One disadvantage of &lsquo;mind chatter&rsquo; is that people may</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMCQ(this,'q35','A')"><span class="radio-dot"></span>A talk too much and miss important information</label><label class="mcq-opt" onclick="selectMCQ(this,'q35','B')"><span class="radio-dot"></span>B spend too much time by themselves</label><label class="mcq-opt" onclick="selectMCQ(this,'q35','C')"><span class="radio-dot"></span>C become distracted from real threats</label><label class="mcq-opt" onclick="selectMCQ(this,'q35','D')"><span class="radio-dot"></span>D worry about problems that are not real</label></div></div></div>
+<div class="question" id="q36"><div class="q-num">36</div><div class="q-body"><div class="q-text">The writer suggests stress is increasing because of</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMCQ(this,'q36','A')"><span class="radio-dot"></span>A a lack of physical release</label><label class="mcq-opt" onclick="selectMCQ(this,'q36','B')"><span class="radio-dot"></span>B an increase in the number of threats</label><label class="mcq-opt" onclick="selectMCQ(this,'q36','C')"><span class="radio-dot"></span>C more health problems</label><label class="mcq-opt" onclick="selectMCQ(this,'q36','D')"><span class="radio-dot"></span>D the loss of some hormones</label></div></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Questions 37&ndash;40</div>
+<div class="q-section-intro">Do the following statements agree with the views of the writer in Reading Passage 3? Write <strong>TRUE</strong> if the statement agrees with the views of the writer, <strong>FALSE</strong> if the statement contradicts the views of the writer, or <strong>NOT GIVEN</strong> if it is impossible to say what the writer thinks about this.</div>
+<div class="question" id="q37"><div class="q-num">37</div><div class="q-body"><div class="q-text">Stress is an emotion.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q37','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q37','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q37','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q38"><div class="q-num">38</div><div class="q-body"><div class="q-text">Fights in the workplace are increasing.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q38','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q38','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q38','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q39"><div class="q-num">39</div><div class="q-body"><div class="q-text">In order to metabolise hormones, exercise must be linked with the original cause of stress.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q39','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q39','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q39','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q40"><div class="q-num">40</div><div class="q-body"><div class="q-text">Saying positive words can reduce stress.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q40','TRUE')"><span class="radio-dot"></span>TRUE</button><button class="tfn-btn" onclick="selectTFN(this,'q40','FALSE')"><span class="radio-dot"></span>FALSE</button><button class="tfn-btn" onclick="selectTFN(this,'q40','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+</div>
+</div>
+  </div>
+</div>
+
+<div id="bottombar">
+  <div class="part-tabs">
+    <div class="part-tab active" id="ptab-0" onclick="switchPassage(0)">Part 1: <span class="count" id="pcount-0">0 of 13</span></div>
+    <div class="part-tab" id="ptab-1" onclick="switchPassage(1)">Part 2: <span class="count" id="pcount-1">0 of 13</span></div>
+    <div class="part-tab" id="ptab-2" onclick="switchPassage(2)">Part 3: <span class="count" id="pcount-2">0 of 14</span></div>
+  </div>
+  <div class="q-circles" id="q-circles"></div>
+  <div class="nav-arrows">
+    <button class="nav-arrow" onclick="prevQ()">&lsaquo;</button>
+    <button class="nav-arrow" onclick="nextQ()">&rsaquo;</button>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="submit-modal">
+  <div class="modal">
+    <h2>Submit Your Test?</h2>
+    <p>You are about to submit your test. This action cannot be undone.</p>
+    <div class="score-grid" id="score-grid" style="display:none">
+      <div class="score-card"><div class="val" id="sc-answered">0</div><div class="lbl">Answered</div></div>
+      <div class="score-card"><div class="val" id="sc-unanswered">40</div><div class="lbl">Unanswered</div></div>
+      <div class="score-card"><div class="val" id="sc-pct">0%</div><div class="lbl">Completion</div></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-modal" onclick="closeModal()">Cancel</button>
+      <button class="btn-modal primary" onclick="submitTest()">Submit Test</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="results-modal">
+  <div class="modal">
+    <h2>Test Complete</h2>
+    <p id="results-cand"></p>
+    <div class="score-grid">
+      <div class="score-card"><div class="val" id="r-correct" style="color:var(--success)">&mdash;</div><div class="lbl">Correct</div></div>
+      <div class="score-card"><div class="val" id="r-wrong" style="color:var(--accent-red)">&mdash;</div><div class="lbl">Incorrect</div></div>
+      <div class="score-card"><div class="val" id="r-unanswered">&mdash;</div><div class="lbl">Unanswered</div></div>
+    </div>
+    <div style="margin:14px 0 12px;background:var(--accent);border-radius:12px;padding:18px 22px;text-align:center;color:#fff">
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.75;margin-bottom:4px">IELTS Band Score</div>
+      <div id="r-band" style="font-size:48px;font-weight:700;line-height:1">&mdash;</div>
+      <div id="r-band-label" style="font-size:13px;margin-top:6px;opacity:.85">&mdash;</div>
+    </div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:6px">Your Answers vs Correct Answers</div>
+    <div class="ans-table-wrap"><table class="ans-table"><thead><tr><th>Q</th><th>Your Answer</th><th>Correct Answer</th><th>Result</th></tr></thead><tbody id="ans-table-body"></tbody></table></div>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px">Green = correct &middot; Red = incorrect &middot; Band scores are approximate for Academic Reading.</p>
+    <p id="pdf-status" style="font-size:13px;color:var(--success);margin-top:8px;font-weight:500"></p>
+    <div class="modal-btns">
+      <button class="btn-modal" onclick="redownloadPDF()">Download PDF again</button>
+      <button class="btn-modal primary" onclick="document.getElementById('results-modal').classList.add('hidden')">Close &amp; Review</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var ANSWERS = {
+  q1:'TRUE', q2:'NOT GIVEN', q3:'FALSE', q4:'FALSE', q5:'NOT GIVEN', q6:'TRUE',
+  q7:'a young age', q8:'the ruling monarch', q9:'a nominations system', q10:'an advisory panel',
+  q11:'B', q12:'C', q13:'F',
+  q14:'FALSE', q15:'TRUE', q16:'NOT GIVEN', q17:'TRUE', q18:'FALSE',
+  q19:'B', q20:'A', q21:'C', q22:'A', q23:'C', q24:'B', q25:'A',
+  q26:'B',
+  q27:'G', q28:'H', q29:'K', q30:'C', q31:'M', q32:'J',
+  q33:'B', q34:'A', q35:'D', q36:'A',
+  q37:'FALSE', q38:'NOT GIVEN', q39:'FALSE', q40:'TRUE'
+};
+
+var ALT = {
+  q7:['a young age','young age'],
+  q8:['the ruling monarch','ruling monarch'],
+  q9:['a nominations system','nominations system'],
+  q10:['an advisory panel','advisory panel'],
+  q27:['G','g','instincts','Instincts'],
+  q28:['H','h','threats','Threats'],
+  q29:['K','k','anxiety','Anxiety'],
+  q30:['C','c','substances','Substances'],
+  q31:['M','m','drop','Drop'],
+  q32:['J','j','system','System']
+};
+
+var PART_RANGES = [[1,13],[14,26],[27,40]];
+var userAnswers = {}, currentPassage = 0, submitted = false;
+var candidateName='', candidateNumber='';
+var seconds = 60*60;
+var timerEl = document.getElementById('timer');
+var timerInterval = null;
+
+(function initSelects(){
+  document.querySelectorAll('select[data-opts],select[data-words]').forEach(function(s){
+    var ph = document.createElement('option');
+    ph.value = ''; ph.disabled = true; ph.selected = true;
+    ph.innerHTML = s.getAttribute('data-ph') || 'Select\u2026';
+    s.appendChild(ph);
+    var words = s.getAttribute('data-words');
+    if(words){
+      words.split(',').forEach(function(p){
+        var kv = p.split(':');
+        var o = document.createElement('option');
+        o.value = kv[0]; o.textContent = kv[0] + ' \u2013 ' + kv[1];
+        s.appendChild(o);
+      });
+    } else {
+      s.getAttribute('data-opts').split(',').forEach(function(v){
+        var o = document.createElement('option');
+        o.value = v; o.textContent = v;
+        s.appendChild(o);
+      });
+    }
+  });
+})();
+
+var STORAGE_KEY = 'ielts_reading_318_session';
+var autosaveInterval = null;
+var autosaveListenersAdded = false;
+var autosaveIndicator = document.getElementById('autosave-indicator');
+var autosaveText = document.getElementById('autosave-text');
+
+function showAutosaveSaving(){
+  autosaveIndicator.classList.add('show','saving');
+  autosaveText.textContent = 'Saving\u2026';
+}
+function showAutosaveSaved(){
+  autosaveIndicator.classList.add('show');
+  autosaveIndicator.classList.remove('saving');
+  var t = new Date();
+  autosaveText.textContent = 'Saved ' + t.toTimeString().slice(0,8);
+  setTimeout(function(){ autosaveIndicator.classList.remove('show'); }, 2500);
+}
+function getPassageWidth(){
+  var pw = document.getElementById('passage-panel');
+  return pw ? (pw.style.width || pw.offsetWidth + 'px') : '';
+}
+function saveSession(silent){
+  if(submitted) return;
+  if(!silent) showAutosaveSaving();
+  try{
+    var data = {
+      version: 3,
+      timestamp: Date.now(),
+      candidateName: candidateName,
+      candidateNumber: candidateNumber,
+      seconds: seconds,
+      currentPassage: currentPassage,
+      userAnswers: userAnswers,
+      notepad: document.getElementById('notepad-text').value,
+      passageWidth: getPassageWidth(),
+      started: true
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    if(!silent) showAutosaveSaved();
+  }catch(e){ console.warn('Autosave failed:', e); }
+}
+function loadSession(){
+  try{
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return null;
+    var d = JSON.parse(raw);
+    if(!d || !d.started) return null;
+    return d;
+  }catch(e){ return null; }
+}
+function clearSession(){ try{ localStorage.removeItem(STORAGE_KEY); }catch(e){} }
+function formatTime(sec){
+  var m = Math.floor(sec/60), s = sec%60;
+  return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+
+(function checkSavedSession(){
+  var saved = loadSession();
+  if(!saved) return;
+  var banner = document.getElementById('resume-banner');
+  var info = document.getElementById('resume-info');
+  var answered = 0;
+  for(var i=1;i<=40;i++){ if(saved.userAnswers && saved.userAnswers['q'+i]) answered++; }
+  var when = new Date(saved.timestamp).toLocaleString();
+  info.innerHTML = '<strong>' + escapeHtml(saved.candidateName || 'Anonymous') + '</strong> &middot; ' + answered + '/40 answered &middot; ' + formatTime(saved.seconds) + ' remaining<br><span style="opacity:.75">Saved ' + when + '</span>';
+  banner.classList.add('show');
+  document.getElementById('cand-name').value = saved.candidateName || '';
+  document.getElementById('cand-num').value = saved.candidateNumber || '';
+})();
+
+function resumeTest(){
+  var saved = loadSession();
+  if(!saved){ startTest(); return; }
+  candidateName = saved.candidateName || 'Anonymous';
+  candidateNumber = saved.candidateNumber || 'N/A';
+  seconds = saved.seconds || 60*60;
+  userAnswers = saved.userAnswers || {};
+  currentPassage = saved.currentPassage || 0;
+  if(saved.notepad) document.getElementById('notepad-text').value = saved.notepad;
+  if(saved.passageWidth){ document.getElementById('passage-panel').style.width = saved.passageWidth; }
+
+  document.getElementById('start-screen').classList.add('hidden');
+  restoreAnswersUI();
+  buildCircles();
+  updatePartCounts();
+  if(currentPassage !== 0) switchPassage(currentPassage);
+  updateTimerDisplay();
+  startTimer();
+  startAutosave();
+  showAutosaveSaved();
+}
+function discardSaved(){
+  clearSession();
+  document.getElementById('resume-banner').classList.remove('show');
+  document.getElementById('cand-name').value = '';
+  document.getElementById('cand-num').value = '';
+}
+
+function restoreAnswersUI(){
+  for(var id in userAnswers){
+    var val = userAnswers[id];
+    if(!val) continue;
+    var dd = document.getElementById('dd-'+id);
+    if(dd){ dd.value = val; dd.classList.add('answered'); continue; }
+    var fi = document.getElementById(id);
+    if(fi && fi.tagName === 'INPUT'){ fi.value = val; fi.classList.add('answered'); continue; }
+    var tfnWrap = document.querySelector('#'+id+' .tfn-options');
+    if(tfnWrap){
+      tfnWrap.querySelectorAll('.tfn-btn').forEach(function(b){
+        if(b.textContent.trim() === val) b.classList.add('selected');
+      });
+      continue;
+    }
+    var mcqWrap = document.querySelector('#'+id+' .mcq-options');
+    if(mcqWrap){
+      mcqWrap.querySelectorAll('.mcq-opt').forEach(function(l){
+        if(l.textContent.trim().charAt(0) === val) l.classList.add('selected');
+      });
+    }
+  }
+}
+
+function startAutosave(){
+  if(autosaveInterval) clearInterval(autosaveInterval);
+  autosaveInterval = setInterval(function(){ saveSession(false); }, 5000);
+  if(autosaveListenersAdded) return;
+  autosaveListenersAdded = true;
+  document.addEventListener('visibilitychange', function(){ if(document.hidden) saveSession(true); });
+  window.addEventListener('beforeunload', function(){ saveSession(true); });
+}
+
+function startTest(){
+  candidateName = document.getElementById('cand-name').value.trim() || 'Anonymous';
+  candidateNumber = document.getElementById('cand-num').value.trim() || 'N/A';
+  document.getElementById('start-screen').classList.add('hidden');
+  document.getElementById('resume-banner').classList.remove('show');
+  clearSession();
+  buildCircles();
+  updatePartCounts();
+  startTimer();
+  startAutosave();
+  saveSession(true);
+}
+function startTimer(){
+  if(timerInterval) clearInterval(timerInterval);
+  updateTimerDisplay();
+  timerInterval = setInterval(function(){
+    if(submitted) return;
+    seconds--;
+    if(seconds <= 0){ clearInterval(timerInterval); submitTest(); return; }
+    updateTimerDisplay();
+  }, 1000);
+}
+function updateTimerDisplay(){
+  timerEl.textContent = formatTime(Math.max(0,seconds));
+  timerEl.classList.toggle('warn', seconds < 300);
+}
+
+function switchPassage(idx){
+  currentPassage = idx;
+  document.querySelectorAll('.part-tab').forEach(function(t,i){ t.classList.toggle('active', i===idx); });
+  document.querySelectorAll('.passage-content').forEach(function(p,i){ p.classList.toggle('active', i===idx); });
+  document.querySelectorAll('#qs-0,#qs-1,#qs-2').forEach(function(q,i){ q.style.display = i===idx ? '' : 'none'; });
+  buildCircles();
+  document.getElementById('questions-panel').scrollTop = 0;
+  document.getElementById('passage-panel').scrollTop = 0;
+  saveSession(true);
+}
+function buildCircles(){
+  var wrap = document.getElementById('q-circles');
+  wrap.innerHTML = '';
+  var range = PART_RANGES[currentPassage];
+  var start = range[0], end = range[1];
+  for(var i=start;i<=end;i++){
+    var d = document.createElement('div');
+    d.className = 'q-circle';
+    d.textContent = i;
+    var a = userAnswers['q'+i];
+    if(a && a.toString().trim()) d.classList.add('answered');
+    d.onclick = (function(n){ return function(){ scrollToQ(n); }; })(i);
+    wrap.appendChild(d);
+  }
+}
+function updatePartCounts(){
+  PART_RANGES.forEach(function(r, idx){
+    var s = r[0], e = r[1], a = 0;
+    for(var i=s;i<=e;i++){ if(userAnswers['q'+i] && userAnswers['q'+i].toString().trim()) a++; }
+    document.getElementById('pcount-'+idx).textContent = a + ' of ' + (e-s+1);
+  });
+}
+function scrollToQ(num){
+  var p = num<=13?0:num<=26?1:2;
+  if(p !== currentPassage) switchPassage(p);
+  setTimeout(function(){
+    var el = document.getElementById('q'+num);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'center'});
+  },50);
+}
+function prevQ(){ document.getElementById('questions-panel').scrollBy({top:-240,behavior:'smooth'}); }
+function nextQ(){ document.getElementById('questions-panel').scrollBy({top:240,behavior:'smooth'}); }
+
+function selectTFN(btn, qId, val){
+  btn.closest('.tfn-options').querySelectorAll('.tfn-btn').forEach(function(b){ b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  userAnswers[qId] = val;
+  updatePartCounts(); buildCircles(); saveSession(true);
+}
+function selectMCQ(label, qId, val){
+  label.closest('.mcq-options').querySelectorAll('.mcq-opt').forEach(function(l){ l.classList.remove('selected'); });
+  label.classList.add('selected');
+  userAnswers[qId] = val;
+  updatePartCounts(); buildCircles(); saveSession(true);
+}
+function selectMulti(label, qId, val){
+  label.closest('.mcq-options').querySelectorAll('.mcq-opt').forEach(function(l){ l.classList.remove('selected'); });
+  label.classList.add('selected');
+  userAnswers[qId] = val;
+  updatePartCounts(); buildCircles(); saveSession(true);
+}
+function selectDropdown(sel, qId){
+  var val = sel.value;
+  sel.classList.toggle('answered', !!val);
+  userAnswers[qId] = val;
+  updatePartCounts(); buildCircles(); saveSession(true);
+}
+function markFill(id){
+  var el = document.getElementById(id);
+  var val = el.value.trim();
+  el.classList.toggle('answered', val.length > 0);
+  userAnswers[id] = val;
+  updatePartCounts(); buildCircles(); saveSession(true);
+}
+
+var _savedRange = null;
+function hideSelToolbar(){ var tb=document.getElementById('sel-toolbar'); if(tb) tb.style.display='none'; _savedRange=null; }
+function showSelToolbar(x,y){
+  var tb=document.getElementById('sel-toolbar'); if(!tb) return;
+  tb.style.display='block';
+  var tw=tb.offsetWidth||140, th=tb.offsetHeight||36;
+  var left=x-tw/2, top=y-th-10;
+  if(left+tw>window.innerWidth-8) left=window.innerWidth-tw-8;
+  if(left<8) left=8;
+  if(top<60) top=y+12;
+  tb.style.left=left+'px'; tb.style.top=top+'px';
+}
+function getPassageSelection(){
+  var sel=window.getSelection();
+  if(!sel||sel.isCollapsed||sel.rangeCount===0) return null;
+  var range=sel.getRangeAt(0);
+  var p1=document.getElementById('passage-panel');
+  var p2=document.getElementById('questions-panel');
+  var node=range.commonAncestorContainer;
+  if(!((p1&&p1.contains(node))||(p2&&p2.contains(node)))) return null;
+  if(!sel.toString().trim()) return null;
+  var frag=range.cloneContents();
+  if(frag.querySelector && frag.querySelector('input,select,textarea,button,label')) return null;
+  return {sel:sel,range:range};
+}
+function onPassageMouseUp(e){
+  setTimeout(function(){
+    var data=getPassageSelection();
+    if(!data){ var tb=document.getElementById('sel-toolbar'); if(e&&e.target&&tb&&tb.contains(e.target)) return; hideSelToolbar(); return; }
+    _savedRange=data.range.cloneRange();
+    var rect=data.range.getBoundingClientRect();
+    showSelToolbar(rect.left+rect.width/2, rect.top);
+  },10);
+}
+function applyMark(cls){
+  if(!_savedRange) return;
+  try{ var m=document.createElement('mark'); m.className=cls; _savedRange.surroundContents(m); }
+  catch(e){ try{ var f=_savedRange.extractContents(); var m2=document.createElement('mark'); m2.className=cls; m2.appendChild(f); _savedRange.insertNode(m2); }catch(e2){} }
+  var s=window.getSelection(); if(s) s.removeAllRanges();
+  hideSelToolbar();
+}
+(function(){
+  var hl=document.getElementById('sel-hl-btn');
+  if(hl) hl.addEventListener('mousedown',function(e){e.preventDefault();applyMark('hl');});
+  var nb=document.getElementById('sel-note-btn');
+  if(nb) nb.addEventListener('mousedown',function(e){
+    e.preventDefault();
+    var text=_savedRange?_savedRange.toString().trim():'';
+    applyMark('hl-note');
+    if(text){ var ta=document.getElementById('notepad-text'); if(ta){ ta.value+=(ta.value&&!ta.value.endsWith('\n')?'\n':'')+'\u2022 '+text; saveSession(true); var p=document.getElementById('notepad-panel'); if(p&&p.classList.contains('hidden')) toggleNotepad(); } }
+  });
+  var pp=document.getElementById('passage-panel');
+  if(pp) pp.addEventListener('mouseup',onPassageMouseUp);
+  var qp=document.getElementById('questions-panel');
+  if(qp) qp.addEventListener('mouseup',onPassageMouseUp);
+  document.addEventListener('mousedown',function(e){ var tb=document.getElementById('sel-toolbar'); if(!tb||tb.style.display==='none') return; if(tb.contains(e.target)) return; setTimeout(function(){ var s=window.getSelection(); if(!s||s.isCollapsed) hideSelToolbar(); },150); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') hideSelToolbar(); });
+  if(pp) pp.addEventListener('scroll',hideSelToolbar);
+  if(qp) qp.addEventListener('scroll',hideSelToolbar);
+})();
+
+function toggleNotepad(){
+  var panel=document.getElementById('notepad-panel');
+  var btn=document.getElementById('notepad-btn');
+  panel.classList.toggle('hidden');
+  btn.classList.toggle('active', !panel.classList.contains('hidden'));
+  if(!panel.classList.contains('hidden')) document.getElementById('notepad-text').focus();
+  saveSession(true);
+}
+function toggleFullscreen(){
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen().catch(function(){});
+  else document.exitFullscreen().catch(function(){});
+}
+document.getElementById('notepad-text').addEventListener('input', function(){ saveSession(true); });
+
+function getBandScore(c){
+  if(c>=39) return {band:'9.0',level:'Expert User'};
+  if(c>=37) return {band:'8.5',level:'Very Good User'};
+  if(c>=35) return {band:'8.0',level:'Very Good User'};
+  if(c>=33) return {band:'7.5',level:'Good User'};
+  if(c>=30) return {band:'7.0',level:'Good User'};
+  if(c>=27) return {band:'6.5',level:'Competent User'};
+  if(c>=23) return {band:'6.0',level:'Competent User'};
+  if(c>=19) return {band:'5.5',level:'Modest User'};
+  if(c>=15) return {band:'5.0',level:'Modest User'};
+  if(c>=13) return {band:'4.5',level:'Limited User'};
+  if(c>=10) return {band:'4.0',level:'Limited User'};
+  return {band:'3.5',level:'Extremely Limited'};
+}
+function normalize(s){
+  // Articles (a/an/the) are optional – strip leading ones for comparison
+  return (s||'').toString().trim().toLowerCase()
+    .replace(/[()]/g,'')
+    .replace(/\s+/g,' ')
+    .replace(/\.$/,'')
+    .replace(/^(a|an|the)\s+/,'');
+}
+function checkCorrect(id){
+  // Q11-13: choose THREE letters B, C, F (any order). Each correct letter scores independently.
+  if(id==='q11' || id==='q12' || id==='q13'){
+    var thisAns = (userAnswers[id]||'').toString().trim().toUpperCase();
+    if(!thisAns) return null;
+    var correctSet = ['B','C','F'];
+    return correctSet.indexOf(thisAns) !== -1;
+  }
+  var ans = ANSWERS[id];
+  var user = (userAnswers[id]||'').toString().trim();
+  if(!user) return null;
+  var nU = normalize(user);
+  if(ALT[id]){ for(var k=0;k<ALT[id].length;k++){ if(nU === normalize(ALT[id][k])) return true; } }
+  return nU === normalize(ans);
+}
+function correctAnswerLabel(id){
+  if(id==='q11' || id==='q12' || id==='q13') return 'B, C and F (any order)';
+  return ANSWERS[id];
+}
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function confirmSubmit(){
+  var count=0;
+  for(var i=1;i<=40;i++){ if(userAnswers['q'+i]&&userAnswers['q'+i].toString().trim()) count++; }
+  document.getElementById('sc-answered').textContent=count;
+  document.getElementById('sc-unanswered').textContent=40-count;
+  document.getElementById('sc-pct').textContent=Math.round(count/40*100)+'%';
+  document.getElementById('score-grid').style.display='grid';
+  document.getElementById('submit-modal').classList.remove('hidden');
+}
+function closeModal(){ document.getElementById('submit-modal').classList.add('hidden'); }
+
+function submitTest(){
+  submitted=true;
+  if(timerInterval) clearInterval(timerInterval);
+  if(autosaveInterval) clearInterval(autosaveInterval);
+  document.getElementById('submit-modal').classList.add('hidden');
+  clearSession();
+
+  var correct=0, wrong=0, unanswered=0;
+  var tbody=document.getElementById('ans-table-body');
+  tbody.innerHTML='';
+  var pdfRows=[];
+
+  for(var num=1;num<=40;num++){
+    var id='q'+num;
+    var result=checkCorrect(id);
+    var userRaw=(userAnswers[id]||'').toString().trim();
+    var correctAns=correctAnswerLabel(id);
+
+    var yourCell, resultCell, resText;
+    if(result===null){
+      unanswered++;
+      yourCell='<span class="blank">&mdash;</span>';
+      resultCell='<span class="blank">Unanswered</span>';
+      resText='Unanswered';
+    } else if(result){
+      correct++;
+      yourCell='<span class="ok">'+escapeHtml(userRaw)+'</span>';
+      resultCell='<span class="ok">&#10003; Correct</span>';
+      resText='Correct';
+    } else {
+      wrong++;
+      yourCell='<span class="bad">'+escapeHtml(userRaw||'-')+'</span>';
+      resultCell='<span class="bad">&#10007; Incorrect</span>';
+      resText='Incorrect';
+    }
+
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td style="font-weight:700;color:var(--accent)">'+num+'</td><td>'+yourCell+'</td><td><strong>'+escapeHtml(correctAns)+'</strong></td><td>'+resultCell+'</td>';
+    tbody.appendChild(tr);
+    pdfRows.push([String(num), userRaw||'-', correctAns, resText]);
+  }
+
+  document.getElementById('r-correct').textContent=correct;
+  document.getElementById('r-wrong').textContent=wrong;
+  document.getElementById('r-unanswered').textContent=unanswered;
+  var bs=getBandScore(correct);
+  document.getElementById('r-band').textContent=bs.band;
+  document.getElementById('r-band-label').textContent=bs.level+' \u00B7 '+correct+' / 40 correct';
+  document.getElementById('results-cand').textContent='Candidate: '+candidateName+'  \u00B7  Number: '+candidateNumber;
+  document.getElementById('results-modal').classList.remove('hidden');
+  window._lastPdfData={correct:correct,wrong:wrong,unanswered:unanswered,bs:bs,pdfRows:pdfRows};
+  try{
+    generateResultsPDF(correct,wrong,unanswered,bs,pdfRows);
+    document.getElementById('pdf-status').textContent='Candidate response PDF downloaded.';
+  }catch(e){
+    document.getElementById('pdf-status').textContent='PDF download failed. Use the button below.';
+    document.getElementById('pdf-status').style.color='var(--accent-red)';
+  }
+}
+function redownloadPDF(){
+  if(!window._lastPdfData) return;
+  var d=window._lastPdfData;
+  try{ generateResultsPDF(d.correct,d.wrong,d.unanswered,d.bs,d.pdfRows); }catch(e){}
+}
+
+function generateResultsPDF(correct,wrong,unanswered,bandInfo,rows){
+  var jsPDF=window.jspdf.jsPDF;
+  var doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  var pageWidth=doc.internal.pageSize.getWidth();
+  doc.setFillColor(30,58,95); doc.rect(0,0,pageWidth,28,'F');
+  doc.setTextColor(255,255,255); doc.setFontSize(16); doc.setFont('helvetica','bold');
+  doc.text('IELTS Academic Reading \u00B7 Test 318',14,12);
+  doc.setFontSize(10); doc.setFont('helvetica','normal');
+  doc.text('Candidate Response Report',14,20);
+  doc.text(new Date().toLocaleString(),pageWidth-14,20,{align:'right'});
+  doc.setTextColor(26,24,20); doc.setFontSize(11); doc.setFont('helvetica','bold');
+  doc.text('Candidate Name:',14,38); doc.setFont('helvetica','normal'); doc.text(candidateName||'Anonymous',52,38);
+  doc.setFont('helvetica','bold'); doc.text('Candidate Number:',14,45); doc.setFont('helvetica','normal'); doc.text(candidateNumber||'-',58,45);
+  doc.setFontSize(12); doc.setFont('helvetica','bold'); doc.text('Score Summary',14,56);
+  doc.setFontSize(10); doc.setFont('helvetica','normal');
+  doc.text('Correct: '+correct+'    Incorrect: '+wrong+'    Unanswered: '+unanswered,14,64);
+  doc.setFont('helvetica','bold'); doc.setTextColor(30,58,95); doc.setFontSize(14);
+  doc.text('Band Score: '+bandInfo.band+'  ('+bandInfo.level+')',14,72);
+  doc.setTextColor(26,24,20); doc.setFontSize(10); doc.setFont('helvetica','normal');
+  doc.text(correct+' / 40 correct',14,79);
+  doc.autoTable({
+    startY:86, head:[['Q','Your Answer','Correct Answer','Result']], body:rows, theme:'grid',
+    styles:{fontSize:8,cellPadding:2.2,overflow:'linebreak',valign:'middle'},
+    headStyles:{fillColor:[30,58,95],textColor:255,fontStyle:'bold',fontSize:8},
+    columnStyles:{0:{cellWidth:18,halign:'center'},1:{cellWidth:50},2:{cellWidth:70},3:{cellWidth:35,halign:'center'}},
+    didParseCell:function(data){
+      if(data.section==='body'&&data.column.index===3){
+        var t=data.cell.raw||'';
+        if(t.indexOf('Correct')!==-1 && t.indexOf('Incorrect')===-1){data.cell.styles.textColor=[5,150,105];data.cell.styles.fontStyle='bold';}
+        else if(t.indexOf('Incorrect')!==-1){data.cell.styles.textColor=[225,29,72];data.cell.styles.fontStyle='bold';}
+        else {data.cell.styles.textColor=[107,114,128];data.cell.styles.fontStyle='italic';}
+      }
+    },
+    margin:{left:14,right:14}
+  });
+  var finalY=doc.lastAutoTable.finalY+12;
+  doc.setFontSize(8); doc.setTextColor(107,114,128);
+  doc.text('This report shows your answers against the official answer key.',14,finalY);
+  var safeName=(candidateName||'Candidate').replace(/[^a-zA-Z0-9]/g,'_').slice(0,20);
+  var safeNum=(candidateNumber||'NA').replace(/[^a-zA-Z0-9]/g,'_').slice(0,15);
+  doc.save('IELTS_Test318_'+safeName+'_'+safeNum+'_'+new Date().toISOString().slice(0,10)+'.pdf');
+}
+
+var resizer=document.getElementById('resizer');
+var passPanel=document.getElementById('passage-panel');
+var isResizing=false,startX,startW;
+resizer.addEventListener('mousedown',function(e){ isResizing=true; startX=e.clientX; startW=passPanel.offsetWidth; resizer.classList.add('dragging'); document.body.style.userSelect='none'; document.body.style.cursor='col-resize'; });
+document.addEventListener('mousemove',function(e){ if(!isResizing) return; var dx=e.clientX-startX; passPanel.style.width=Math.min(Math.max(startW+dx,280),window.innerWidth-320)+'px'; });
+document.addEventListener('mouseup',function(){ if(isResizing){ isResizing=false; resizer.classList.remove('dragging'); document.body.style.userSelect=''; document.body.style.cursor=''; saveSession(true); } });
+
+(function(){
+  var saved = loadSession();
+  if(saved && saved.passageWidth){ document.getElementById('passage-panel').style.width = saved.passageWidth; }
+})();
+</script>
+</body>
+</html>
