@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Academic Reading · Test 318</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#fff;--border:#e5e7eb;--border-soft:#f3f4f6;--accent:#1e3a5f;--accent-red:#e11d48;--accent-red-hover:#be123c;--text:#1f2937;--muted:#6b7280;--success:#059669;--passage-width:52%;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+  #start-screen{position:fixed;inset:0;background:#f8fafc;display:flex;align-items:center;justify-content:center;z-index:500;}
+  #start-screen.hidden{display:none;}
+  .start-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:40px 44px;max-width:460px;width:92%;box-shadow:0 10px 40px rgba(0,0,0,.08);}
+  .start-card h1{font-size:20px;margin-bottom:4px;font-weight:600;}
+  .start-card .sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
+  .start-card label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;}
+  .start-card input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;margin-bottom:16px;font-family:inherit;}
+  .start-card input:focus{outline:none;border-color:var(--accent-red);box-shadow:0 0 0 3px rgba(225,29,72,.12);}
+  .start-card button{width:100%;padding:12px;background:var(--accent-red);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:6px;}
+  .start-card button:hover{background:var(--accent-red-hover);}
+  .resume-banner{display:none;background:#fef3c7;border:1px solid #fbbf24;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12.5px;color:#92400e;line-height:1.5;}
+  .resume-banner.show{display:block;}
+  .resume-banner .resume-actions{margin-top:8px;display:flex;gap:8px;}
+  .resume-banner .resume-actions button{width:auto;margin:0;padding:6px 12px;font-size:12px;border-radius:6px;}
+  .resume-banner .resume-actions .btn-ghost{background:#fff;color:#92400e;border:1px solid #fbbf24;}
+  #topbar{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:56px;flex-shrink:0;z-index:100;}
+  .top-left{display:flex;align-items:center;gap:12px;}
+  .mock-label{font-size:15px;font-weight:500;}
+  #autosave-indicator{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--success);font-weight:500;opacity:0;transition:opacity .4s ease;}
+  #autosave-indicator.show{opacity:1;}
+  #autosave-indicator .dot{width:7px;height:7px;border-radius:50%;background:var(--success);}
+  #autosave-indicator.saving .dot{background:#f59e0b;animation:blink .8s infinite;}
+  #autosave-indicator.saving{color:#f59e0b;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+  #timer-wrap{display:flex;align-items:center;gap:6px;color:var(--accent-red);font-weight:600;}
+  #timer{font-size:18px;font-weight:600;letter-spacing:0.02em;min-width:52px;}
+  #timer.warn{animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+  .top-actions{display:flex;align-items:center;gap:8px;}
+  .icon-btn{width:36px;height:36px;border:none;background:transparent;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s;}
+  .icon-btn:hover{background:var(--border-soft);color:var(--text);}
+  .btn-submit{background:#e5e7eb;color:var(--text);border:none;padding:8px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;}
+  .btn-submit:hover{background:#d1d5db;}
+  .icon-btn.active{background:#fff1f2;color:var(--accent-red);}
+  #notepad-panel{position:fixed;top:56px;right:0;width:320px;height:calc(100vh - 56px - 56px);background:#fff;border-left:1px solid var(--border);box-shadow:-4px 0 24px rgba(0,0,0,.08);z-index:150;display:flex;flex-direction:column;transition:transform .2s ease;}
+  #notepad-panel.hidden{transform:translateX(100%);pointer-events:none;}
+  .notepad-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+  .notepad-title{font-size:15px;font-weight:600;color:var(--accent-red);}
+  #notepad-text{flex:1;border:none;resize:none;padding:14px 16px;font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.55;outline:none;}
+  #main{display:flex;flex:1;overflow:hidden;}
+  #passage-panel{width:var(--passage-width);background:#fff;overflow-y:auto;padding:24px 28px 40px;flex-shrink:0;}
+  .part-header{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:0.04em;margin-bottom:4px;}
+  #passage-panel h2{font-size:22px;font-weight:700;color:var(--accent);margin-bottom:6px;letter-spacing:-0.3px;}
+  .time-note{font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.5;}
+  .passage-title{text-align:center;font-family:'Source Serif 4',Georgia,serif;font-size:18px;font-weight:600;color:var(--accent);margin-bottom:22px;}
+  #passage-panel p{font-family:'Source Serif 4',Georgia,serif;font-size:15px;line-height:1.75;margin-bottom:16px;}
+  #passage-panel p.glossary{font-size:13px;line-height:1.6;color:var(--muted);border-top:1px solid var(--border);padding-top:12px;margin-top:8px;}
+  #passage-panel strong{font-weight:700;color:var(--accent);}
+  #passage-panel em{font-style:italic;}
+  #resizer{width:5px;background:transparent;cursor:col-resize;flex-shrink:0;position:relative;z-index:10;}
+  #resizer::before{content:'';position:absolute;top:0;bottom:0;left:2px;width:1px;background:var(--accent-red);}
+  #resizer:hover::before,#resizer.dragging::before{width:3px;left:1px;}
+  #resizer .handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:14px;height:28px;background:#fff;border:1px solid var(--accent-red);border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--accent-red);font-size:10px;}
+  #questions-panel{flex:1;overflow-y:auto;padding:20px 24px 80px;background:#fff;}
+  .q-section{margin-bottom:28px;}
+  .q-section-header{font-size:15px;font-weight:600;margin-bottom:8px;}
+  .q-section-intro{font-size:13.5px;color:var(--muted);line-height:1.55;margin-bottom:16px;}
+  .info-box{padding:12px 16px;font-size:13px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;margin-bottom:14px;line-height:1.9;}
+  .info-box.notes{font-size:13.5px;line-height:2.1;}
+  .info-box .box-title{display:block;font-weight:600;color:var(--accent);margin-bottom:2px;}
+  .question{padding:12px 0;border-bottom:1px solid var(--border-soft);display:flex;gap:12px;align-items:flex-start;}
+  .question:last-child{border-bottom:none;}
+  .q-num{min-width:26px;height:26px;color:var(--muted);border:1.5px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;margin-top:1px;}
+  .q-body{flex:1;}
+  .q-text{font-size:14px;line-height:1.55;margin-bottom:10px;}
+  .tfn-options,.mcq-options{display:flex;flex-direction:column;gap:6px;}
+  .tfn-options.horizontal{flex-direction:row;flex-wrap:wrap;gap:8px;}
+  .tfn-btn,.mcq-opt{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:13.5px;transition:all .12s;}
+  .tfn-btn:hover,.mcq-opt:hover{border-color:#94a3b8;background:#f8fafc;}
+  .tfn-btn.selected,.mcq-opt.selected{border-color:var(--accent-red);background:#fff1f2;}
+  .tfn-btn .radio-dot,.mcq-opt .radio-dot{width:18px;height:18px;border-radius:50%;border:2px solid #cbd5e1;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+  .tfn-btn.selected .radio-dot,.mcq-opt.selected .radio-dot{border-color:var(--accent-red);}
+  .tfn-btn.selected .radio-dot::after,.mcq-opt.selected .radio-dot::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--accent-red);}
+  .fill-input{border:1.5px solid var(--border);border-radius:6px;padding:7px 12px;font-size:14px;font-family:inherit;width:100%;max-width:220px;transition:border-color .15s;}
+  .fill-input:focus{outline:none;border-color:var(--accent-red);box-shadow:0 0 0 3px rgba(225,29,72,.1);}
+  .fill-input.answered{border-color:var(--success);background:#f0fdf4;}
+  .fill-input.inline{display:inline-block;vertical-align:middle;margin:0 2px;}
+  .dd-select{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 36px 10px 12px;font-size:13.5px;font-family:inherit;background-color:#fff;cursor:pointer;transition:border-color .15s;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");background-repeat:no-repeat;background-position:right 12px center;}
+  .dd-select:focus{outline:none;border-color:var(--accent-red);box-shadow:0 0 0 3px rgba(225,29,72,.1);}
+  .dd-select.answered{border-color:var(--success);background-color:#f0fdf4;}
+  .pair-hint{font-size:12.5px;color:#b45318;background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;padding:6px 10px;margin-bottom:10px;}
+  #bottombar{border-top:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;flex-shrink:0;gap:12px;min-height:56px;}
+  .part-tabs{display:flex;gap:8px;flex-shrink:0;}
+  .part-tab{padding:8px 16px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap;}
+  .part-tab:hover{border-color:#94a3b8;color:var(--text);}
+  .part-tab.active{border-color:var(--accent-red);color:var(--accent);box-shadow:0 0 0 1px var(--accent-red);}
+  .part-tab .count{font-weight:400;color:var(--muted);}
+  .q-circles{display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;flex:1;padding:0 8px;}
+  .q-circle{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);background:#fff;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .12s;}
+  .q-circle:hover{border-color:#94a3b8;color:var(--text);}
+  .q-circle.answered{background:var(--success);border-color:var(--success);color:#fff;}
+  .nav-arrows{display:flex;gap:6px;flex-shrink:0;}
+  .nav-arrow{width:36px;height:36px;border:1.5px solid var(--border);border-radius:50%;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:16px;}
+  .nav-arrow:hover{border-color:#94a3b8;color:var(--text);}
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:flex;align-items:center;justify-content:center;}
+  .modal-overlay.hidden{display:none;}
+  .modal{background:#fff;border-radius:12px;padding:28px 32px;max-width:720px;width:94%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+  .modal h2{font-size:20px;margin-bottom:10px;}
+  .modal p{font-size:14px;line-height:1.6;color:var(--muted);margin-bottom:16px;}
+  .score-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0;}
+  .score-card{background:#f8fafc;border-radius:10px;padding:14px;text-align:center;}
+  .score-card .val{font-size:26px;font-weight:700;color:var(--accent);}
+  .score-card .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+  .modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;}
+  .btn-modal{padding:9px 18px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:#fff;}
+  .btn-modal:hover{background:#f8fafc;}
+  .btn-modal.primary{background:var(--accent-red);color:#fff;border-color:var(--accent-red);}
+  .btn-modal.primary:hover{background:var(--accent-red-hover);}
+  .ans-table-wrap{margin:12px 0;max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;}
+  .ans-table{width:100%;border-collapse:collapse;font-size:12px;}
+  .ans-table th{position:sticky;top:0;background:var(--accent);color:#fff;padding:8px 10px;text-align:left;font-weight:600;font-size:11px;}
+  .ans-table td{padding:6px 10px;border-bottom:1px solid var(--border);}
+  .ans-table tr:nth-child(even) td{background:#f8fafc;}
+  .ans-table .ok{color:var(--success);font-weight:600;}
+  .ans-table .bad{color:var(--accent-red);font-weight:600;}
+  .ans-table .blank{color:var(--muted);font-style:italic;}
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px;}
+  .passage-content{display:none;}
+  .passage-content.active{display:block;}
+  mark.hl{background:#fef08a;padding:0 2px;border-radius:2px;}
+  mark.hl-note{background:#bbf7d0;padding:0 2px;border-radius:2px;border-bottom:2px solid #16a34a;}
+  #sel-toolbar{position:fixed;z-index:300;display:none;background:#1e3a5f;color:#fff;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.2);font-size:13px;font-weight:500;overflow:hidden;white-space:nowrap;}
+  #sel-toolbar button{background:transparent;border:none;color:#fff;padding:8px 14px;cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;}
+  #sel-toolbar button:hover{background:rgba(255,255,255,.15);}
+  #sel-toolbar .sep{display:inline-block;width:1px;height:14px;background:rgba(255,255,255,.35);vertical-align:middle;}
+  @media (max-width:800px){#main{flex-direction:column;}#passage-panel{width:100%!important;height:42vh;border-bottom:1px solid var(--border);}#resizer{display:none;}}
+  #passage-panel p.source-note{font-family:'Inter',system-ui,sans-serif;font-size:12px;font-style:normal;color:var(--muted);text-align:center;margin:-12px 0 20px;line-height:1.5;}
+  .figure{margin:4px 0 20px;}
+  .figure img{width:100%;height:auto;display:block;border:1px solid var(--border);border-radius:6px;}
+  .figure figcaption{font-family:'Inter',system-ui,sans-serif;font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:8px;}
+  .figure .fig-src{font-size:11.5px;opacity:.85;}
+  .dd-select.inline{display:inline-block;width:auto;min-width:130px;padding:6px 32px 6px 10px;vertical-align:middle;margin:0 2px;}
+  .info-box .box-title + .box-title{margin-top:8px;}
+  .q-section .figure{margin:0 0 14px;}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+
+<div id="start-screen">
+  <div class="start-card">
+    <h1>IELTS Academic Reading</h1>
+    <div class="sub">Computer-Delivered Simulation &middot; Test 318</div>
+    <div class="resume-banner" id="resume-banner">
+      <strong>&#9201; Saved session found</strong>
+      <div id="resume-info"></div>
+      <div class="resume-actions">
+        <button onclick="resumeTest()">Resume Test</button>
+        <button class="btn-ghost" onclick="discardSaved()">Start Fresh</button>
+      </div>
+    </div>
+    <label for="cand-name">Candidate Name</label>
+    <input type="text" id="cand-name" placeholder="Enter your full name" autocomplete="off">
+    <label for="cand-num">Candidate Number</label>
+    <input type="text" id="cand-num" placeholder="e.g. 123456" autocomplete="off">
+    <button onclick="startTest()">Start Test</button>
+  </div>
+</div>
+
+<div id="topbar">
+  <div class="top-left">
+    <span class="mock-label">IELTS Academic Reading &middot; Test 318</span>
+    <span id="autosave-indicator"><span class="dot"></span><span id="autosave-text">Saved</span></span>
+  </div>
+  <div id="timer-wrap">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <div id="timer">60:00</div>
+  </div>
+  <div class="top-actions">
+    <button class="icon-btn" id="notepad-btn" title="Notepad" onclick="toggleNotepad()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></button>
+    <button class="icon-btn" title="Full screen" onclick="toggleFullscreen()"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
+    <button class="btn-submit" onclick="confirmSubmit()">Submit</button>
+  </div>
+</div>
+
+<div id="notepad-panel" class="hidden">
+  <div class="notepad-header">
+    <span class="notepad-title">Notepad</span>
+    <button class="icon-btn" title="Close" onclick="toggleNotepad()" style="width:28px;height:28px"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <textarea id="notepad-text" placeholder="Type your notes here&hellip;"></textarea>
+</div>
+
+<div id="sel-toolbar">
+  <button type="button" id="sel-note-btn">Note</button><span class="sep"></span><button type="button" id="sel-hl-btn">Highlight</button>
+</div>
+
+<div id="main">
+  <div id="passage-panel">
+
+    <div class="passage-content active" id="pc-0">
+      <div class="part-header">PART 1</div>
+      <h2>READING PASSAGE 1</h2>
+      <div class="time-note">You should spend about 20 minutes on Questions 1&ndash;13, which are based on Reading Passage 1 below.</div>
+      <div class="passage-title">Mind Music</div>
+      <div class="source-note">Scientists investigate &lsquo;earworms&rsquo;, the music we can&rsquo;t get out of our head</div>
+      <p><strong>A</strong>&nbsp; Ever had a song stuck in your head, playing on an endless loop? Scientists call them &lsquo;involuntary musical images&rsquo;, or &lsquo;earworms&rsquo;, and a wave of new research is shining light on why they occur and what can be learned from them. Some neuroscientists and cognitive psychologists are studying earworms to explore the mysteries of memory and the part of the brain that is beyond our conscious control. &lsquo;The idea that we have full control over our thought processes is an illusion,&rsquo; says psychologist Lauren Stewart, who founded the master&rsquo;s program in music, mind and brain at Goldsmiths, University of London, UK, where recent research has taken place. Researchers haven&rsquo;t been able to watch what happens in the brain when earworms occur, because they happen unpredictably. Much of what is known about them comes from surveys, questionnaires, diaries and lab experiments.</p>
+      <p><strong>B</strong>&nbsp; A Goldsmiths study published in the journal <em>Memory and Cognition</em> this year showed that the singing we hear in our heads tends to be true to actual recordings. Researchers had 17 volunteers tap to the beat of any earworm they heard during a four-day period while a device attached to their wrist recorded their movements. The tapping tempos were within 10% of the tempos of the original recordings. Another Goldsmiths study, published this year in <em>Consciousness and Cognition</em>, found that people who report hearing earworms often, and find them most intrusive, have slightly different brain structures, with more gray matter in areas associated with processing emotions.</p>
+      <p><strong>C</strong>&nbsp; Studies also show that the music in our heads often starts playing during times of &lsquo;low cognitive load&rsquo;, such as while showering, getting dressed, walking, or doing chores. Dr Stewart likens earworms to &lsquo;sonic screen savers&rsquo; that keep the mind entertained while it is otherwise unoccupied. She and her colleagues tested that theory by having volunteers listen to songs and giving them various tasks afterwards. The volunteers who sat idly for the next five minutes were the most likely to report hearing the music in their heads. Dr Stewart observed that the more challenging the activity, the less likely the volunteers were to hear the music. Diary studies also show songs tend to match people&rsquo;s moods and therefore they are not random. If you are energized and upbeat, an earworm that occurs is likely to be uptempo too.</p>
+      <p><strong>D</strong>&nbsp; Songs the brain fixates on are usually those it has been exposed to recently, surveys show, which is why tunes getting heavy radio play frequently top the earworm charts. Even tunes you may have heard but didn&rsquo;t pay attention to can worm their way into your subconscious, says Ira Hyman, a psychologist at Western Washington University in Bellingham, USA. In an unpublished study there, participants who listened to music while doing other tasks were more likely to report that the songs returned as earworms later on, compared with participants who simply listened.</p>
+      <p><strong>E</strong>&nbsp; Some earworms are just fragments of a song that repeat like a broken record. So, when the mind hits a part of a song it can&rsquo;t remember, it loops back rather than moving on. That could make an earworm even more entrenched, Dr Hyman says. According to a theory known as the Zeigarnik effect, named for a Soviet psychologist, Bluma Zeigarnik, unfinished thoughts and activities weigh on the mind more heavily than those that are completed, although experiments exposing students to interrupted songs have yielded mixed results.</p>
+      <p><strong>F</strong>&nbsp; Researchers say they can&rsquo;t pinpoint a spot in the brain where earworms live. Imaging studies by Andrea Halpern at Bucknell University, in Lewisburg, USA, have shown that deliberately imagining music and actually listening to music activate many of the same neurological networks. Dr Halpern&rsquo;s earlier studies showed that when subjects listened to the first few notes of familiar music, areas in the right frontal and superior temporal portions of the brain became activated, along with the supplementary motor area at the top, which is typically involved in remembering sequences. When the same subjects listened to unfamiliar music and were asked to recall it, there was activity in the left frontal portions of the brain instead.</p>
+      <p><strong>G</strong>&nbsp; One factor that makes some songs stick might be repetition. &lsquo;Repetition leads to familiarity which leads to anticipation, which is satisfied by hearing the song,&rsquo; says John Seabrook, author of <em>The Song Machine: Inside the Hit Factory</em>, about how producers pump pop songs full of aural &lsquo;hooks&rsquo;, the punchy melodic phrases designed to target the brain and leave it wanting more. The researchers are comparing the melodic structure of 100 often-mentioned songs with 100 similarly popular songs that weren&rsquo;t cited as earworms, to assess the difference. Songs with earworm potential appear to share certain features: a repeating pattern of ups and downs in pitch, and an irregular musical interval.</p>
+      <p><strong>H</strong>&nbsp; The researchers plan next to test their results in reverse, and play ringtones from songs of both the earworm and non-earworm variety for volunteers several times a day to see which ones get stuck. Drs Stewart and Halpern are now working together to recruit survey participants for a study looking at whether people at different stages of life experience earworms differently. &lsquo;You can argue that older people might get them more often because they know more songs,&rsquo; Dr Halpern says. &lsquo;But the few responses we have so far indicate that they have earworms less often. It could be that they don&rsquo;t play music as often as younger people do.&rsquo;</p>
+    </div>
+
+    <div class="passage-content" id="pc-1">
+      <div class="part-header">PART 2</div>
+      <h2>READING PASSAGE 2</h2>
+      <div class="time-note">You should spend about 20 minutes on Questions 14&ndash;26, which are based on Reading Passage 2 below.</div>
+      <div class="passage-title">Mysteries of Water</div>
+      <p><strong>A</strong>&nbsp; From the nature of dark matter and the origin of the universe to the research for a theory of everything, we come across many mysteries. Whilst these are all puzzles on a grand scale, there is another not quite so grand but equally confusing mystery of the physical world that you can observe from the comfort of your own kitchen. Simply fill a tall glass with chilled water, throw in an ice cube and leave it to stand. The fact that the ice cube floats is the first oddity. And the mystery deepens if you take a thermometer and measure the temperature of the water at various depths. At the top, near the ice cube, you&rsquo;ll find it to be around 0&deg;C, but at the bottom, it should be about 4&deg;C. That&rsquo;s why water is denser at 4&deg;C than it is at any other temperature, which is another strange feature that sets it apart from other liquids.</p>
+      <p><strong>B</strong>&nbsp; Water&rsquo;s odd but essential qualities don&rsquo;t stop there, for ice is less dense than water, and water is less dense at its freezing point than it is when it is slightly warmer. It freezes from the top down rather than the bottom up. So even during the ice ages, life kept going on to flourish on lake floors and in the deep ocean. Also, water has an extraordinary capacity to absorb up the heat, and this helps smooth out climatic changes that could otherwise lay waste to ecosystems. However, in spite of water&rsquo;s enormous importance to life, no single theory had been able to satisfactorily explain its mysterious qualities until now. If we can believe physicists Anders Nilsson at Stanford University, California, and Lars Pettersson of Stockholm University, Sweden, we could, at last, be getting to the bottom of many of these anomalies.</p>
+      <p><strong>C</strong>&nbsp; Their disputed ideas expand on a theory proposed more than a century ago. According to Wilhelm Roentgen, the man who discovered the X-ray, the molecule in liquid water packs together not in just one way, as today&rsquo;s textbooks would have us believe, but in two different ways. The way its molecules are composed of two hydrogen atoms and one oxygen atom and how they interact with one another is essential to the understanding of water&rsquo;s mysteries. The oxygen atom has a slight negative charge whilst the hydrogen atoms share a compensating positive charge. Through this process, the hydrogen and oxygen atoms of neighbouring molecules are drawn to one another, forming a link called a hydrogen bond.</p>
+      <p><strong>D</strong>&nbsp; Hydrogen bonds are even weaker than the bonds that link the atoms within molecules together, so keep going to break and reform, but they are at their strongest when molecules are organized so that each hydrogen bond lines up with a molecular bond. The shaping of a water molecule is such that each H<sub>2</sub>O molecule is surrounded by four neighbours organized in the shaping of a triangular pyramid better known as a tetrahedron. At least, that&rsquo;s the way the molecules organize themselves in ice. From the conventional view, liquid water has a similar, although less hard, structure, in which extra molecules are able to pack into some of the open gaps in the tetrahedral arrangement. It explains why liquid water is denser than ice and it seems to comply with the results of various experiments that beams of X-rays, infrared light and neutrons are bounced off samples of water.</p>
+      <p><strong>E</strong>&nbsp; Some physicists had suggested that water placed under certain extreme conditions may separate into two different structures, but most had assumed it resumes a single structure under normal conditions. And then, 10 years ago, a change found by Pettersson and Nilsson called this idea into question. They were using X-ray absorption spectroscopy to research the amino acid glycine. The peaks in the X-ray absorption spectrum can shed light on the accurate nature of the target substance&rsquo;s chemical bonds on its structure. Critically, the researchers had got hold of a new, high-power X-ray source with which they could make more sensitive and precise measurements than had ever been possible. They soon knew that the water containing their glycine sample was producing a far more interesting spectrum than the amino acids did. Nilsson recalls, &ldquo;What we saw there was sensational, so we had to get to the bottom of it.&rdquo;</p>
+      <p><strong>F</strong>&nbsp; The characteristic that sparked their interest was a peak point in the absorption spectrum that is not anticipated by the traditional model of liquid water. Actually, a paper published in 2004 concludes that at any given moment 85% of the hydrogen bonds in water must be weakened or broken. This is far more than the 10% anticipated by the textbook model. The hints of this finding are dramatic: it claims that a total rethink of the structure of water is needed. So, both Nilsson and Pettersson turned to other X-ray experiments to confirm these claims. Their first move was to enlist the aid of Shik Shin of the University of Tokyo who specialises in a technique called X-ray emission spectroscopy. The main thing about these spectra is that the shorter the wavelength of the X-ray in a substance&rsquo;s emission spectrum is, the looser the hydrogen bonding must be.<br><br>The team struck gold: the two peak spectrum of discharged X-ray might correspond to two separate structures. The researchers insisted that the spike of the longer-wavelength X-ray indicates the proportion of tetrahedrally organized molecules, whilst the shorter-wavelength peak reflects the proportion of disordered molecules. Critically, the shorter-wavelength peak in the X-ray emissions was the more intense of the two, suggesting that the loosely bound molecules must be more outstanding within the sample, an assertion that fitted the team&rsquo;s previous models. What&rsquo;s more, they also recognised that this peak shifts to an even shorter wavelength, as if the water was heated, the other peak remains more or less fixed.</p>
+    </div>
+
+    <div class="passage-content" id="pc-2">
+      <div class="part-header">PART 3</div>
+      <h2>READING PASSAGE 3</h2>
+      <div class="time-note">You should spend about 20 minutes on Questions 27&ndash;40, which are based on Reading Passage 3 below.</div>
+      <div class="passage-title">Gaming Impact</div>
+      <p>Many people who spend a lot of time playing video games insist that they have helped them in areas like confidence-building, presentation skills and debating. Yet this way of thinking about video games can be found almost nowhere within the mainstream media, which still tend to treat games as an odd mix of the slightly menacing and the alien. This lack of awareness has become increasingly inappropriate, as video games and the culture that surrounds them have become very big business indeed.</p>
+      <p>Recently, the British government released the Byron report into the effects of electronic media on children. Its conclusions set out a clear, rational basis for exploring the regulation of video games. The ensuing debate, however, has descended into the same old squabbling between partisan factions: the preachers of mental and moral decline, and the innovative game designers. In between are the gamers, busily buying and playing while nonsense is talked over their heads.</p>
+      <p>Susan Greenfield, renowned neuroscientist, outlines her concerns in a new book. Every individual&rsquo;s mind is the product of a brain that has been personalized by the sum total of their experiences; with an increasing quantity of our experiences from very early childhood taking place &lsquo;on screen&rsquo; rather than in the world, there is potentially a profound shift in the way children&rsquo;s minds work. She suggests that the fast-paced, second-hand experiences created by video games and the Internet may inculcate a worldview that is less empathetic, more risk-taking and less contemplative than what we tend to think of as healthy.</p>
+      <p>Greenfield&rsquo;s prose is full of mixed metaphors and self-contradictions and is perhaps the worst enemy of her attempts to persuade. This is unfortunate, because however much technophiles may snort, she is articulating widely held fears that have a basis in fact. Unlike even their immediate antecedents, the latest electronic media are at once domestic and work-related, their mobility blurring the boundaries between these spaces, and video games are at their forefront. A generational divide has opened that is in many ways more profound than the equivalent shifts associated with radio or television, more alienating for those unfamiliar with new technologies, more absorbing for those who are. So how do our lawmakers regulate something that is too fluid to be fully comprehended or controlled?</p>
+      <p>Adam Martin, a lead programmer for an online games developer, says: &lsquo;Computer games teach and people don&rsquo;t even notice they&rsquo;re being taught.&rsquo; But isn&rsquo;t the kind of learning that goes on in games rather narrow? &lsquo;A large part of the addictiveness of games does come from the fact that as you play you are mastering a set of challenges. But humanity&rsquo;s larger understanding of the world comes primarily through communication and experimentation, through answering the question &ldquo;What if?&rdquo; Games excel at teaching this too.&rsquo;</p>
+      <p>Steven Johnson&rsquo;s thesis is not that electronic games constitute a great, popular art, but that the mean level of mass culture has been demanding steadily more intellectual engagement from consumers. Games, he points out, generate satisfaction via the complexity of their virtual worlds, not by their robotic predictability. Testing the nature and limits of the laws of such imaginary worlds has more in common with scientific methods than with a pointless addiction, while the complexity of the problems children encounter within games exceeds that of anything they might find at school.</p>
+      <p>Greenfield argues that there are ways of thinking that playing video games simply cannot teach. She has a point. We should never forget, for instance, the unique ability of books to engage and expand the human imagination, and to give us the means of more fully expressing our situations in the world. Intriguingly, the video games industry is now growing in ways that have more in common with an old-fashioned world of companionable pastimes than with a cyber future of lonely, isolated obsessives. Games in which friends and relations gather around a console to compete at activities are growing in popularity. The agenda is increasingly being set by the concerns of mainstream consumers &ndash; what they consider acceptable for their children, what they want to play at parties and across generations.</p>
+      <p>These trends embody a familiar but important truth: games are human products, and lie within our control. This doesn&rsquo;t mean we yet control or understand them fully, but it should remind us that there is nothing inevitable or incomprehensible about them. No matter how deeply it may be felt, instinctive fear is an inappropriate response to technology of any kind.</p>
+      <p>So far, the dire predictions many traditionalists have made about the &lsquo;death&rsquo; of old-fashioned narratives and imaginative thought at the hands of video games cannot be upheld. Television and cinema may be suffering, economically, at the hands of interactive media. But literacy standards have failed to decline. Young people still enjoy sport, going out, and listening to music, and most research &ndash; including a recent $1.5m study funded by the US government &ndash; suggests that even pre-teens are not in the habit of blurring game worlds and real worlds.</p>
+      <p>The sheer pace and scale of the changes we face, however, leave little room for complacency. Richard Battle, a British writer and game researcher, says &lsquo;Times change: accept it; embrace it.&rsquo; Just as, today, we have no living memories of a time before radio, we will soon live in a world in which no one living experienced growing up without computers. It is for this reason that we must try to examine what we stand to lose and gain, before it is too late.</p>
+    </div>
+
+  </div>
+
+  <div id="resizer"><div class="handle">&#8942;&#8942;</div></div>
+
+  <div id="questions-panel">
+<div id="qs-0">
+<div class="q-section">
+<div class="q-section-header">Questions 1&ndash;4</div>
+<div class="q-section-intro">Complete the summary below. Choose <strong>ONE WORD ONLY</strong> from the passage for each answer.</div>
+<div class="question"><div class="q-body"><div class="q-text">Researchers from Goldsmiths concluded that the music we imagine in our minds is quite similar to recordings. They proved this by asking volunteers to record the rhythm of music using a monitor on their <strong>1</strong> <input class="fill-input inline" id="q1" oninput="markFill('q1')" style="width:120px" placeholder="&hellip;">. Further research has demonstrated that those who hear earworms more frequently have brains that may deal with <strong>2</strong> <input class="fill-input inline" id="q2" oninput="markFill('q2')" style="width:120px" placeholder="&hellip;"> differently from other people. Dr Stewart also believes that the brain is <strong>3</strong> <input class="fill-input inline" id="q3" oninput="markFill('q3')" style="width:120px" placeholder="&hellip;"> by earworms when it is not focused on a task. In fact, a reduction in the occurrence of earworms was found to be directly related to how <strong>4</strong> <input class="fill-input inline" id="q4" oninput="markFill('q4')" style="width:120px" placeholder="&hellip;"> the task was. Interestingly, volunteers&rsquo; diaries revealed that the songs they heard inside their head reflected their moods, so the choice of music is not accidental.</div></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Questions 5&ndash;9</div>
+<div class="q-section-intro">Look at the following statements and the list of researchers below. Match each statement with the correct person, <strong>A</strong>, <strong>B</strong>, <strong>C</strong> or <strong>D</strong>. <em>NB You may use any letter more than once.</em></div>
+<div class="info-box"><span class="box-title">List of Researchers</span><strong>A</strong> Lauren Stewart<br><strong>B</strong> Ira Hyman<br><strong>C</strong> Andrea Halpern<br><strong>D</strong> John Seabrook</div>
+<div class="question" id="q5"><div class="q-num">5</div><div class="q-body"><div class="q-text">Some musicians create music that is intentionally memorable.</div><select class="dd-select" id="dd-q5" data-opts="A,B,C,D" data-ph="Select a researcher&hellip;" onchange="selectDropdown(this,'q5')"></select></div></div>
+<div class="question" id="q6"><div class="q-num">6</div><div class="q-body"><div class="q-text">People are unable to completely regulate how they think.</div><select class="dd-select" id="dd-q6" data-opts="A,B,C,D" data-ph="Select a researcher&hellip;" onchange="selectDropdown(this,'q6')"></select></div></div>
+<div class="question" id="q7"><div class="q-num">7</div><div class="q-body"><div class="q-text">We can remember songs without knowing that we have heard them.</div><select class="dd-select" id="dd-q7" data-opts="A,B,C,D" data-ph="Select a researcher&hellip;" onchange="selectDropdown(this,'q7')"></select></div></div>
+<div class="question" id="q8"><div class="q-num">8</div><div class="q-body"><div class="q-text">Thinking about music has a similar effect on the brain to hearing music.</div><select class="dd-select" id="dd-q8" data-opts="A,B,C,D" data-ph="Select a researcher&hellip;" onchange="selectDropdown(this,'q8')"></select></div></div>
+<div class="question" id="q9"><div class="q-num">9</div><div class="q-body"><div class="q-text">Earworms are more persistent when only a short section of the song is constantly replayed.</div><select class="dd-select" id="dd-q9" data-opts="A,B,C,D" data-ph="Select a researcher&hellip;" onchange="selectDropdown(this,'q9')"></select></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Questions 10&ndash;13</div>
+<div class="q-section-intro">The reading passage has eight paragraphs, <strong>A&ndash;H</strong>. Which paragraph contains the following information?</div>
+<div class="question" id="q10"><div class="q-num">10</div><div class="q-body"><div class="q-text">a description of the characteristics common to songs with earworms</div><select class="dd-select" id="dd-q10" data-opts="A,B,C,D,E,F,G,H" data-ph="Select a paragraph&hellip;" onchange="selectDropdown(this,'q10')"></select></div></div>
+<div class="question" id="q11"><div class="q-num">11</div><div class="q-body"><div class="q-text">a justification for research into earworms</div><select class="dd-select" id="dd-q11" data-opts="A,B,C,D,E,F,G,H" data-ph="Select a paragraph&hellip;" onchange="selectDropdown(this,'q11')"></select></div></div>
+<div class="question" id="q12"><div class="q-num">12</div><div class="q-body"><div class="q-text">a description of the brain&rsquo;s reaction to known and unknown songs</div><select class="dd-select" id="dd-q12" data-opts="A,B,C,D,E,F,G,H" data-ph="Select a paragraph&hellip;" onchange="selectDropdown(this,'q12')"></select></div></div>
+<div class="question" id="q13"><div class="q-num">13</div><div class="q-body"><div class="q-text">details of proposed research into the frequency with which earworms occur in different age groups</div><select class="dd-select" id="dd-q13" data-opts="A,B,C,D,E,F,G,H" data-ph="Select a paragraph&hellip;" onchange="selectDropdown(this,'q13')"></select></div></div>
+</div>
+</div>
+<div id="qs-1" style="display:none">
+<div class="q-section">
+<div class="q-section-header">Questions 14&ndash;18</div>
+<div class="q-section-intro">Reading Passage 2 has six sections, <strong>A&ndash;F</strong>. Choose the correct heading for sections <strong>B&ndash;F</strong> from the list of headings below.</div>
+<div class="info-box"><span class="box-title">List of Headings</span><strong>i</strong> a significant role to creatures<br><strong>ii</strong> spectrum&rsquo;s previous models<br><strong>iii</strong> a distinction of hydrogen bonds<br><strong>iv</strong> nature&rsquo;s mysteries in the small place<br><strong>v</strong> the effect of the spectrum on liquid water<br><strong>vi</strong> molecular composition of water<br><strong>vii</strong> water based on infrared light<br><strong>viii</strong> on-body structure of water</div>
+<div class="question"><div class="q-body"><div class="q-text"><em>Example: Section A &mdash; <strong>iv</strong></em></div></div></div>
+<div class="question" id="q14"><div class="q-num">14</div><div class="q-body"><div class="q-text">Section B</div><select class="dd-select" id="dd-q14" data-opts="i,ii,iii,iv,v,vi,vii,viii" data-ph="Select a heading&hellip;" onchange="selectDropdown(this,'q14')"></select></div></div>
+<div class="question" id="q15"><div class="q-num">15</div><div class="q-body"><div class="q-text">Section C</div><select class="dd-select" id="dd-q15" data-opts="i,ii,iii,iv,v,vi,vii,viii" data-ph="Select a heading&hellip;" onchange="selectDropdown(this,'q15')"></select></div></div>
+<div class="question" id="q16"><div class="q-num">16</div><div class="q-body"><div class="q-text">Section D</div><select class="dd-select" id="dd-q16" data-opts="i,ii,iii,iv,v,vi,vii,viii" data-ph="Select a heading&hellip;" onchange="selectDropdown(this,'q16')"></select></div></div>
+<div class="question" id="q17"><div class="q-num">17</div><div class="q-body"><div class="q-text">Section E</div><select class="dd-select" id="dd-q17" data-opts="i,ii,iii,iv,v,vi,vii,viii" data-ph="Select a heading&hellip;" onchange="selectDropdown(this,'q17')"></select></div></div>
+<div class="question" id="q18"><div class="q-num">18</div><div class="q-body"><div class="q-text">Section F</div><select class="dd-select" id="dd-q18" data-opts="i,ii,iii,iv,v,vi,vii,viii" data-ph="Select a heading&hellip;" onchange="selectDropdown(this,'q18')"></select></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Questions 19&ndash;26</div>
+<div class="q-section-intro">Do the following statements reflect the claims of the writer in Reading Passage 2? Write <strong>YES</strong> if the statement reflects the opinion of the writer, <strong>NO</strong> if the statement contradicts the opinion of the writer, or <strong>NOT GIVEN</strong> if it is impossible to say what the writer thinks about this.</div>
+<div class="question" id="q19"><div class="q-num">19</div><div class="q-body"><div class="q-text">Water&rsquo;s temperature at the top and bottom is generally the same.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q19','YES')"><span class="radio-dot"></span>YES</button><button class="tfn-btn" onclick="selectTFN(this,'q19','NO')"><span class="radio-dot"></span>NO</button><button class="tfn-btn" onclick="selectTFN(this,'q19','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q20"><div class="q-num">20</div><div class="q-body"><div class="q-text">During the ice ages, there was life in the deep ocean because of warmth.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q20','YES')"><span class="radio-dot"></span>YES</button><button class="tfn-btn" onclick="selectTFN(this,'q20','NO')"><span class="radio-dot"></span>NO</button><button class="tfn-btn" onclick="selectTFN(this,'q20','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q21"><div class="q-num">21</div><div class="q-body"><div class="q-text">Wilhelm Roentgen discovered X-rays for water molecules.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q21','YES')"><span class="radio-dot"></span>YES</button><button class="tfn-btn" onclick="selectTFN(this,'q21','NO')"><span class="radio-dot"></span>NO</button><button class="tfn-btn" onclick="selectTFN(this,'q21','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q22"><div class="q-num">22</div><div class="q-body"><div class="q-text">Both hydrogen and oxygen&rsquo;s atoms are similar to a positive charge.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q22','YES')"><span class="radio-dot"></span>YES</button><button class="tfn-btn" onclick="selectTFN(this,'q22','NO')"><span class="radio-dot"></span>NO</button><button class="tfn-btn" onclick="selectTFN(this,'q22','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q23"><div class="q-num">23</div><div class="q-body"><div class="q-text">A single H<sub>2</sub>O molecule is composed entirely of five-angled shape.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q23','YES')"><span class="radio-dot"></span>YES</button><button class="tfn-btn" onclick="selectTFN(this,'q23','NO')"><span class="radio-dot"></span>NO</button><button class="tfn-btn" onclick="selectTFN(this,'q23','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q24"><div class="q-num">24</div><div class="q-body"><div class="q-text">Pettersson and Nilsson were scrutinising the amino acid glycine by using X-ray absorption spectroscopy.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q24','YES')"><span class="radio-dot"></span>YES</button><button class="tfn-btn" onclick="selectTFN(this,'q24','NO')"><span class="radio-dot"></span>NO</button><button class="tfn-btn" onclick="selectTFN(this,'q24','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q25"><div class="q-num">25</div><div class="q-body"><div class="q-text">The water including glycine was making a superior spectrum to the amino acid.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q25','YES')"><span class="radio-dot"></span>YES</button><button class="tfn-btn" onclick="selectTFN(this,'q25','NO')"><span class="radio-dot"></span>NO</button><button class="tfn-btn" onclick="selectTFN(this,'q25','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q26"><div class="q-num">26</div><div class="q-body"><div class="q-text">The shorter wavelength is subjected to the longer wavelength.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q26','YES')"><span class="radio-dot"></span>YES</button><button class="tfn-btn" onclick="selectTFN(this,'q26','NO')"><span class="radio-dot"></span>NO</button><button class="tfn-btn" onclick="selectTFN(this,'q26','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+</div>
+</div>
+<div id="qs-2" style="display:none">
+<div class="q-section">
+<div class="q-section-header">Questions 27&ndash;32</div>
+<div class="q-section-intro">Do the following statements agree with the information given in Reading Passage 3? Write <strong>YES</strong> if the statement agrees with the information, <strong>NO</strong> if the statement contradicts the information, or <strong>NOT GIVEN</strong> if there is no information on this.</div>
+<div class="question" id="q27"><div class="q-num">27</div><div class="q-body"><div class="q-text">Much media comment ignores the impact that video games can have on many people&rsquo;s lives.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q27','YES')"><span class="radio-dot"></span>YES</button><button class="tfn-btn" onclick="selectTFN(this,'q27','NO')"><span class="radio-dot"></span>NO</button><button class="tfn-btn" onclick="selectTFN(this,'q27','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q28"><div class="q-num">28</div><div class="q-body"><div class="q-text">The publication of the Byron Report was followed by a worthwhile discussion between those for and against video games.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q28','YES')"><span class="radio-dot"></span>YES</button><button class="tfn-btn" onclick="selectTFN(this,'q28','NO')"><span class="radio-dot"></span>NO</button><button class="tfn-btn" onclick="selectTFN(this,'q28','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q29"><div class="q-num">29</div><div class="q-body"><div class="q-text">Susan Greenfield&rsquo;s way of writing has become more complex over the years.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q29','YES')"><span class="radio-dot"></span>YES</button><button class="tfn-btn" onclick="selectTFN(this,'q29','NO')"><span class="radio-dot"></span>NO</button><button class="tfn-btn" onclick="selectTFN(this,'q29','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q30"><div class="q-num">30</div><div class="q-body"><div class="q-text">It is likely that video games will take over the role of certain kinds of books in the future.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q30','YES')"><span class="radio-dot"></span>YES</button><button class="tfn-btn" onclick="selectTFN(this,'q30','NO')"><span class="radio-dot"></span>NO</button><button class="tfn-btn" onclick="selectTFN(this,'q30','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q31"><div class="q-num">31</div><div class="q-body"><div class="q-text">More sociable games are being brought out to satisfy the demands of the buying public.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q31','YES')"><span class="radio-dot"></span>YES</button><button class="tfn-btn" onclick="selectTFN(this,'q31','NO')"><span class="radio-dot"></span>NO</button><button class="tfn-btn" onclick="selectTFN(this,'q31','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+<div class="question" id="q32"><div class="q-num">32</div><div class="q-body"><div class="q-text">Being afraid of technological advances is a justifiable reaction.</div><div class="tfn-options horizontal"><button class="tfn-btn" onclick="selectTFN(this,'q32','YES')"><span class="radio-dot"></span>YES</button><button class="tfn-btn" onclick="selectTFN(this,'q32','NO')"><span class="radio-dot"></span>NO</button><button class="tfn-btn" onclick="selectTFN(this,'q32','NOT GIVEN')"><span class="radio-dot"></span>NOT GIVEN</button></div></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Questions 33&ndash;37</div>
+<div class="q-section-intro">Choose the correct letter, <strong>A</strong>, <strong>B</strong>, <strong>C</strong> or <strong>D</strong>.</div>
+<div class="question" id="q33"><div class="q-num">33</div><div class="q-body"><div class="q-text">According to the writer, what view about video games does Susan Greenfield put forward in her new book?</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMCQ(this,'q33','A')"><span class="radio-dot"></span>A They are exposing a child to an adult view of the world too soon.</label><label class="mcq-opt" onclick="selectMCQ(this,'q33','B')"><span class="radio-dot"></span>B Children become easily frightened by some of the situations in them.</label><label class="mcq-opt" onclick="selectMCQ(this,'q33','C')"><span class="radio-dot"></span>C They are changing the way children&rsquo;s view of the world develops.</label><label class="mcq-opt" onclick="selectMCQ(this,'q33','D')"><span class="radio-dot"></span>D Children don&rsquo;t learn from them because they are too repetitive.</label></div></div></div>
+<div class="question" id="q34"><div class="q-num">34</div><div class="q-body"><div class="q-text">According to the writer, what problems are faced when regulating video games?</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMCQ(this,'q34','A')"><span class="radio-dot"></span>A The widespread and ever-changing use of games makes it difficult for lawmakers to control them.</label><label class="mcq-opt" onclick="selectMCQ(this,'q34','B')"><span class="radio-dot"></span>B The appeal of the games to a younger generation isn&rsquo;t really understood by many lawmakers.</label><label class="mcq-opt" onclick="selectMCQ(this,'q34','C')"><span class="radio-dot"></span>C The lawmakers try to apply the same rules to the games as they did to radio and television.</label><label class="mcq-opt" onclick="selectMCQ(this,'q34','D')"><span class="radio-dot"></span>D Many lawmakers feel it is too late for the regulations to have much effect on the use of games.</label></div></div></div>
+<div class="question" id="q35"><div class="q-num">35</div><div class="q-body"><div class="q-text">What main point does Adam Martin make about video games?</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMCQ(this,'q35','A')"><span class="radio-dot"></span>A People are learning how to avoid becoming addicted to them.</label><label class="mcq-opt" onclick="selectMCQ(this,'q35','B')"><span class="radio-dot"></span>B They enable people to learn without being aware of it happening.</label><label class="mcq-opt" onclick="selectMCQ(this,'q35','C')"><span class="radio-dot"></span>C They satisfy a need for people to compete with each other.</label><label class="mcq-opt" onclick="selectMCQ(this,'q35','D')"><span class="radio-dot"></span>D People learn a narrow range of skills but they are still useful.</label></div></div></div>
+<div class="question" id="q36"><div class="q-num">36</div><div class="q-body"><div class="q-text">Which of the following does Steven Johnson disagree with?</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMCQ(this,'q36','A')"><span class="radio-dot"></span>A the opinion that video games offer educational benefits to the user</label><label class="mcq-opt" onclick="selectMCQ(this,'q36','B')"><span class="radio-dot"></span>B the attitude that video games are often labelled as predictable and undemanding</label><label class="mcq-opt" onclick="selectMCQ(this,'q36','C')"><span class="radio-dot"></span>C the idea that children&rsquo;s logic is tested more by video games than at school</label><label class="mcq-opt" onclick="selectMCQ(this,'q36','D')"><span class="radio-dot"></span>D the suggestion that video games can be compared to scientific procedures</label></div></div></div>
+<div class="question" id="q37"><div class="q-num">37</div><div class="q-body"><div class="q-text">Which of the following is the most suitable subtitle for Reading Passage 3?</div><div class="mcq-options"><label class="mcq-opt" onclick="selectMCQ(this,'q37','A')"><span class="radio-dot"></span>A A debate about the effects of video games on other forms of technology.</label><label class="mcq-opt" onclick="selectMCQ(this,'q37','B')"><span class="radio-dot"></span>B An examination of the opinions of young people about video games.</label><label class="mcq-opt" onclick="selectMCQ(this,'q37','C')"><span class="radio-dot"></span>C A discussion of whether attitudes towards video games are outdated.</label><label class="mcq-opt" onclick="selectMCQ(this,'q37','D')"><span class="radio-dot"></span>D An analysis of the principles behind the historical development of video games.</label></div></div></div>
+</div>
+<div class="q-section">
+<div class="q-section-header">Questions 38&ndash;40</div>
+<div class="q-section-intro">Complete each sentence with the correct ending, <strong>A&ndash;E</strong>, below.</div>
+<div class="info-box"><span class="box-title">Endings</span><strong>A</strong> young people have no problem separating their own lives from the ones they play on the screen.<br><strong>B</strong> levels of reading ability will continue to drop significantly.<br><strong>C</strong> new advances in technology have to be absorbed into our lives.<br><strong>D</strong> games cannot provide preparation for the skills needed in real life.<br><strong>E</strong> young people will continue to play video games despite warnings against doing so.</div>
+<div class="question" id="q38"><div class="q-num">38</div><div class="q-body"><div class="q-text">There is little evidence for the traditionalists&rsquo; prediction that</div><select class="dd-select" id="dd-q38" data-opts="A,B,C,D,E" data-ph="Select an ending&hellip;" onchange="selectDropdown(this,'q38')"></select></div></div>
+<div class="question" id="q39"><div class="q-num">39</div><div class="q-body"><div class="q-text">A recent study by the US government found that</div><select class="dd-select" id="dd-q39" data-opts="A,B,C,D,E" data-ph="Select an ending&hellip;" onchange="selectDropdown(this,'q39')"></select></div></div>
+<div class="question" id="q40"><div class="q-num">40</div><div class="q-body"><div class="q-text">Richard Battle suggests that it is important for people to accept the fact that</div><select class="dd-select" id="dd-q40" data-opts="A,B,C,D,E" data-ph="Select an ending&hellip;" onchange="selectDropdown(this,'q40')"></select></div></div>
+</div>
+</div>
+  </div>
+</div>
+
+<div id="bottombar">
+  <div class="part-tabs">
+    <div class="part-tab active" id="ptab-0" onclick="switchPassage(0)">Part 1: <span class="count" id="pcount-0">0 of 13</span></div>
+    <div class="part-tab" id="ptab-1" onclick="switchPassage(1)">Part 2: <span class="count" id="pcount-1">0 of 13</span></div>
+    <div class="part-tab" id="ptab-2" onclick="switchPassage(2)">Part 3: <span class="count" id="pcount-2">0 of 14</span></div>
+  </div>
+  <div class="q-circles" id="q-circles"></div>
+  <div class="nav-arrows">
+    <button class="nav-arrow" onclick="prevQ()">&lsaquo;</button>
+    <button class="nav-arrow" onclick="nextQ()">&rsaquo;</button>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="submit-modal">
+  <div class="modal">
+    <h2>Submit Your Test?</h2>
+    <p>You are about to submit your test. This action cannot be undone.</p>
+    <div class="score-grid" id="score-grid" style="display:none">
+      <div class="score-card"><div class="val" id="sc-answered">0</div><div class="lbl">Answered</div></div>
+      <div class="score-card"><div class="val" id="sc-unanswered">40</div><div class="lbl">Unanswered</div></div>
+      <div class="score-card"><div class="val" id="sc-pct">0%</div><div class="lbl">Completion</div></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-modal" onclick="closeModal()">Cancel</button>
+      <button class="btn-modal primary" onclick="submitTest()">Submit Test</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="results-modal">
+  <div class="modal">
+    <h2>Test Complete</h2>
+    <p id="results-cand"></p>
+    <div class="score-grid">
+      <div class="score-card"><div class="val" id="r-correct" style="color:var(--success)">&mdash;</div><div class="lbl">Correct</div></div>
+      <div class="score-card"><div class="val" id="r-wrong" style="color:var(--accent-red)">&mdash;</div><div class="lbl">Incorrect</div></div>
+      <div class="score-card"><div class="val" id="r-unanswered">&mdash;</div><div class="lbl">Unanswered</div></div>
+    </div>
+    <div style="margin:14px 0 12px;background:var(--accent);border-radius:12px;padding:18px 22px;text-align:center;color:#fff">
+      <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.75;margin-bottom:4px">IELTS Band Score</div>
+      <div id="r-band" style="font-size:48px;font-weight:700;line-height:1">&mdash;</div>
+      <div id="r-band-label" style="font-size:13px;margin-top:6px;opacity:.85">&mdash;</div>
+    </div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:6px">Your Answers vs Correct Answers</div>
+    <div class="ans-table-wrap"><table class="ans-table"><thead><tr><th>Q</th><th>Your Answer</th><th>Correct Answer</th><th>Result</th></tr></thead><tbody id="ans-table-body"></tbody></table></div>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px">Green = correct &middot; Red = incorrect &middot; Band scores are approximate for Academic Reading.</p>
+    <p id="pdf-status" style="font-size:13px;color:var(--success);margin-top:8px;font-weight:500"></p>
+    <div class="modal-btns">
+      <button class="btn-modal" onclick="redownloadPDF()">Download PDF again</button>
+      <button class="btn-modal primary" onclick="document.getElementById('results-modal').classList.add('hidden')">Close &amp; Review</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   ANSWER KEY
+   ============================================================ */
+var ANSWERS = {
+  q1:'wrist', q2:'emotions', q3:'entertained', q4:'challenging',
+  q5:'D', q6:'A', q7:'B', q8:'C', q9:'B',
+  q10:'G', q11:'A', q12:'F', q13:'H',
+  q14:'i', q15:'vi', q16:'iii', q17:'viii', q18:'v',
+  q19:'NO', q20:'YES', q21:'NOT GIVEN', q22:'NO', q23:'NO', q24:'YES', q25:'YES', q26:'NOT GIVEN',
+  q27:'YES', q28:'NO', q29:'NOT GIVEN', q30:'NOT GIVEN', q31:'YES', q32:'NO',
+  q33:'C', q34:'A', q35:'B', q36:'B', q37:'C',
+  q38:'B', q39:'A', q40:'C'
+};
+
+var ALT = {
+  q2:['emotions','emotion'],
+  q3:['entertained'],
+  q4:['challenging']
+};
+
+var PAIR_GROUPS = {};
+
+var PART_RANGES = [[1,13],[14,26],[27,40]];
+var userAnswers = {}, currentPassage = 0, submitted = false;
+var candidateName='', candidateNumber='';
+var seconds = 60*60;
+var timerEl = document.getElementById('timer');
+var timerInterval = null;
+
+/* Fill dropdowns that declare their options with data-opts / data-words */
+(function initSelects(){
+  document.querySelectorAll('select[data-opts],select[data-words]').forEach(function(s){
+    var ph = document.createElement('option');
+    ph.value = ''; ph.disabled = true; ph.selected = true;
+    ph.innerHTML = s.getAttribute('data-ph') || 'Select\u2026';
+    s.appendChild(ph);
+    var words = s.getAttribute('data-words');
+    if(words){
+      words.split(',').forEach(function(p){
+        var kv = p.split(':');
+        var o = document.createElement('option');
+        o.value = kv[0]; o.textContent = kv[0] + ' \u2013 ' + kv[1];
+        s.appendChild(o);
+      });
+    } else {
+      s.getAttribute('data-opts').split(',').forEach(function(v){
+        var o = document.createElement('option');
+        o.value = v; o.textContent = v;
+        s.appendChild(o);
+      });
+    }
+  });
+})();
+
+/* ============================================================
+   AUTO-SAVE
+   ============================================================ */
+var STORAGE_KEY = 'ielts_reading_318_session';
+var autosaveInterval = null;
+var autosaveListenersAdded = false;
+var autosaveIndicator = document.getElementById('autosave-indicator');
+var autosaveText = document.getElementById('autosave-text');
+
+function showAutosaveSaving(){
+  autosaveIndicator.classList.add('show','saving');
+  autosaveText.textContent = 'Saving\u2026';
+}
+function showAutosaveSaved(){
+  autosaveIndicator.classList.add('show');
+  autosaveIndicator.classList.remove('saving');
+  var t = new Date();
+  autosaveText.textContent = 'Saved ' + t.toTimeString().slice(0,8);
+  setTimeout(function(){ autosaveIndicator.classList.remove('show'); }, 2500);
+}
+function getPassageWidth(){
+  var pw = document.getElementById('passage-panel');
+  return pw ? (pw.style.width || pw.offsetWidth + 'px') : '';
+}
+function saveSession(silent){
+  if(submitted) return;
+  if(!silent) showAutosaveSaving();
+  try{
+    var data = {
+      version: 3,
+      timestamp: Date.now(),
+      candidateName: candidateName,
+      candidateNumber: candidateNumber,
+      seconds: seconds,
+      currentPassage: currentPassage,
+      userAnswers: userAnswers,
+      notepad: document.getElementById('notepad-text').value,
+      passageWidth: getPassageWidth(),
+      started: true
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    if(!silent) showAutosaveSaved();
+  }catch(e){ console.warn('Autosave failed:', e); }
+}
+function loadSession(){
+  try{
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return null;
+    var d = JSON.parse(raw);
+    if(!d || !d.started) return null;
+    return d;
+  }catch(e){ return null; }
+}
+function clearSession(){ try{ localStorage.removeItem(STORAGE_KEY); }catch(e){} }
+function formatTime(sec){
+  var m = Math.floor(sec/60), s = sec%60;
+  return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+
+(function checkSavedSession(){
+  var saved = loadSession();
+  if(!saved) return;
+  var banner = document.getElementById('resume-banner');
+  var info = document.getElementById('resume-info');
+  var answered = 0;
+  for(var i=1;i<=40;i++){ if(saved.userAnswers && saved.userAnswers['q'+i]) answered++; }
+  var when = new Date(saved.timestamp).toLocaleString();
+  info.innerHTML = '<strong>' + escapeHtml(saved.candidateName || 'Anonymous') + '</strong> &middot; ' + answered + '/40 answered &middot; ' + formatTime(saved.seconds) + ' remaining<br><span style="opacity:.75">Saved ' + when + '</span>';
+  banner.classList.add('show');
+  document.getElementById('cand-name').value = saved.candidateName || '';
+  document.getElementById('cand-num').value = saved.candidateNumber || '';
+})();
+
+function resumeTest(){
+  var saved = loadSession();
+  if(!saved){ startTest(); return; }
+  candidateName = saved.candidateName || 'Anonymous';
+  candidateNumber = saved.candidateNumber || 'N/A';
+  seconds = saved.seconds || 60*60;
+  userAnswers = saved.userAnswers || {};
+  currentPassage = saved.currentPassage || 0;
+  if(saved.notepad) document.getElementById('notepad-text').value = saved.notepad;
+  if(saved.passageWidth){ document.getElementById('passage-panel').style.width = saved.passageWidth; }
+
+  document.getElementById('start-screen').classList.add('hidden');
+  restoreAnswersUI();
+  buildCircles();
+  updatePartCounts();
+  if(currentPassage !== 0) switchPassage(currentPassage);
+  updateTimerDisplay();
+  startTimer();
+  startAutosave();
+  showAutosaveSaved();
+}
+function discardSaved(){
+  clearSession();
+  document.getElementById('resume-banner').classList.remove('show');
+  document.getElementById('cand-name').value = '';
+  document.getElementById('cand-num').value = '';
+}
+
+function restoreAnswersUI(){
+  for(var id in userAnswers){
+    var val = userAnswers[id];
+    if(!val) continue;
+    var dd = document.getElementById('dd-'+id);
+    if(dd){ dd.value = val; dd.classList.add('answered'); continue; }
+    var fi = document.getElementById(id);
+    if(fi && fi.tagName === 'INPUT'){ fi.value = val; fi.classList.add('answered'); continue; }
+    var tfnWrap = document.querySelector('#'+id+' .tfn-options');
+    if(tfnWrap){
+      tfnWrap.querySelectorAll('.tfn-btn').forEach(function(b){
+        if(b.textContent.trim() === val) b.classList.add('selected');
+      });
+      continue;
+    }
+    var mcqWrap = document.querySelector('#'+id+' .mcq-options');
+    if(mcqWrap){
+      mcqWrap.querySelectorAll('.mcq-opt').forEach(function(l){
+        if(l.textContent.trim().charAt(0) === val) l.classList.add('selected');
+      });
+    }
+  }
+}
+
+function startAutosave(){
+  if(autosaveInterval) clearInterval(autosaveInterval);
+  autosaveInterval = setInterval(function(){ saveSession(false); }, 5000);
+  if(autosaveListenersAdded) return;
+  autosaveListenersAdded = true;
+  document.addEventListener('visibilitychange', function(){ if(document.hidden) saveSession(true); });
+  window.addEventListener('beforeunload', function(){ saveSession(true); });
+}
+
+function startTest(){
+  candidateName = document.getElementById('cand-name').value.trim() || 'Anonymous';
+  candidateNumber = document.getElementById('cand-num').value.trim() || 'N/A';
+  document.getElementById('start-screen').classList.add('hidden');
+  document.getElementById('resume-banner').classList.remove('show');
+  clearSession();
+  buildCircles();
+  updatePartCounts();
+  startTimer();
+  startAutosave();
+  saveSession(true);
+}
+function startTimer(){
+  if(timerInterval) clearInterval(timerInterval);
+  updateTimerDisplay();
+  timerInterval = setInterval(function(){
+    if(submitted) return;
+    seconds--;
+    if(seconds <= 0){ clearInterval(timerInterval); submitTest(); return; }
+    updateTimerDisplay();
+  }, 1000);
+}
+function updateTimerDisplay(){
+  timerEl.textContent = formatTime(Math.max(0,seconds));
+  timerEl.classList.toggle('warn', seconds < 300);
+}
+
+function switchPassage(idx){
+  currentPassage = idx;
+  document.querySelectorAll('.part-tab').forEach(function(t,i){ t.classList.toggle('active', i===idx); });
+  document.querySelectorAll('.passage-content').forEach(function(p,i){ p.classList.toggle('active', i===idx); });
+  document.querySelectorAll('#qs-0,#qs-1,#qs-2').forEach(function(q,i){ q.style.display = i===idx ? '' : 'none'; });
+  buildCircles();
+  document.getElementById('questions-panel').scrollTop = 0;
+  document.getElementById('passage-panel').scrollTop = 0;
+  saveSession(true);
+}
+function buildCircles(){
+  var wrap = document.getElementById('q-circles');
+  wrap.innerHTML = '';
+  var range = PART_RANGES[currentPassage];
+  var start = range[0], end = range[1];
+  for(var i=start;i<=end;i++){
+    var d = document.createElement('div');
+    d.className = 'q-circle';
+    d.textContent = i;
+    var a = userAnswers['q'+i];
+    if(a && a.toString().trim()) d.classList.add('answered');
+    d.onclick = (function(n){ return function(){ scrollToQ(n); }; })(i);
+    wrap.appendChild(d);
+  }
+}
+function updatePartCounts(){
+  PART_RANGES.forEach(function(r, idx){
+    var s = r[0], e = r[1], a = 0;
+    for(var i=s;i<=e;i++){ if(userAnswers['q'+i] && userAnswers['q'+i].toString().trim()) a++; }
+    document.getElementById('pcount-'+idx).textContent = a + ' of ' + (e-s+1);
+  });
+}
+function scrollToQ(num){
+  var p = num<=13?0:num<=26?1:2;
+  if(p !== currentPassage) switchPassage(p);
+  setTimeout(function(){
+    var el = document.getElementById('q'+num);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'center'});
+  },50);
+}
+function prevQ(){ document.getElementById('questions-panel').scrollBy({top:-240,behavior:'smooth'}); }
+function nextQ(){ document.getElementById('questions-panel').scrollBy({top:240,behavior:'smooth'}); }
+
+function selectTFN(btn, qId, val){
+  btn.closest('.tfn-options').querySelectorAll('.tfn-btn').forEach(function(b){ b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  userAnswers[qId] = val;
+  updatePartCounts(); buildCircles(); saveSession(true);
+}
+function selectMCQ(label, qId, val){
+  label.closest('.mcq-options').querySelectorAll('.mcq-opt').forEach(function(l){ l.classList.remove('selected'); });
+  label.classList.add('selected');
+  userAnswers[qId] = val;
+  updatePartCounts(); buildCircles(); saveSession(true);
+}
+function selectDropdown(sel, qId){
+  var val = sel.value;
+  sel.classList.toggle('answered', !!val);
+  userAnswers[qId] = val;
+  updatePartCounts(); buildCircles(); saveSession(true);
+}
+function markFill(id){
+  var el = document.getElementById(id);
+  var val = el.value.trim();
+  el.classList.toggle('answered', val.length > 0);
+  userAnswers[id] = val;
+  updatePartCounts(); buildCircles(); saveSession(true);
+}
+function selectPair(sel, qId, partnerId){
+  var val = sel.value;
+  var partner = document.getElementById('dd-'+partnerId);
+  var partnerVal = partner ? partner.value : '';
+  if(val && partnerVal && val === partnerVal){
+    partner.value = '';
+    partner.classList.remove('answered');
+    userAnswers[partnerId] = '';
+  }
+  sel.classList.toggle('answered', !!val);
+  userAnswers[qId] = val;
+  updatePartCounts(); buildCircles(); saveSession(true);
+}
+
+/* ============================================================
+   HIGHLIGHT / NOTE TOOLBAR
+   ============================================================ */
+var _savedRange = null;
+function hideSelToolbar(){ var tb=document.getElementById('sel-toolbar'); if(tb) tb.style.display='none'; _savedRange=null; }
+function showSelToolbar(x,y){
+  var tb=document.getElementById('sel-toolbar'); if(!tb) return;
+  tb.style.display='block';
+  var tw=tb.offsetWidth||140, th=tb.offsetHeight||36;
+  var left=x-tw/2, top=y-th-10;
+  if(left+tw>window.innerWidth-8) left=window.innerWidth-tw-8;
+  if(left<8) left=8;
+  if(top<60) top=y+12;
+  tb.style.left=left+'px'; tb.style.top=top+'px';
+}
+function getPassageSelection(){
+  var sel=window.getSelection();
+  if(!sel||sel.isCollapsed||sel.rangeCount===0) return null;
+  var range=sel.getRangeAt(0);
+  var p1=document.getElementById('passage-panel');
+  var p2=document.getElementById('questions-panel');
+  var node=range.commonAncestorContainer;
+  if(!((p1&&p1.contains(node))||(p2&&p2.contains(node)))) return null;
+  if(!sel.toString().trim()) return null;
+  /* never wrap form controls in a <mark> - it breaks the answer inputs */
+  var frag=range.cloneContents();
+  if(frag.querySelector && frag.querySelector('input,select,textarea,button,label')) return null;
+  return {sel:sel,range:range};
+}
+function onPassageMouseUp(e){
+  setTimeout(function(){
+    var data=getPassageSelection();
+    if(!data){ var tb=document.getElementById('sel-toolbar'); if(e&&e.target&&tb&&tb.contains(e.target)) return; hideSelToolbar(); return; }
+    _savedRange=data.range.cloneRange();
+    var rect=data.range.getBoundingClientRect();
+    showSelToolbar(rect.left+rect.width/2, rect.top);
+  },10);
+}
+function applyMark(cls){
+  if(!_savedRange) return;
+  try{ var m=document.createElement('mark'); m.className=cls; _savedRange.surroundContents(m); }
+  catch(e){ try{ var f=_savedRange.extractContents(); var m2=document.createElement('mark'); m2.className=cls; m2.appendChild(f); _savedRange.insertNode(m2); }catch(e2){} }
+  var s=window.getSelection(); if(s) s.removeAllRanges();
+  hideSelToolbar();
+}
+(function(){
+  var hl=document.getElementById('sel-hl-btn');
+  if(hl) hl.addEventListener('mousedown',function(e){e.preventDefault();applyMark('hl');});
+  var nb=document.getElementById('sel-note-btn');
+  if(nb) nb.addEventListener('mousedown',function(e){
+    e.preventDefault();
+    var text=_savedRange?_savedRange.toString().trim():'';
+    applyMark('hl-note');
+    if(text){ var ta=document.getElementById('notepad-text'); if(ta){ ta.value+=(ta.value&&!ta.value.endsWith('\n')?'\n':'')+'\u2022 '+text; saveSession(true); var p=document.getElementById('notepad-panel'); if(p&&p.classList.contains('hidden')) toggleNotepad(); } }
+  });
+  var pp=document.getElementById('passage-panel');
+  if(pp) pp.addEventListener('mouseup',onPassageMouseUp);
+  var qp=document.getElementById('questions-panel');
+  if(qp) qp.addEventListener('mouseup',onPassageMouseUp);
+  document.addEventListener('mousedown',function(e){ var tb=document.getElementById('sel-toolbar'); if(!tb||tb.style.display==='none') return; if(tb.contains(e.target)) return; setTimeout(function(){ var s=window.getSelection(); if(!s||s.isCollapsed) hideSelToolbar(); },150); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') hideSelToolbar(); });
+  /* hide the toolbar when either panel scrolls, since it is fixed-position */
+  if(pp) pp.addEventListener('scroll',hideSelToolbar);
+  if(qp) qp.addEventListener('scroll',hideSelToolbar);
+})();
+
+function toggleNotepad(){
+  var panel=document.getElementById('notepad-panel');
+  var btn=document.getElementById('notepad-btn');
+  panel.classList.toggle('hidden');
+  btn.classList.toggle('active', !panel.classList.contains('hidden'));
+  if(!panel.classList.contains('hidden')) document.getElementById('notepad-text').focus();
+  saveSession(true);
+}
+function toggleFullscreen(){
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen().catch(function(){});
+  else document.exitFullscreen().catch(function(){});
+}
+document.getElementById('notepad-text').addEventListener('input', function(){ saveSession(true); });
+
+/* ============================================================
+   SCORING
+   ============================================================ */
+function getBandScore(c){
+  if(c>=39) return {band:'9.0',level:'Expert User'};
+  if(c>=37) return {band:'8.5',level:'Very Good User'};
+  if(c>=35) return {band:'8.0',level:'Very Good User'};
+  if(c>=33) return {band:'7.5',level:'Good User'};
+  if(c>=30) return {band:'7.0',level:'Good User'};
+  if(c>=27) return {band:'6.5',level:'Competent User'};
+  if(c>=23) return {band:'6.0',level:'Competent User'};
+  if(c>=19) return {band:'5.5',level:'Modest User'};
+  if(c>=15) return {band:'5.0',level:'Modest User'};
+  if(c>=13) return {band:'4.5',level:'Limited User'};
+  if(c>=10) return {band:'4.0',level:'Limited User'};
+  return {band:'3.5',level:'Extremely Limited'};
+}
+function normalize(s){
+  return (s||'').toString().trim().toLowerCase().replace(/[()]/g,'').replace(/\s+/g,' ').replace(/\.$/,'');
+}
+/* Each letter in a "choose TWO" pair is marked on its own, in either order. */
+function pairResult(qId){
+  var g = PAIR_GROUPS[qId];
+  if(!g) return null;
+  var mine = (userAnswers[qId]||'').toString().trim().toUpperCase();
+  if(!mine) return null;
+  var theirs = (userAnswers[g.partner]||'').toString().trim().toUpperCase();
+  if(mine === theirs) return false;          // duplicate letters can't both score
+  return g.correct.indexOf(mine) !== -1;     // each letter judged on its own
+}
+function checkCorrect(id){
+  if(PAIR_GROUPS[id]) return pairResult(id);
+  var ans = ANSWERS[id];
+  var user = (userAnswers[id]||'').toString().trim();
+  if(!user) return null;
+  var nU = normalize(user);
+  if(ALT[id]){ for(var k=0;k<ALT[id].length;k++){ if(nU === normalize(ALT[id][k])) return true; } }
+  return nU === normalize(ans);
+}
+function correctAnswerLabel(id){
+  if(PAIR_GROUPS[id]){
+    var g = PAIR_GROUPS[id];
+    return g.correct.join(' or ') + ' (any order, ' + g.label + ')';
+  }
+  return ANSWERS[id];
+}
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function confirmSubmit(){
+  var count=0;
+  for(var i=1;i<=40;i++){ if(userAnswers['q'+i]&&userAnswers['q'+i].toString().trim()) count++; }
+  document.getElementById('sc-answered').textContent=count;
+  document.getElementById('sc-unanswered').textContent=40-count;
+  document.getElementById('sc-pct').textContent=Math.round(count/40*100)+'%';
+  document.getElementById('score-grid').style.display='grid';
+  document.getElementById('submit-modal').classList.remove('hidden');
+}
+function closeModal(){ document.getElementById('submit-modal').classList.add('hidden'); }
+
+function submitTest(){
+  submitted=true;
+  if(timerInterval) clearInterval(timerInterval);
+  if(autosaveInterval) clearInterval(autosaveInterval);
+  document.getElementById('submit-modal').classList.add('hidden');
+  clearSession();
+
+  var correct=0, wrong=0, unanswered=0;
+  var tbody=document.getElementById('ans-table-body');
+  tbody.innerHTML='';
+  var pdfRows=[];
+
+  for(var num=1;num<=40;num++){
+    var id='q'+num;
+    var result=checkCorrect(id);
+    var userRaw=(userAnswers[id]||'').toString().trim();
+    var correctAns=correctAnswerLabel(id);
+
+    var yourCell, resultCell, resText;
+    if(result===null){
+      unanswered++;
+      yourCell='<span class="blank">&mdash;</span>';
+      resultCell='<span class="blank">Unanswered</span>';
+      resText='Unanswered';
+    } else if(result){
+      correct++;
+      yourCell='<span class="ok">'+escapeHtml(userRaw)+'</span>';
+      resultCell='<span class="ok">&#10003; Correct</span>';
+      resText='Correct';
+    } else {
+      wrong++;
+      yourCell='<span class="bad">'+escapeHtml(userRaw||'-')+'</span>';
+      resultCell='<span class="bad">&#10007; Incorrect</span>';
+      resText='Incorrect';
+    }
+
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td style="font-weight:700;color:var(--accent)">'+num+'</td><td>'+yourCell+'</td><td><strong>'+escapeHtml(correctAns)+'</strong></td><td>'+resultCell+'</td>';
+    tbody.appendChild(tr);
+    pdfRows.push([String(num), userRaw||'-', correctAns, resText]);
+  }
+
+  document.getElementById('r-correct').textContent=correct;
+  document.getElementById('r-wrong').textContent=wrong;
+  document.getElementById('r-unanswered').textContent=unanswered;
+  var bs=getBandScore(correct);
+  document.getElementById('r-band').textContent=bs.band;
+  document.getElementById('r-band-label').textContent=bs.level+' \u00B7 '+correct+' / 40 correct';
+  document.getElementById('results-cand').textContent='Candidate: '+candidateName+'  \u00B7  Number: '+candidateNumber;
+  document.getElementById('results-modal').classList.remove('hidden');
+  window._lastPdfData={correct:correct,wrong:wrong,unanswered:unanswered,bs:bs,pdfRows:pdfRows};
+  try{
+    generateResultsPDF(correct,wrong,unanswered,bs,pdfRows);
+    document.getElementById('pdf-status').textContent='Candidate response PDF downloaded.';
+  }catch(e){
+    document.getElementById('pdf-status').textContent='PDF download failed. Use the button below.';
+    document.getElementById('pdf-status').style.color='var(--accent-red)';
+  }
+}
+function redownloadPDF(){
+  if(!window._lastPdfData) return;
+  var d=window._lastPdfData;
+  try{ generateResultsPDF(d.correct,d.wrong,d.unanswered,d.bs,d.pdfRows); }catch(e){}
+}
+
+function generateResultsPDF(correct,wrong,unanswered,bandInfo,rows){
+  var jsPDF=window.jspdf.jsPDF;
+  var doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  var pageWidth=doc.internal.pageSize.getWidth();
+  doc.setFillColor(30,58,95); doc.rect(0,0,pageWidth,28,'F');
+  doc.setTextColor(255,255,255); doc.setFontSize(16); doc.setFont('helvetica','bold');
+  doc.text('IELTS Academic Reading \u00B7 Test 318',14,12);
+  doc.setFontSize(10); doc.setFont('helvetica','normal');
+  doc.text('Candidate Response Report',14,20);
+  doc.text(new Date().toLocaleString(),pageWidth-14,20,{align:'right'});
+  doc.setTextColor(26,24,20); doc.setFontSize(11); doc.setFont('helvetica','bold');
+  doc.text('Candidate Name:',14,38); doc.setFont('helvetica','normal'); doc.text(candidateName||'Anonymous',52,38);
+  doc.setFont('helvetica','bold'); doc.text('Candidate Number:',14,45); doc.setFont('helvetica','normal'); doc.text(candidateNumber||'-',58,45);
+  doc.setFontSize(12); doc.setFont('helvetica','bold'); doc.text('Score Summary',14,56);
+  doc.setFontSize(10); doc.setFont('helvetica','normal');
+  doc.text('Correct: '+correct+'    Incorrect: '+wrong+'    Unanswered: '+unanswered,14,64);
+  doc.setFont('helvetica','bold'); doc.setTextColor(30,58,95); doc.setFontSize(14);
+  doc.text('Band Score: '+bandInfo.band+'  ('+bandInfo.level+')',14,72);
+  doc.setTextColor(26,24,20); doc.setFontSize(10); doc.setFont('helvetica','normal');
+  doc.text(correct+' / 40 correct',14,79);
+  doc.autoTable({
+    startY:86, head:[['Q','Your Answer','Correct Answer','Result']], body:rows, theme:'grid',
+    styles:{fontSize:8,cellPadding:2.2,overflow:'linebreak',valign:'middle'},
+    headStyles:{fillColor:[30,58,95],textColor:255,fontStyle:'bold',fontSize:8},
+    columnStyles:{0:{cellWidth:18,halign:'center'},1:{cellWidth:50},2:{cellWidth:70},3:{cellWidth:35,halign:'center'}},
+    didParseCell:function(data){
+      if(data.section==='body'&&data.column.index===3){
+        var t=data.cell.raw||'';
+        if(t.indexOf('Correct')!==-1 && t.indexOf('Incorrect')===-1){data.cell.styles.textColor=[5,150,105];data.cell.styles.fontStyle='bold';}
+        else if(t.indexOf('Incorrect')!==-1){data.cell.styles.textColor=[225,29,72];data.cell.styles.fontStyle='bold';}
+        else {data.cell.styles.textColor=[107,114,128];data.cell.styles.fontStyle='italic';}
+      }
+    },
+    margin:{left:14,right:14}
+  });
+  var finalY=doc.lastAutoTable.finalY+12;
+  doc.setFontSize(8); doc.setTextColor(107,114,128);
+  doc.text('This report shows your answers against the official answer key.',14,finalY);
+  var safeName=(candidateName||'Candidate').replace(/[^a-zA-Z0-9]/g,'_').slice(0,20);
+  var safeNum=(candidateNumber||'NA').replace(/[^a-zA-Z0-9]/g,'_').slice(0,15);
+  doc.save('IELTS_Test318_'+safeName+'_'+safeNum+'_'+new Date().toISOString().slice(0,10)+'.pdf');
+}
+
+/* ============================================================
+   RESIZER
+   ============================================================ */
+var resizer=document.getElementById('resizer');
+var passPanel=document.getElementById('passage-panel');
+var isResizing=false,startX,startW;
+resizer.addEventListener('mousedown',function(e){ isResizing=true; startX=e.clientX; startW=passPanel.offsetWidth; resizer.classList.add('dragging'); document.body.style.userSelect='none'; document.body.style.cursor='col-resize'; });
+document.addEventListener('mousemove',function(e){ if(!isResizing) return; var dx=e.clientX-startX; passPanel.style.width=Math.min(Math.max(startW+dx,280),window.innerWidth-320)+'px'; });
+document.addEventListener('mouseup',function(){ if(isResizing){ isResizing=false; resizer.classList.remove('dragging'); document.body.style.userSelect=''; document.body.style.cursor=''; saveSession(true); } });
+
+(function(){
+  var saved = loadSession();
+  if(saved && saved.passageWidth){ document.getElementById('passage-panel').style.width = saved.passageWidth; }
+})();
+</script>
+</body>
+</html>
