@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Writing Task 1 · Question Bank</title>
+<style>
+:root{--bg:#f5f2eb;--surface:#fffef9;--border:#d6cfc0;--accent:#2d5a8e;--accent-light:#e8f0fa;--text:#1a1814;--muted:#6b6456}
+@media (prefers-color-scheme:dark){:root{--bg:#16181c;--surface:#1f2228;--border:#343a44;--accent:#8db6e8;--accent-light:#26364b;--text:#ece8df;--muted:#9a968b}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px 64px}
+header{padding:48px 0 24px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-family:"Source Serif 4",Georgia,serif;font-size:clamp(28px,5vw,42px);font-weight:600;line-height:1.15;margin:8px 0 12px}
+.lead{color:var(--muted);max-width:60ch}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0}
+.fact{background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:4px 12px;font-size:13px;color:var(--muted)}
+.fact b{color:var(--text)}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input[type=search]{flex:1;min-width:200px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font:inherit;font-size:14px}
+input[type=search]:focus{outline:2px solid var(--accent);outline-offset:1px}
+.btn{display:inline-block;background:var(--accent);color:#fff;border:1px solid var(--accent);padding:10px 16px;border-radius:8px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none}
+@media (prefers-color-scheme:dark){.btn{color:#10151c}}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--accent)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.chip{flex-shrink:0;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;padding:5px 12px;font:inherit;font-size:13px;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+@media (prefers-color-scheme:dark){.chip[aria-pressed=true]{color:#10151c}}
+section{margin-top:36px}
+section h2{font-family:"Source Serif 4",Georgia,serif;font-size:22px;font-weight:600;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+section h2 small{font-family:"DM Sans",system-ui,sans-serif;font-size:12px;color:var(--muted);font-weight:400}
+.tip{color:var(--muted);font-size:14px;margin:4px 0 14px;max-width:75ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+a.card{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;text-decoration:none;color:inherit;transition:border-color .15s,transform .15s}
+a.card:hover,a.card:focus-visible{border-color:var(--accent);transform:translateY(-2px);outline:none}
+.meta{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.meta .t{color:var(--accent);font-weight:600}
+.card h3{font-size:16px;font-weight:600}
+.card p{font-size:13px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.empty{margin-top:40px;color:var(--muted);text-align:center}
+footer{margin-top:56px;font-size:13px;color:var(--muted);border-top:1px solid var(--border);padding-top:16px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">IELTS Academic · Writing</div>
+  <h1>Task 1 Question Bank</h1>
+  <p class="lead">Pick a question and write your 150-word response against a 20-minute timer. Your answers autosave in this browser, and you can download a PDF when you submit.</p>
+  <div class="facts" id="facts"></div>
+</header>
+
+<div class="bar">
+  <div class="row">
+    <input type="search" id="q" placeholder="Search by topic, e.g. “water”, “map”, “university”" aria-label="Search questions">
+    <button class="btn ghost" id="rand" type="button">Random question</button>
+    <a class="btn" href="modern_T1.html">Open full test</a>
+  </div>
+  <div class="chips" id="chips" role="group" aria-label="Filter by category"></div>
+</div>
+
+<main id="list"></main>
+<p class="empty" id="empty" hidden>No questions match your search.</p>
+
+<footer>Each question opens in the practice test. You will be asked for your name and candidate number the first time.</footer>
+</div>
+<script>
+const DATA = [{"name":"Line Graphs","tip":"Describe overall trends, peak and low points, and make clear comparisons between the lines.","qs":[{"id":"1-1","typ":"Line Graph","subj":"Unemployment Rate","desc":"The graph below shows the unemployment rate in three countries between 2008 and 2020."},{"id":"1-2","typ":"Line Graph","subj":"Meat Consumption","desc":"The graph below shows the average yearly consumption of four types of meat per person in Country M between 1990 and 2020."},{"id":"1-3","typ":"Line Graph","subj":"House Price Index","desc":"The graph below shows changes in house prices in three cities between 2005 and 2019, using an index where 2005 = 100."},{"id":"1-4","typ":"Line Graph","subj":"Noise Complaints","desc":"The graph below shows the number of complaints made about noise to Environmental Health authorities in the city of Newtown between 1980 and 1996."},{"id":"1-5","typ":"Line Graph","subj":"Monthly Temperatures","desc":"The line graph below shows the average monthly temperatures in three major cities."}]},{"name":"Bar Charts","tip":"Highlight the highest and lowest values and compare the categories rather than listing every figure.","qs":[{"id":"2-1","typ":"Bar Chart","subj":"World Oil Resources","desc":"The chart below shows the proportions of the world’s oil resources held in different areas, together with the proportions consumed annually in the same areas."},{"id":"2-2","typ":"Bar Charts","subj":"Reasons for Study","desc":"The charts below show the main reasons for study among students of different age groups and the amount of support they received from employers."},{"id":"2-3","typ":"Bar Charts","subj":"Fresh Fruit Exports","desc":"The chart shows fresh fruit exports in 2010."},{"id":"2-4","typ":"Bar Chart","subj":"Museum Visitors","desc":"The chart shows the number of visitors to three museums in 2010, 2015 and 2020."},{"id":"2-5","typ":"Bar Chart","subj":"Teenage Leisure Activities","desc":"The chart shows the percentage of teenage boys and girls who enjoy five leisure activities."}]},{"name":"Pie Charts","tip":"Compare the main proportions and point out the biggest differences or changes between the charts.","qs":[{"id":"3-1","typ":"Pie Charts","subj":"Household Spending","desc":"The pie charts show how an average household in Country X spent its budget in 1990 and in 2020."},{"id":"3-2","typ":"Pie Charts","subj":"Travel to University","desc":"The pie charts show how students travel to university in three cities."},{"id":"3-3","typ":"Pie Charts","subj":"Graduate Jobs","desc":"The pie charts show the industries in which graduates found their first jobs in 2010 and in 2020."},{"id":"3-4","typ":"Pie Charts","subj":"Water Usage","desc":"The pie charts below compare water usage in San Diego, California and the rest of the world."},{"id":"3-5","typ":"Pie Charts","subj":"What Makes People Happy","desc":"The charts below show the results of a survey about what people of different age groups say makes them most happy."}]},{"name":"Tables","tip":"Pick out the highest and lowest figures and group related data instead of reading out every number.","qs":[{"id":"4-1","typ":"Table","subj":"University Enrolments","desc":"The table below gives information about student enrolments at Manchester University in 1937, 1967 and 2017."},{"id":"4-2","typ":"Table","subj":"Electricity Fuel Types","desc":"The table below shows the percentage use of four different fuel types to generate electricity in five Asian countries in 2005."},{"id":"4-3","typ":"Table","subj":"University Survey Results","desc":"The table below shows the results of surveys in 2005, 2010 and 2015 about McGill University."},{"id":"4-4","typ":"Table","subj":"Types of Housing","desc":"The illustration below shows the proportions of people living in different types of houses in three different areas in 2012 in Denmark."},{"id":"4-5","typ":"Table","subj":"Population Figures","desc":"The table below gives information about past and projected population figures in various countries for different years."}]},{"name":"Maps and Plans","tip":"Describe what has changed and what has stayed the same, using location language (next to, opposite, north of).","qs":[{"id":"5-1","typ":"Plans","subj":"Farm Site","desc":"The plans below show the site of a farm in 1950 and the same site today."},{"id":"5-2","typ":"Maps","subj":"University Campus","desc":"The maps show improvements that have been made to a university campus between 2010 and the present day."},{"id":"5-3","typ":"Maps","subj":"College Site","desc":"The two maps below show the site of a college in 2006 and the present day."},{"id":"5-4","typ":"Maps","subj":"Town of Westley","desc":"The two maps below show the changes that have taken place in the town of Westley since 1815."},{"id":"5-5","typ":"Floor Plans","subj":"Public Library","desc":"The diagram below shows the floor plan of a public library 20 years ago and how it looks now."}]},{"name":"Mixed Charts","tip":"Cover both the table and the chart, link the figures where you can, and compare the main features.","qs":[{"id":"6-1","typ":"Table & Pie Charts","subj":"Police Budget","desc":"The table and charts below give information on the police budget for 2017 and 2018 in one area of Britain."},{"id":"6-2","typ":"Table & Bar Chart","subj":"Study Abroad Spending","desc":"The table and chart below provide a breakdown of the total expenditure and the average amount of money spent by students per week while studying abroad in 4 countries."},{"id":"6-3","typ":"Graph & Table","subj":"Water Use","desc":"The graph and table below give information about water use worldwide and water consumption in two different countries."},{"id":"6-4","typ":"Bar Chart & Table","subj":"Foreign Students","desc":"The bar chart and table show information about students from abroad studying in four English-speaking countries in 2004 and 2012."},{"id":"6-5","typ":"Pie & Bar Charts","subj":"Takeaways in Canada","desc":"The charts below show the favourite takeaways of people in Canada and the number of Indian restaurants in Canada between 1960 and 2015."}]},{"name":"Flowcharts","tip":"Give a short overview, then follow the flow stage by stage, mentioning any decision points, outcomes and time periods shown.","qs":[{"id":"7-1","typ":"Flowchart","subj":"Work Experience Requirement","desc":"The flowchart below shows the process involved in completing the work experience requirement for university students."},{"id":"7-2","typ":"Flowchart","subj":"University Entry","desc":"The diagram below shows the procedure for university entry for high school graduates."},{"id":"7-3","typ":"Flowchart","subj":"University Entry","desc":"The diagram shows the procedure for university entry for high school graduates."}]},{"name":"Process and Cycle Diagrams","tip":"Give a short overview, then describe each stage in order using sequencing words (first, then, after that, finally).","qs":[{"id":"8-1","typ":"Process Diagram","subj":"Rainwater Reuse","desc":"The following diagram shows how rain water is reused for domestic purpose."},{"id":"8-2","typ":"Diagrams","subj":"Wave Power","desc":"The diagrams show a structure that is used to generate electricity from wave power."},{"id":"8-3","typ":"Process Diagram","subj":"Frozen Fish Pie","desc":"The diagrams below give information about the manufacture of frozen fish pie."},{"id":"8-4","typ":"Life Cycle","subj":"Monarch Butterfly","desc":"The diagram below shows the life cycle of the Monarch butterfly."},{"id":"8-5","typ":"Process Diagram","subj":"Glass Recycling","desc":"The diagram below shows how glass is recycled."},{"id":"8-6","typ":"Process Diagram","subj":"Nuclear Power","desc":"The diagram below shows how uranium is used in the production of nuclear power."},{"id":"8-7","typ":"Natural Cycle","subj":"The Water Cycle","desc":"The diagram below shows the water cycle, which is the continuous movement of water on, above, and below the surface of the Earth."},{"id":"8-8","typ":"Diagrams","subj":"House Design","desc":"The diagrams below show some principles of house design for cool and warm climates."},{"id":"8-9","typ":"Diagram","subj":"Automatic Photo Booth","desc":"The diagram below gives information about an automatic photo booth."},{"id":"8-10","typ":"Process Diagram","subj":"Ethanol Production","desc":"The diagram below shows how a biofuel called ethanol is produced."}]}];
+const APP = 'modern_T1.html';
+const list = document.getElementById('list'), chips = document.getElementById('chips');
+let cat = -1;
+const total = DATA.reduce((n, c) => n + c.qs.length, 0);
+document.getElementById('facts').innerHTML =
+  '<span class="fact"><b>' + total + '</b> questions</span><span class="fact"><b>' + DATA.length + '</b> categories</span><span class="fact"><b>20</b> min each</span><span class="fact"><b>150</b> words minimum</span>';
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function mkChip(label, idx) {
+  const b = document.createElement('button');
+  b.className = 'chip'; b.type = 'button'; b.textContent = label;
+  b.setAttribute('aria-pressed', idx === cat);
+  b.onclick = () => { cat = idx; render(); };
+  return b;
+}
+function render() {
+  const term = document.getElementById('q').value.trim().toLowerCase();
+  chips.replaceChildren(mkChip('All', -1), ...DATA.map((c, i) => mkChip(c.name, i)));
+  let shown = 0, html = '';
+  DATA.forEach((c, i) => {
+    if (cat !== -1 && cat !== i) return;
+    const qs = c.qs.filter(q => !term || (q.typ + ' ' + q.subj + ' ' + q.desc + ' ' + c.name).toLowerCase().includes(term));
+    if (!qs.length) return;
+    shown += qs.length;
+    html += '<section><h2>' + esc(c.name) + '<small>' + qs.length + ' question' + (qs.length > 1 ? 's' : '') + '</small></h2><p class="tip">' + esc(c.tip) + '</p><div class="grid">' +
+      qs.map(q => '<a class="card" href="' + APP + '#q=' + q.id + '"><div class="meta"><span class="t">' + esc(q.typ) + '</span><span>Q' + q.id + '</span></div><h3>' + esc(q.subj) + '</h3><p>' + esc(q.desc) + '</p></a>').join('') +
+      '</div></section>';
+  });
+  list.innerHTML = html;
+  document.getElementById('empty').hidden = shown > 0;
+}
+document.getElementById('q').addEventListener('input', render);
+document.getElementById('rand').onclick = () => {
+  const all = DATA.flatMap(c => c.qs);
+  location.href = APP + '#q=' + all[Math.floor(Math.random() * all.length)].id;
+};
+render();
+</script>
+</body>
+</html>
